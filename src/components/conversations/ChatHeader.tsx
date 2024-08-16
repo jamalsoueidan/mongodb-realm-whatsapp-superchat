@@ -1,4 +1,11 @@
-import { ActionIcon, Avatar, Flex, Indicator, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Avatar,
+  Flex,
+  Indicator,
+  Popover,
+  Text,
+} from "@mantine/core";
 import {
   IconArrowLeft,
   IconGripVertical,
@@ -50,9 +57,20 @@ export function ChatHeader() {
         </Flex>
       </Flex>
       <Flex gap="md">
-        <Indicator inline label={`+${assignedUsers.length}`} size={16}>
-          <IconUsersGroup />
-        </Indicator>
+        <Popover width={200} position="bottom" withArrow shadow="md">
+          <Popover.Target>
+            <Indicator inline label={`+${assignedUsers.length}`} size={16}>
+              <IconUsersGroup />
+            </Indicator>
+          </Popover.Target>
+          <Popover.Dropdown>
+            {assignedUsers.map((user) => (
+              <Flex key={user.user_id} gap="xs" align="center">
+                <Text>{user.name}</Text>
+              </Flex>
+            ))}
+          </Popover.Dropdown>
+        </Popover>
 
         <ActionIcon
           variant="transparent"

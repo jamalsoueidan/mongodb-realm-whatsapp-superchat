@@ -5,6 +5,7 @@ import {
   Card,
   Flex,
   Group,
+  Loader,
   LoadingOverlay,
   Stack,
   Text,
@@ -125,10 +126,14 @@ function Preview({
   conversation: Conversation & Realm.Object<Conversation>;
 }) {
   const { flowId } = useParams<{ flowId: string }>();
-  const { data } = useUserFunction<GetFlow>("func-flow-get", {
+  const { data, loading } = useUserFunction<GetFlow>("func-flow-get", {
     business_phone_number_id: "364826260050460",
     flow_id: flowId,
   });
+
+  if (loading) {
+    return <Loader size="xl" />;
+  }
 
   return <iframe src={data?.preview.preview_url} width="100%" height="900" />;
 }
