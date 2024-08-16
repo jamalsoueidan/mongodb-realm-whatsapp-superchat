@@ -11,6 +11,7 @@ import {
   Text,
   Textarea,
   TextInput,
+  Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconArrowRight, IconEye } from "@tabler/icons-react";
@@ -47,7 +48,6 @@ export const ChatFlows = () => {
 
   if (error) return <p>Error: {error.message}</p>;
 
-  console.log(params);
   return (
     <CustomModal
       opened={isMatch}
@@ -66,7 +66,7 @@ export const ChatFlows = () => {
         overlayProps={{ radius: "sm", blur: 2 }}
       />
       <Route path="/conversation/:conversationId/flows/:flowId/preview">
-        <Preview conversation={conversation} />
+        <Preview />
       </Route>
       <Route path="/conversation/:conversationId/flows/:flowId/send">
         <Send conversation={conversation} />
@@ -120,11 +120,7 @@ function Flow({ flow }: { flow: Flow }) {
   );
 }
 
-function Preview({
-  conversation,
-}: {
-  conversation: Conversation & Realm.Object<Conversation>;
-}) {
+function Preview() {
   const { flowId } = useParams<{ flowId: string }>();
   const { data, loading } = useUserFunction<GetFlow>("func-flow-get", {
     business_phone_number_id: "364826260050460",
@@ -143,6 +139,7 @@ function Send({
 }: {
   conversation: Conversation & Realm.Object<Conversation>;
 }) {
+  const [, setLocation] = useLocation();
   const { flowId } = useParams<{ flowId: string }>();
   const { data } = useUserFunction<GetFlow>("func-flow-get", {
     business_phone_number_id: "364826260050460",
@@ -165,6 +162,11 @@ function Send({
     <form
       onSubmit={form.onSubmit((values) =>
         send({
+          metadata: {
+            id: data?.id,
+            name: data?.name,
+            status: data?.status,
+          },
           messaging_product: "whatsapp",
           to: conversation.customer_phone_number,
           recipient_type: "individual",
@@ -199,14 +201,49 @@ function Send({
         })
       )}
     >
-      <Stack>
-        <TextInput label="Header" {...form.getInputProps("header")} />
-        <Textarea label="Body" {...form.getInputProps("body")} />
-        <TextInput label="Footer" {...form.getInputProps("footer")} />
-        <TextInput label="Button" {...form.getInputProps("flow_cta")} />
-        <Button loading={count > 0} type="submit">
-          Send
-        </Button>
+      <Stack gap="xs">
+        <div>
+          <Title order={3}>{data?.name}</Title>
+          <Badge color={data?.status === "DRAFT" ? "yellow" : "green"}>
+            {data?.status}
+          </Badge>
+        </div>
+
+        {data?.status !== "PUBLISHED" ? <Text></Text> : null}
+        <TextInput
+          label="Header"
+          {...form.getInputProps("header")}
+          disabled={data?.status !== "PUBLISHED"}
+        />
+        <Textarea
+          label="Body"
+          {...form.getInputProps("body")}
+          disabled={data?.status !== "PUBLISHED"}
+        />
+        <TextInput
+          label="Footer"
+          {...form.getInputProps("footer")}
+          disabled={data?.status !== "PUBLISHED"}
+        />
+        <TextInput
+          label="Button"
+          {...form.getInputProps("flow_cta")}
+          disabled={data?.status !== "PUBLISHED"}
+        />
+        <Flex justify="flex-end" gap="sm">
+          <Button
+            type="button"
+            variant="subtle"
+            onClick={() =>
+              setLocation(`/conversation/${conversation._id}/flows`)
+            }
+          >
+            Back
+          </Button>
+          <Button loading={count > 0} type="submit">
+            Send {data?.status !== "PUBLISHED" ? "Test" : ""}
+          </Button>
+        </Flex>
       </Stack>
     </form>
   );

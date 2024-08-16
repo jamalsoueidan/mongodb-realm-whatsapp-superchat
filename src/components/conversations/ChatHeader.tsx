@@ -5,6 +5,7 @@ import {
   Indicator,
   Popover,
   Text,
+  UnstyledButton,
 } from "@mantine/core";
 import {
   IconArrowLeft,
@@ -59,7 +60,12 @@ export function ChatHeader() {
       <Flex gap="md">
         <Popover width={200} position="bottom" withArrow shadow="md">
           <Popover.Target>
-            <Indicator inline label={`+${assignedUsers.length}`} size={16}>
+            <Indicator
+              inline
+              label={`+${assignedUsers.length}`}
+              size={16}
+              component={UnstyledButton}
+            >
               <IconUsersGroup />
             </Indicator>
           </Popover.Target>

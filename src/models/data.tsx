@@ -24,7 +24,6 @@ export type Message = {
   _id: Realm.BSON.ObjectId;
   business_phone_number_id: string;
   conversation?: Conversation;
-  user?: User;
   interactive?: Message_interactive;
   interactive_reply?: Message_interactive_reply;
   media?: Message_media;
@@ -36,6 +35,7 @@ export type Message = {
   text?: Message_text;
   timestamp: number;
   type: string;
+  user?: User;
 };
 
 export const MessageSchema = {
@@ -44,7 +44,6 @@ export const MessageSchema = {
     _id: "objectId",
     business_phone_number_id: "string",
     conversation: "Conversation",
-    user: "User",
     interactive: "Message_interactive",
     interactive_reply: "Message_interactive_reply",
     media: "Message_media",
@@ -56,6 +55,7 @@ export const MessageSchema = {
     text: "Message_text",
     timestamp: "double",
     type: "string",
+    user: "User",
   },
   primaryKey: "_id",
 };
@@ -65,6 +65,7 @@ export type Message_interactive = {
   body?: Message_interactive_body;
   footer?: Message_interactive_footer;
   header?: Message_interactive_header;
+  metadata?: Message_interactive_metadata;
   type?: string;
 };
 
@@ -76,6 +77,7 @@ export const Message_interactiveSchema = {
     body: "Message_interactive_body",
     footer: "Message_interactive_footer",
     header: "Message_interactive_header",
+    metadata: "Message_interactive_metadata",
     type: "string?",
   },
 };
@@ -169,43 +171,185 @@ export const Message_interactive_headerSchema = {
   },
 };
 
-export type Message_interactive_reply = {
-  body?: string;
+export type Message_interactive_metadata = {
+  id?: string;
   name?: string;
-  response_json?: Message_interactive_reply_response_json;
+  status?: string;
+};
+
+export const Message_interactive_metadataSchema = {
+  name: "Message_interactive_metadata",
+  embedded: true,
+  properties: {
+    id: "string?",
+    name: "string?",
+    status: "string?",
+  },
+};
+
+export type Message_interactive_reply = {
+  bookatable?: Message_interactive_reply_bookatable;
+  feedback?: Message_interactive_reply_feedback;
+  flow_name?: string;
 };
 
 export const Message_interactive_replySchema = {
   name: "Message_interactive_reply",
   embedded: true,
   properties: {
-    body: "string?",
-    name: "string?",
-    response_json: "Message_interactive_reply_response_json",
+    bookatable: "Message_interactive_reply_bookatable",
+    feedback: "Message_interactive_reply_feedback",
+    flow_name: "string?",
   },
 };
 
-export type Message_interactive_reply_response_json = {
-  comment?: string;
-  date?: number;
+export type Message_interactive_reply_bookatable = {
+  comment?: Message_interactive_reply_bookatable_comment;
+  date?: Message_interactive_reply_bookatable_date;
   flow_token?: string;
-  food?: number;
-  service?: number;
-  time?: string;
-  total?: number;
+  time?: Message_interactive_reply_bookatable_time;
+  total?: Message_interactive_reply_bookatable_total;
 };
 
-export const Message_interactive_reply_response_jsonSchema = {
-  name: "Message_interactive_reply_response_json",
+export const Message_interactive_reply_bookatableSchema = {
+  name: "Message_interactive_reply_bookatable",
   embedded: true,
   properties: {
-    comment: "string?",
-    date: "double?",
+    comment: "Message_interactive_reply_bookatable_comment",
+    date: "Message_interactive_reply_bookatable_date",
     flow_token: "string?",
-    food: "double?",
-    service: "double?",
-    time: "string?",
-    total: "double?",
+    time: "Message_interactive_reply_bookatable_time",
+    total: "Message_interactive_reply_bookatable_total",
+  },
+};
+
+export type Message_interactive_reply_bookatable_comment = {
+  question?: string;
+  type?: string;
+  value?: string;
+};
+
+export const Message_interactive_reply_bookatable_commentSchema = {
+  name: "Message_interactive_reply_bookatable_comment",
+  embedded: true,
+  properties: {
+    question: "string?",
+    type: "string?",
+    value: "string?",
+  },
+};
+
+export type Message_interactive_reply_bookatable_date = {
+  question?: string;
+  type?: string;
+  value?: number;
+};
+
+export const Message_interactive_reply_bookatable_dateSchema = {
+  name: "Message_interactive_reply_bookatable_date",
+  embedded: true,
+  properties: {
+    question: "string?",
+    type: "string?",
+    value: "double?",
+  },
+};
+
+export type Message_interactive_reply_bookatable_time = {
+  question?: string;
+  type?: string;
+  value?: string;
+};
+
+export const Message_interactive_reply_bookatable_timeSchema = {
+  name: "Message_interactive_reply_bookatable_time",
+  embedded: true,
+  properties: {
+    question: "string?",
+    type: "string?",
+    value: "string?",
+  },
+};
+
+export type Message_interactive_reply_bookatable_total = {
+  question?: string;
+  type?: string;
+  value?: number;
+};
+
+export const Message_interactive_reply_bookatable_totalSchema = {
+  name: "Message_interactive_reply_bookatable_total",
+  embedded: true,
+  properties: {
+    question: "string?",
+    type: "string?",
+    value: "double?",
+  },
+};
+
+export type Message_interactive_reply_feedback = {
+  comment?: Message_interactive_reply_feedback_comment;
+  flow_token?: string;
+  food?: Message_interactive_reply_feedback_food;
+  service?: Message_interactive_reply_feedback_service;
+};
+
+export const Message_interactive_reply_feedbackSchema = {
+  name: "Message_interactive_reply_feedback",
+  embedded: true,
+  properties: {
+    comment: "Message_interactive_reply_feedback_comment",
+    flow_token: "string?",
+    food: "Message_interactive_reply_feedback_food",
+    service: "Message_interactive_reply_feedback_service",
+  },
+};
+
+export type Message_interactive_reply_feedback_comment = {
+  question?: string;
+  type?: string;
+  value?: string;
+};
+
+export const Message_interactive_reply_feedback_commentSchema = {
+  name: "Message_interactive_reply_feedback_comment",
+  embedded: true,
+  properties: {
+    question: "string?",
+    type: "string?",
+    value: "string?",
+  },
+};
+
+export type Message_interactive_reply_feedback_food = {
+  question?: string;
+  type?: string;
+  value?: number;
+};
+
+export const Message_interactive_reply_feedback_foodSchema = {
+  name: "Message_interactive_reply_feedback_food",
+  embedded: true,
+  properties: {
+    question: "string?",
+    type: "string?",
+    value: "double?",
+  },
+};
+
+export type Message_interactive_reply_feedback_service = {
+  question?: string;
+  type?: string;
+  value?: number;
+};
+
+export const Message_interactive_reply_feedback_serviceSchema = {
+  name: "Message_interactive_reply_feedback_service",
+  embedded: true,
+  properties: {
+    question: "string?",
+    type: "string?",
+    value: "double?",
   },
 };
 
@@ -339,7 +483,6 @@ export const Message_textSchema = {
 
 export type User = {
   _id: Realm.BSON.ObjectId;
-  user_id: string;
   business_phone_number_ids: Realm.List<string>;
   conversation_ids: Realm.List<Realm.BSON.ObjectId>;
   email: string;
@@ -347,13 +490,13 @@ export type User = {
   is_team_admin: boolean;
   name: string;
   picture?: string;
+  user_id: string;
 };
 
 export const UserSchema = {
   name: "User",
   properties: {
     _id: "objectId",
-    user_id: "string",
     business_phone_number_ids: "string[]",
     conversation_ids: "objectId[]",
     email: "string",
@@ -361,6 +504,7 @@ export const UserSchema = {
     is_team_admin: "bool",
     name: "string",
     picture: "string?",
+    user_id: "string",
   },
   primaryKey: "_id",
 };

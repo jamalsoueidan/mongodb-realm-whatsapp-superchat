@@ -1,20 +1,24 @@
 import {
+  Accordion,
   ActionIcon,
-  Box,
+  Button,
   Divider,
   Drawer,
   Flex,
   MultiSelect,
   ScrollArea,
+  Stack,
+  Text,
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useRealm } from "@realm/react";
+import { useQuery, useRealm } from "@realm/react";
 import { IconX } from "@tabler/icons-react";
 import Realm from "realm";
 import { Link, useParams, useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
 import { useUsersAssignedConversation } from "../../hooks/useUserAssignedConversation";
+import { Message, MessageSchema } from "../../models/data";
 
 export const ChatSettings = () => {
   const isMobile = useMobile();
@@ -45,9 +49,20 @@ export const ChatSettings = () => {
             </ActionIcon>
           </Flex>
           <Divider />
-          <Box p="sm">
-            <Assigned />
-          </Box>
+          <Accordion chevronPosition="right" variant="default">
+            <Accordion.Item value="assignments">
+              <Accordion.Control>User assignment</Accordion.Control>
+              <Accordion.Panel>
+                <Assigned />
+              </Accordion.Panel>
+            </Accordion.Item>
+            <Accordion.Item value="flows">
+              <Accordion.Control>Flows reply (newest top)</Accordion.Control>
+              <Accordion.Panel>
+                <FlowsReply />
+              </Accordion.Panel>
+            </Accordion.Item>
+          </Accordion>
         </Drawer.Body>
       </Drawer.Content>
     </Drawer.Root>
@@ -99,8 +114,8 @@ function Assigned() {
 
   return (
     <MultiSelect
-      label="Assigned"
-      placeholder="Part of this conversation"
+      placeholder="Pick user"
+      description="Choose which users can view this conversation?"
       value={assignedUsers.map((u) => u.name)}
       data={unassignedUsers.map((u) => ({
         label: u.name,
@@ -108,5 +123,35 @@ function Assigned() {
       }))}
       onChange={handleUserSelectionChange}
     />
+  );
+}
+
+function FlowsReply() {
+  //TODO:
+  // show only last 24 hours, or last 7 days?
+
+  const flows = useQuery<Message>(MessageSchema.name, (collection) =>
+    collection.filtered("type = 'interactive_reply' AND reply != $0", null)
+  );
+
+  return (
+    <Stack>
+      {flows.map((f) => {
+        const flowOwner = f.reply;
+        const receivedDate = new Date(f.timestamp * 1000);
+
+        return (
+          <Flex key={f._id.toJSON()} direction="column">
+            <Flex justify="space-between" align="center">
+              <div>
+                <Text fw="500">{flowOwner?.interactive?.metadata?.name}</Text>
+                <Text>{receivedDate.toLocaleString()}</Text>
+              </div>
+              <Button size="compact-md">View</Button>
+            </Flex>
+          </Flex>
+        );
+      })}
+    </Stack>
   );
 }
