@@ -1,4 +1,11 @@
-import { Button, Flex, LoadingOverlay } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Flex,
+  Image,
+  LoadingOverlay,
+  Overlay,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useApp } from "@realm/react";
 import { IconBrandFacebook } from "@tabler/icons-react";
@@ -38,9 +45,22 @@ export const LoginFacebook = () => {
         size="xl"
         color="green"
         rightSection={<IconBrandFacebook />}
+        pos="absolute"
+        left="auto"
+        top="auto"
+        style={{ zIndex: 999 }}
       >
         Login
       </Button>
+      <Box>
+        <Image
+          src="https://github.com/jamalsoueidan/whatsapp-superchat/blob/main/screenshots/app.png?raw=true"
+          alt="Demo"
+          mah="100vh"
+        />
+        <Overlay color="#000" backgroundOpacity={0.82} />
+      </Box>
+
       <LoadingOverlay
         visible={visible}
         zIndex={1000}
