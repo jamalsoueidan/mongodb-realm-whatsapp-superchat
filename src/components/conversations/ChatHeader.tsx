@@ -5,7 +5,6 @@ import {
   Indicator,
   Popover,
   Text,
-  UnstyledButton,
 } from "@mantine/core";
 import {
   IconArrowLeft,
@@ -35,38 +34,46 @@ export function ChatHeader() {
       py="xs"
       h="60px"
       align="center"
-      bg={isMobile ? "green.9" : undefined}
+      bg={{ base: "#3a5664", md: "#f0f2f5" }}
       justify="space-between"
     >
-      <Flex gap="xs" align="center">
-        {isMobile ? (
-          <ActionIcon
-            variant="transparent"
-            aria-label="Back"
-            color="white"
-            onClick={() => setLocation("/conversation")}
-          >
-            <IconArrowLeft stroke={2.5} />
-          </ActionIcon>
-        ) : null}
-        <Avatar color="white" radius="xl" bg="gray.1" size="md" />
-        <Flex direction="column" gap="0">
-          <Text fw="bold" lh="xs">
-            {conversation.name || conversation.customer_phone_number}{" "}
-          </Text>
-          <Text lh="xs">{receivedDate.toLocaleDateString()}</Text>
+      <Flex gap="0" align="center">
+        <ActionIcon
+          variant="transparent"
+          aria-label="Back"
+          color="white"
+          onClick={() => setLocation("/conversation")}
+          hiddenFrom="md"
+        >
+          <IconArrowLeft stroke={2.5} />
+        </ActionIcon>
+        <Flex gap="xs">
+          <Avatar color="white" radius="xl" bg="gray.1" size="md" />
+          <Flex direction="column" gap="0">
+            <Text lh="xs" c={{ base: "white", md: "black" }}>
+              {conversation.name || conversation.customer_phone_number}{" "}
+            </Text>
+            <Text lh="xs" fz="xs" c={{ base: "white", md: "black" }}>
+              {receivedDate.toLocaleDateString()}
+            </Text>
+          </Flex>
         </Flex>
       </Flex>
-      <Flex gap="md">
-        <Popover width={200} position="bottom" withArrow shadow="md">
+      <Flex gap="md" align="center">
+        <Popover
+          middlewares={{ flip: true, shift: true, inline: true }}
+          position="bottom"
+          withArrow
+          shadow="md"
+        >
           <Popover.Target>
             <Indicator
-              inline
               label={`+${assignedUsers.length}`}
               size={16}
-              component={UnstyledButton}
+              color={isMobile ? "#3a5664" : "#54656f"}
+              mt="4px"
             >
-              <IconUsersGroup />
+              <IconUsersGroup color={isMobile ? "white" : "#54656f"} />
             </Indicator>
           </Popover.Target>
           <Popover.Dropdown>
@@ -81,7 +88,7 @@ export function ChatHeader() {
         <ActionIcon
           variant="transparent"
           aria-label="Back"
-          color="black"
+          color={isMobile ? "white" : "#54656f"}
           component={Link}
           to={
             !isMatch

@@ -16,12 +16,13 @@ export const MessageWrapper = ({
   const justify = isRecipientDifferent ? "flex-end" : undefined;
 
   return (
-    <Flex justify={justify}>
+    <Flex justify={justify} mb="xs">
       <Card
         bg={bg}
-        py="2px"
+        py="4px"
         px="6px"
         shadow="xs"
+        radius="md"
         maw={{ base: "80%", md: "40%" }}
       >
         {children}

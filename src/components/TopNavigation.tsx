@@ -12,12 +12,25 @@ export function TopNavigation() {
   const user = useUser();
 
   return (
-    <Flex justify="space-between" align="center" pl="md" h="60px" w="100&">
-      <Title>WA Business</Title>
+    <Flex
+      justify="space-between"
+      align="center"
+      pl="md"
+      h="60px"
+      w="100&"
+      bg={{ base: "#3a5664", md: "white" }}
+    >
+      <Title order={2} c="white" fw="500">
+        WA Business
+      </Title>
       <Menu shadow="md" width={200}>
         <Menu.Target>
           <ActionIcon aria-label="Menu" size="xl" variant="transparent">
-            <IconMenu2 style={{ width: "70%", height: "70%" }} stroke={1.5} />
+            <IconMenu2
+              style={{ width: "70%", height: "70%" }}
+              stroke={1.5}
+              color="white"
+            />
           </ActionIcon>
         </Menu.Target>
 

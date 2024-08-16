@@ -1,4 +1,4 @@
-import { ScrollArea, Stack } from "@mantine/core";
+import { ScrollArea } from "@mantine/core";
 import { useEffect, useRef } from "react";
 import { useParams } from "wouter";
 import { useMessages } from "../../hooks/useMessages";
@@ -44,27 +44,28 @@ export function ChatMessages() {
   }, []);
 
   return (
-    <ScrollArea type="auto" bg="gray.3" p="xs" flex="1" viewportRef={viewport}>
-      <Stack gap="5px">
-        {messages.map((msg) => {
-          if (msg.type === "text") {
-            return <MessageText msg={msg} key={msg._id as any} />;
-          } else if (msg.type === "image") {
-            return <MessageImage msg={msg} key={msg._id as any} />;
-          } else if (msg.type === "interactive" && msg.interactive) {
-            return <MessageInteractive msg={msg} key={msg._id as any} />;
-          } else if (
-            msg.type === "interactive_reply" &&
-            msg.interactive_reply
-          ) {
-            return <MessageInteractiveReply msg={msg} key={msg._id as any} />;
-          } else if (msg.type === "system") {
-            return <MessageSystem msg={msg} key={msg._id as any} />;
-          } else {
-            return <MessageUnknown msg={msg} key={msg._id as any} />;
-          }
-        })}
-      </Stack>
+    <ScrollArea
+      type="auto"
+      bg="#efeae2"
+      px="xs"
+      flex="1"
+      viewportRef={viewport}
+    >
+      {messages.map((msg) => {
+        if (msg.type === "text") {
+          return <MessageText msg={msg} key={msg._id as any} />;
+        } else if (msg.type === "image") {
+          return <MessageImage msg={msg} key={msg._id as any} />;
+        } else if (msg.type === "interactive" && msg.interactive) {
+          return <MessageInteractive msg={msg} key={msg._id as any} />;
+        } else if (msg.type === "interactive_reply" && msg.interactive_reply) {
+          return <MessageInteractiveReply msg={msg} key={msg._id as any} />;
+        } else if (msg.type === "system") {
+          return <MessageSystem msg={msg} key={msg._id as any} />;
+        } else {
+          return <MessageUnknown msg={msg} key={msg._id as any} />;
+        }
+      })}
     </ScrollArea>
   );
 }

@@ -33,6 +33,7 @@ export const MessageInteractiveReply = ({ msg }: MessageWrapperProps) => {
           mt="md"
           mx="md"
           mb="4px"
+          radius="md"
           withCloseButton={false}
         >
           <Text size="xs" c="dimmed">

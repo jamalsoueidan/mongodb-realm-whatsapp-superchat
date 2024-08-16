@@ -2,7 +2,9 @@ import "@mantine/charts/styles.css";
 import { Flex, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import { AppProvider, RealmProvider, UserProvider } from "@realm/react";
+import { useEffect } from "react";
 import { FacebookProvider } from "react-facebook";
+import { Router, useLocation, useRoute } from "wouter";
 import { LeftNavigation } from "./components/LeftNavigation";
 import { LoginFacebook } from "./components/Login";
 import { TopNavigation } from "./components/TopNavigation";
@@ -45,6 +47,14 @@ import { ReportsPage } from "./pages/ReportsPage";
 function App() {
   const isMobile = useMobile();
   const viewportHeight = useVisualViewportHeight();
+  const [isMatch] = useRoute("/");
+  const [, setLocation] = useLocation();
+
+  useEffect(() => {
+    if (isMatch) {
+      setLocation("/conversation");
+    }
+  }, [isMatch]);
 
   return (
     <Flex h={`${viewportHeight}px`} direction={isMobile ? "column" : "row"}>
@@ -104,7 +114,9 @@ export default function Home() {
                 },
               }}
             >
-              <App />
+              <Router base="/whatsapp-superchat">
+                <App />
+              </Router>
             </RealmProvider>
           </UserProvider>
         </AppProvider>

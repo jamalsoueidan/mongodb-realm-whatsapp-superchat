@@ -21,11 +21,20 @@ export function ChatInput() {
   };
 
   return (
-    <Flex p="md" h="76px" gap={{ base: "xs", md: "0" }}>
+    <Flex
+      p={{ md: "xs" }}
+      px={{ base: "2px", md: "xs" }}
+      pb={{ base: "2px", md: "xs" }}
+      h={{ md: "70px" }}
+      gap={{ base: "xs", md: "0" }}
+      justify="center"
+      align="center"
+      bg={isMobile ? "#efeae2" : "gray.1"}
+    >
       <TextInput
-        size="md"
+        size="lg"
         placeholder="Type a message"
-        radius="md"
+        radius={isMobile ? "xl" : "md"}
         value={value}
         rightSectionWidth={count > 0 ? 72 : 40}
         rightSection={
