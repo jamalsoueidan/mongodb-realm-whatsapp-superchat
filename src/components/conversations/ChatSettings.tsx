@@ -121,6 +121,7 @@ function Assigned() {
         label: u.name,
         value: u.user_id,
       }))}
+      size="md"
       onChange={handleUserSelectionChange}
     />
   );
