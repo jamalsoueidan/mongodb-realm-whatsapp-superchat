@@ -4,6 +4,7 @@ import topLevelAwait from "vite-plugin-top-level-await";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "/whatsapp-superchat/",
   plugins: [react(), topLevelAwait()],
   build: {
     outDir: "build",
