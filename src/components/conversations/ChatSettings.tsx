@@ -8,13 +8,13 @@ import {
   ScrollArea,
   Title,
 } from "@mantine/core";
-import { useQuery, useRealm } from "@realm/react";
+import { useDisclosure } from "@mantine/hooks";
+import { useRealm } from "@realm/react";
 import { IconX } from "@tabler/icons-react";
-import { useMemo } from "react";
 import Realm from "realm";
 import { Link, useParams, useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
-import { User, UserSchema } from "../../models/data";
+import { useUsersAssignedConversation } from "../../hooks/useUserAssignedConversation";
 
 export const ChatSettings = () => {
   const isMobile = useMobile();
@@ -56,42 +56,23 @@ export const ChatSettings = () => {
 
 function Assigned() {
   const { conversationId } = useParams<{ conversationId: string }>();
+  const [opened, { toggle }] = useDisclosure(false);
+
   const realm = useRealm();
 
-  const users = useQuery<User>(
-    UserSchema.name,
-    (collection) =>
-      collection.filtered(
-        "business_phone_number_ids CONTAINS $0",
-        "364826260050460"
-      ),
-    []
-  );
-
-  const { assignedUsers, unassignedUsers } = useMemo(() => {
-    const assigned: User[] = [];
-    const unassigned: User[] = [];
-
-    users.forEach((user) => {
-      if (
-        user.conversation_ids.some((id) =>
-          id.equals(new Realm.BSON.ObjectId(conversationId))
-        )
-      ) {
-        assigned.push(user);
-      } else {
-        unassigned.push(user);
-      }
-    });
-
-    return { assignedUsers: assigned, unassignedUsers: unassigned };
-  }, [users, conversationId]);
+  const { users, assignedUsers, unassignedUsers } =
+    useUsersAssignedConversation(
+      {
+        conversationId,
+      },
+      [opened]
+    );
 
   const handleUserSelectionChange = (selectedUserIds: string[]) => {
     realm.write(() => {
       // First, remove all unselected users from the conversation
       users.forEach((user) => {
-        const userId = user._id;
+        const userId = user.user_id;
 
         if (!selectedUserIds.includes(userId)) {
           // If the user is not in the selectedUserIds, remove the conversation ID from their list
@@ -113,6 +94,7 @@ function Assigned() {
         }
       });
     });
+    toggle();
   };
 
   return (
@@ -122,7 +104,7 @@ function Assigned() {
       value={assignedUsers.map((u) => u.name)}
       data={unassignedUsers.map((u) => ({
         label: u.name,
-        value: u._id,
+        value: u.user_id,
       }))}
       onChange={handleUserSelectionChange}
     />

@@ -24,6 +24,7 @@ export type Message = {
   _id: Realm.BSON.ObjectId;
   business_phone_number_id: string;
   conversation?: Conversation;
+  user?: User;
   interactive?: Message_interactive;
   interactive_reply?: Message_interactive_reply;
   media?: Message_media;
@@ -43,6 +44,7 @@ export const MessageSchema = {
     _id: "objectId",
     business_phone_number_id: "string",
     conversation: "Conversation",
+    user: "User",
     interactive: "Message_interactive",
     interactive_reply: "Message_interactive_reply",
     media: "Message_media",
@@ -336,7 +338,8 @@ export const Message_textSchema = {
 };
 
 export type User = {
-  _id: string;
+  _id: Realm.BSON.ObjectId;
+  user_id: string;
   business_phone_number_ids: Realm.List<string>;
   conversation_ids: Realm.List<Realm.BSON.ObjectId>;
   email: string;
@@ -349,7 +352,8 @@ export type User = {
 export const UserSchema = {
   name: "User",
   properties: {
-    _id: "string",
+    _id: "objectId",
+    user_id: "string",
     business_phone_number_ids: "string[]",
     conversation_ids: "objectId[]",
     email: "string",
