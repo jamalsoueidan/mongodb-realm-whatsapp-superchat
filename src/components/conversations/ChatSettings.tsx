@@ -173,29 +173,31 @@ function FlowsReply() {
   );
 
   return (
-    <Stack>
-      {flows.map((f) => {
-        const flowOwner = f.reply;
-        const receivedDate = new Date(f.timestamp * 1000);
+    <ScrollArea type="auto" pr="md" flex="1" h="300px">
+      <Stack>
+        {flows.map((flow) => {
+          const flowParent = flow.reply;
+          const receivedDate = new Date(flow.timestamp * 1000);
 
-        return (
-          <Flex key={f._id.toJSON()} direction="column">
-            <Flex justify="space-between" align="center">
-              <div>
-                <Text fw="500">{flowOwner?.interactive?.metadata?.name}</Text>
-                <Text>{receivedDate.toLocaleString()}</Text>
-              </div>
-              <Button
-                size="compact-md"
-                component={Link}
-                to={`/${f._id.toJSON()}`}
-              >
-                View
-              </Button>
+          return (
+            <Flex key={flow._id.toJSON()} direction="column">
+              <Flex justify="space-between" align="center">
+                <div>
+                  <Text fw="500">{flow?.interactive_reply?.flow_name}</Text>
+                  <Text>{receivedDate.toLocaleString()}</Text>
+                </div>
+                <Button
+                  size="compact-md"
+                  component={Link}
+                  to={`/${flow._id.toJSON()}`}
+                >
+                  View
+                </Button>
+              </Flex>
             </Flex>
-          </Flex>
-        );
-      })}
-    </Stack>
+          );
+        })}
+      </Stack>
+    </ScrollArea>
   );
 }

@@ -150,7 +150,7 @@ function Send({
       header: "Table Booking",
       body: "Hi! Thanks for choosing to book a table with us. Please select the date, time, and number of people so we can assist you with the reservation.",
       footer: "By Zigzag",
-      flow_cta: "[ Start testing your Flow ]",
+      flow_cta: "Book table",
     },
   });
 
