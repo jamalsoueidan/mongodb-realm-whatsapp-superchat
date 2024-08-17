@@ -1,4 +1,4 @@
-import { ActionIcon, Flex, Group, Loader, TextInput } from "@mantine/core";
+import { ActionIcon, Flex, Group, TextInput } from "@mantine/core";
 import { getHotkeyHandler } from "@mantine/hooks";
 import { IconSend, IconWashDryF } from "@tabler/icons-react";
 import { useState } from "react";
@@ -10,13 +10,13 @@ export function ChatInput() {
   const { conversationId } = useParams<{ conversationId: string }>();
   const [value, setValue] = useState("");
   const isMobile = useMobile();
-  const { send, count } = useSendMessage();
+  const { sendText } = useSendMessage();
 
   const handler = () => {
     if (value.length > 0) {
       const body = value;
       setValue("");
-      send({ ...reply, text: { preview_url: false, body } });
+      sendText(body);
     }
   };
 
@@ -36,10 +36,8 @@ export function ChatInput() {
         placeholder="Type a message"
         radius={isMobile ? "xl" : "md"}
         value={value}
-        rightSectionWidth={count > 0 ? 72 : 40}
         rightSection={
           <Group gap="xs">
-            {count > 0 ? <Loader color="blue" size="sm" /> : <></>}
             <ActionIcon
               variant="transparent"
               component={Link}

@@ -2,7 +2,7 @@ import { useQuery } from "@realm/react";
 import Realm from "realm";
 import { Conversation, ConversationSchema } from "../models/data";
 
-export function useGetConversation(conversationId: string) {
+export function useGetConversation(conversationId?: string) {
   const conversations = useQuery<Conversation>(
     ConversationSchema.name,
     (collection) =>

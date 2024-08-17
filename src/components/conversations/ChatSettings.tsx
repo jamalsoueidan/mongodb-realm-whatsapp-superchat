@@ -16,6 +16,7 @@ import { useQuery, useRealm } from "@realm/react";
 import { IconX } from "@tabler/icons-react";
 import Realm from "realm";
 import { Link, useParams, useRoute } from "wouter";
+import { useGetConversation } from "../../hooks/useGetConversation";
 import { useMobile } from "../../hooks/useMobile";
 import { useUsersAssignedConversation } from "../../hooks/useUserAssignedConversation";
 import { Message, MessageSchema } from "../../models/data";
@@ -75,6 +76,7 @@ function Assigned() {
 
   const realm = useRealm();
 
+  const conversation = useGetConversation(conversationId);
   const { users, assignedUsers, unassignedUsers } =
     useUsersAssignedConversation(
       {
@@ -96,6 +98,19 @@ function Assigned() {
           );
           if (conversationIdIndex !== -1) {
             user.conversation_ids.remove(conversationIdIndex);
+            realm.create("Message", {
+              _id: new Realm.BSON.ObjectId(),
+              message_id: "system",
+              conversation,
+              business_phone_number_id: "364826260050460",
+              recipient: conversation.customer_phone_number,
+              timestamp: Math.floor(Date.now() / 1000),
+              statuses: [],
+              type: "system",
+              text: {
+                body: `<strong>${user.name}</strong> was removed from this conversation.`,
+              },
+            });
           }
         } else {
           // If the user is in selectedUserIds, add the conversation ID if it's not already there
@@ -105,6 +120,19 @@ function Assigned() {
             )
           ) {
             user.conversation_ids.push(new Realm.BSON.ObjectId(conversationId));
+            realm.create("Message", {
+              _id: new Realm.BSON.ObjectId(),
+              message_id: "system",
+              conversation,
+              business_phone_number_id: "364826260050460",
+              recipient: conversation.customer_phone_number,
+              timestamp: Math.floor(Date.now() / 1000),
+              statuses: [],
+              type: "system",
+              text: {
+                body: `<strong>${user.name}</strong> is assigned to this conversation.`,
+              },
+            });
           }
         }
       });

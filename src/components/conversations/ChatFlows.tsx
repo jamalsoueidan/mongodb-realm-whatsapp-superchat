@@ -146,7 +146,7 @@ function Send({
     flow_id: flowId,
   });
 
-  const { send, count } = useSendMessage();
+  const { sendFlow } = useSendMessage();
 
   const form = useForm({
     mode: "uncontrolled",
@@ -161,16 +161,12 @@ function Send({
   return (
     <form
       onSubmit={form.onSubmit((values) =>
-        send({
+        sendFlow({
           metadata: {
             id: data?.id,
             name: data?.name,
             status: data?.status,
           },
-          messaging_product: "whatsapp",
-          to: conversation.customer_phone_number,
-          recipient_type: "individual",
-          type: "interactive",
           interactive: {
             type: "flow",
             header: {
@@ -240,7 +236,7 @@ function Send({
           >
             Back
           </Button>
-          <Button loading={count > 0} type="submit">
+          <Button type="submit">
             Send {data?.status !== "PUBLISHED" ? "Test" : ""}
           </Button>
         </Flex>
@@ -248,3 +244,42 @@ function Send({
     </form>
   );
 }
+
+export const flowExample = {
+  metadata: {
+    //id: data?.id,
+    //name: data?.name,
+    //status: data?.status,
+  },
+  messaging_product: "whatsapp",
+  //to: conversation.customer_phone_number,
+  recipient_type: "individual",
+  type: "interactive",
+  interactive: {
+    type: "flow",
+    header: {
+      type: "text",
+      //text: values.header,
+    },
+    body: {
+      //text: values.body,
+    },
+    footer: {
+      //text: values.footer,
+    },
+    action: {
+      name: "flow",
+      parameters: {
+        flow_message_version: "3",
+        flow_token: "unused",
+        //flow_id: data?.id,
+        //mode: data?.status.toLocaleLowerCase(),
+        //flow_cta: values.flow_cta,
+        flow_action: "navigate",
+        flow_action_payload: {
+          screen: "INITIAL",
+        },
+      },
+    },
+  },
+};

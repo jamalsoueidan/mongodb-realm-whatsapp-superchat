@@ -1,22 +1,51 @@
-import { useUser } from "@realm/react";
-import { useState } from "react";
+import { useRealm } from "@realm/react";
+import Realm from "realm";
+import { useParams } from "wouter";
+import { useGetConversation } from "./useGetConversation";
 
 export const useSendMessage = () => {
-  const user = useUser();
+  const { conversationId } = useParams<{ conversationId: string }>();
+  const conversation = useGetConversation(conversationId);
+  const realm = useRealm();
 
-  const [sendingMessages, setSendingMessages] = useState<number[]>([]);
-
-  const send = (object?: any) => {
-    const messageId = Math.random();
-    setSendingMessages((prev) => [...prev, messageId]);
-
-    user.functions["func-send-messages"]({
-      business_phone_number_id: "364826260050460",
-      ...object,
-    }).finally(() => {
-      setSendingMessages((prev) => prev.filter((msg) => msg !== messageId));
+  const sendText = (body: string) => {
+    realm.write(() => {
+      realm.create("Message", {
+        _id: new Realm.BSON.ObjectId(),
+        message_id: "not_send_yet",
+        conversation,
+        business_phone_number_id: "364826260050460",
+        recipient: conversation.customer_phone_number,
+        timestamp: Math.floor(Date.now() / 1000),
+        statuses: [],
+        type: "text",
+        text: {
+          preview_url: true,
+          body,
+        },
+      });
     });
   };
 
-  return { send, count: sendingMessages.length };
+  const sendFlow = (body: object) => {
+    realm.write(() => {
+      realm.create("Message", {
+        _id: new Realm.BSON.ObjectId(),
+        message_id: "not_send_yet",
+        conversation,
+        business_phone_number_id: "364826260050460",
+        recipient: conversation.customer_phone_number,
+        timestamp: Math.floor(Date.now() / 1000),
+        statuses: [],
+        type: "interactive",
+        deliveryState: "ready",
+        text: {
+          preview_url: true,
+          body,
+        },
+      });
+    });
+  };
+
+  return { sendText, sendFlow };
 };

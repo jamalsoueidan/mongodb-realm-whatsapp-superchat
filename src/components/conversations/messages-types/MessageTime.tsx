@@ -1,5 +1,5 @@
 import { em, Flex, Group, Text } from "@mantine/core";
-import { IconChecks } from "@tabler/icons-react";
+import { IconCheck, IconChecks } from "@tabler/icons-react";
 import { useMessageInfo } from "../../../hooks/useMessageInfo";
 import { MessageWrapperProps } from "./MessageWrapper";
 
@@ -13,10 +13,17 @@ export function MessageTime({ msg }: MessageWrapperProps) {
         <Text size="xs" c="gray.6">
           {receivedDate.toLocaleString()}
         </Text>
-        <IconChecks
-          size={em(16)}
-          style={{ color: isRead ? "#53bdeb" : "gray" }}
-        />
+        {msg.message_id === "not_send_yet" ? (
+          <IconCheck
+            size={em(16)}
+            style={{ color: isRead ? "#53bdeb" : "gray" }}
+          />
+        ) : (
+          <IconChecks
+            size={em(16)}
+            style={{ color: isRead ? "#53bdeb" : "gray" }}
+          />
+        )}
       </Group>
     </Flex>
   );
