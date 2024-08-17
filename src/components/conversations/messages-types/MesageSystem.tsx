@@ -17,7 +17,7 @@ export const MessageSystem = ({ msg }: MessageWrapperProps) => {
           c="gray.9"
           dangerouslySetInnerHTML={{ __html: msg.text?.body || "" }}
         />
-        <MessageTime msg={msg} />
+        <MessageTime msg={msg} withChecks={false} />
       </Card>
     </Flex>
   );

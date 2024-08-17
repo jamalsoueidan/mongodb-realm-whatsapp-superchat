@@ -27,7 +27,7 @@ export const useSendMessage = () => {
     });
   };
 
-  const sendFlow = (body: object) => {
+  const sendFlow = (rest: object) => {
     realm.write(() => {
       realm.create("Message", {
         _id: new Realm.BSON.ObjectId(),
@@ -38,11 +38,7 @@ export const useSendMessage = () => {
         timestamp: Math.floor(Date.now() / 1000),
         statuses: [],
         type: "interactive",
-        deliveryState: "ready",
-        text: {
-          preview_url: true,
-          body,
-        },
+        ...rest,
       });
     });
   };

@@ -15,7 +15,7 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconArrowRight, IconEye } from "@tabler/icons-react";
-import { Route, useLocation, useParams, useRoute } from "wouter";
+import { Route, Router, useLocation, useParams, useRoute } from "wouter";
 import { useGetConversation } from "../../hooks/useGetConversation";
 import { useSendMessage } from "../../hooks/useSendMessage";
 import { useUserFunction } from "../../hooks/useUserFunction";
@@ -49,38 +49,34 @@ export const ChatFlows = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <CustomModal
-      opened={isMatch}
-      onClose={() => setLocation(`/conversation/${params?.conversationId}`)}
-      back={
-        params && params["*"]
-          ? () => {
-              setLocation(`/conversation/${params?.conversationId}/flows`);
-            }
-          : undefined
-      }
-    >
-      <LoadingOverlay
-        visible={!data}
-        zIndex={1000}
-        overlayProps={{ radius: "sm", blur: 2 }}
-      />
-      <Route path="/conversation/:conversationId/flows/:flowId/preview">
-        <Preview />
-      </Route>
-      <Route path="/conversation/:conversationId/flows/:flowId/send">
-        <Send conversation={conversation} />
-      </Route>
-      <Route path="/conversation/:conversationId/flows">
-        <Stack>
-          {data
-            ?.filter((f) => f.status !== "DEPRECATED")
-            .map((flow) => (
-              <Flow flow={flow} key={flow.id} />
-            ))}
-        </Stack>
-      </Route>
-    </CustomModal>
+    <Router base={`/conversation/${params?.conversationId}/flows`}>
+      <CustomModal
+        opened={isMatch}
+        onClose={() => setLocation(`/conversation/${params?.conversationId}`)}
+        back={params && params["*"] ? "/" : undefined}
+      >
+        <LoadingOverlay
+          visible={!data}
+          zIndex={1000}
+          overlayProps={{ radius: "sm", blur: 2 }}
+        />
+        <Route path="/:flowId/preview">
+          <Preview />
+        </Route>
+        <Route path="/:flowId/send">
+          <Send conversation={conversation} />
+        </Route>
+        <Route path="/">
+          <Stack>
+            {data
+              ?.filter((f) => f.status !== "DEPRECATED")
+              .map((flow) => (
+                <Flow flow={flow} key={flow.id} />
+              ))}
+          </Stack>
+        </Route>
+      </CustomModal>
+    </Router>
   );
 };
 
@@ -90,7 +86,7 @@ function Flow({ flow }: { flow: Flow }) {
   return (
     <Card
       withBorder
-      onClick={() => setLocation(`flows/${flow.id}/send`)}
+      onClick={() => setLocation(`/${flow.id}/send`)}
       style={{ cursor: "pointer" }}
     >
       <Group justify="space-between">
@@ -104,7 +100,7 @@ function Flow({ flow }: { flow: Flow }) {
           <ActionIcon
             onClick={(e) => {
               e.stopPropagation();
-              setLocation(`flows/${flow.id}/preview`);
+              setLocation(`/${flow.id}/preview`);
             }}
             variant="transparent"
             color="black"

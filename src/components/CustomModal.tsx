@@ -1,12 +1,13 @@
 import { ActionIcon, Modal, ModalProps } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
+import { Link } from "wouter";
 import { useMobile } from "../hooks/useMobile";
 
 export function CustomModal({
   children,
   back,
   ...props
-}: ModalProps & { back?: () => void }) {
+}: ModalProps & { back?: string }) {
   const isMobile = useMobile();
 
   return (
@@ -16,7 +17,12 @@ export function CustomModal({
         <Modal.Header>
           {props.title ? <Modal.Title>Modal title</Modal.Title> : null}
           {back ? (
-            <ActionIcon onClick={back} variant="transparent" color="#666">
+            <ActionIcon
+              component={Link}
+              to={back}
+              variant="transparent"
+              color="#666"
+            >
               <IconArrowLeft stroke="1.5" />
             </ActionIcon>
           ) : null}
