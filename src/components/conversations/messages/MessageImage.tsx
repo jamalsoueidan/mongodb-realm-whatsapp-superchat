@@ -1,7 +1,8 @@
-import { Image, Modal, UnstyledButton } from "@mantine/core";
+import { Image, UnstyledButton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Realm from "realm";
 import { Message } from "../../../models/data";
+import { CustomModal } from "../../CustomModal";
 import { MessageTime } from "./MessageTime";
 import { MessageWrapper } from "./MessageWrapper";
 
@@ -25,11 +26,11 @@ export function MessageImage({
         </UnstyledButton>
         <MessageTime msg={msg} />
       </MessageWrapper>
-      <Modal opened={opened} onClose={close} centered>
+      <CustomModal opened={opened} onClose={close} centered>
         <Image
           src={`https://data.mongodb-api.com/app/facebook-ckxlfbp/endpoint/media?id=${msg.media?.file_name}`}
         />
-      </Modal>
+      </CustomModal>
     </>
   );
 }

@@ -63,7 +63,7 @@ function Bookatable({ data }: { data: Message_interactive_reply_bookatable }) {
           {data.date?.question}
         </Text>
         <Text size="sm" c="gray.9">
-          {date.toLocaleString().substring(0, 10)}
+          {date.toLocaleDateString()}
         </Text>
       </div>
       <div>

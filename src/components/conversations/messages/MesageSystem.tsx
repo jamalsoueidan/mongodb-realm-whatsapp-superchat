@@ -4,7 +4,7 @@ import { MessageWrapperProps } from "./MessageWrapper";
 
 export const MessageSystem = ({ msg }: MessageWrapperProps) => {
   return (
-    <Flex justify="center" mb="xs">
+    <Flex justify="center" my="xs">
       <Card
         bg="yellow.1"
         py="2px"

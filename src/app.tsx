@@ -68,9 +68,9 @@ function App() {
 export default function Home() {
   return (
     <MantineProvider>
-      <Router base="/whatsapp-superchat">
-        <FacebookProvider appId="1866926953815951">
-          <AppProvider id="facebook-ckxlfbp">
+      <Router base={`/${import.meta.env.VITE_BASE_URL}`}>
+        <FacebookProvider appId={import.meta.env.VITE_FACEBOOK_APPID}>
+          <AppProvider id={import.meta.env.VITE_MONGODB_APPID}>
             <UserProvider fallback={<LoginFacebook />}>
               <RealmProvider
                 schema={[

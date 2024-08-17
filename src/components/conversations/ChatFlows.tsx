@@ -156,13 +156,8 @@ function Send({
 
   return (
     <form
-      onSubmit={form.onSubmit((values) =>
+      onSubmit={form.onSubmit((values) => {
         sendFlow({
-          metadata: {
-            id: data?.id,
-            name: data?.name,
-            status: data?.status,
-          },
           interactive: {
             type: "flow",
             header: {
@@ -190,8 +185,8 @@ function Send({
               },
             },
           },
-        })
-      )}
+        });
+      })}
     >
       <Stack gap="xs">
         <div>
@@ -226,9 +221,7 @@ function Send({
           <Button
             type="button"
             variant="subtle"
-            onClick={() =>
-              setLocation(`/conversation/${conversation._id}/flows`)
-            }
+            onClick={() => setLocation(`/`)}
           >
             Back
           </Button>

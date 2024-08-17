@@ -10,7 +10,7 @@ import { ChatMessages } from "./ChatMessages";
 import { ChatSettings } from "./ChatSettings";
 export const Chat = () => {
   const isMobile = useMobile();
-  const [isMatch] = useRoute("/conversation/:conversationId/settings");
+  const [isMatch] = useRoute("/conversation/:conversationId/settings/*?");
 
   const components = useMemo(
     () => (

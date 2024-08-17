@@ -15,7 +15,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useQuery, useRealm } from "@realm/react";
 import { IconX } from "@tabler/icons-react";
 import Realm from "realm";
-import { Link, useParams, useRoute } from "wouter";
+import { Link, Router, useParams, useRoute } from "wouter";
 import { useGetConversation } from "../../hooks/useGetConversation";
 import { useMobile } from "../../hooks/useMobile";
 import { useUsersAssignedConversation } from "../../hooks/useUserAssignedConversation";
@@ -24,7 +24,7 @@ import { Message, MessageSchema } from "../../models/data";
 export const ChatSettings = () => {
   const isMobile = useMobile();
   const { conversationId } = useParams<{ conversationId: string }>();
-  const [isMatch] = useRoute("/conversation/:conversationId/settings");
+  const [isMatch] = useRoute("/conversation/:conversationId/settings/*?");
 
   return (
     <Drawer.Root
@@ -50,20 +50,28 @@ export const ChatSettings = () => {
             </ActionIcon>
           </Flex>
           <Divider />
-          <Accordion chevronPosition="right" variant="default">
-            <Accordion.Item value="assignments">
-              <Accordion.Control>User assignment</Accordion.Control>
-              <Accordion.Panel>
-                <Assigned />
-              </Accordion.Panel>
-            </Accordion.Item>
-            <Accordion.Item value="flows">
-              <Accordion.Control>Flows replies (newest top)</Accordion.Control>
-              <Accordion.Panel>
-                <FlowsReply />
-              </Accordion.Panel>
-            </Accordion.Item>
-          </Accordion>
+          <Router base={`/conversation/${conversationId}/settings`}>
+            <Accordion
+              chevronPosition="right"
+              variant="default"
+              defaultValue="flows"
+            >
+              <Accordion.Item value="assignments">
+                <Accordion.Control>User assignment</Accordion.Control>
+                <Accordion.Panel>
+                  <Assigned />
+                </Accordion.Panel>
+              </Accordion.Item>
+              <Accordion.Item value="flows">
+                <Accordion.Control>
+                  Flows replies (newest top)
+                </Accordion.Control>
+                <Accordion.Panel>
+                  <FlowsReply />
+                </Accordion.Panel>
+              </Accordion.Item>
+            </Accordion>
+          </Router>
         </Drawer.Body>
       </Drawer.Content>
     </Drawer.Root>
@@ -177,7 +185,13 @@ function FlowsReply() {
                 <Text fw="500">{flowOwner?.interactive?.metadata?.name}</Text>
                 <Text>{receivedDate.toLocaleString()}</Text>
               </div>
-              <Button size="compact-md">View</Button>
+              <Button
+                size="compact-md"
+                component={Link}
+                to={`/${f._id.toJSON()}`}
+              >
+                View
+              </Button>
             </Flex>
           </Flex>
         );
