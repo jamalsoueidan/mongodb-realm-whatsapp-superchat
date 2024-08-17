@@ -4,7 +4,7 @@ import "@mantine/core/styles.css";
 import { AppProvider, RealmProvider, UserProvider } from "@realm/react";
 import { useEffect } from "react";
 import { FacebookProvider } from "react-facebook";
-import { Route, Router, useLocation, useRoute } from "wouter";
+import { Router, useLocation, useRoute } from "wouter";
 import { LeftNavigation } from "./components/LeftNavigation";
 import { LoginFacebook } from "./components/Login";
 import { TopNavigation } from "./components/TopNavigation";
@@ -42,9 +42,7 @@ import {
   UserSchema,
 } from "./models/data";
 import { ConversationPage } from "./pages/ConversationPage";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
 import { ReportsPage } from "./pages/ReportsPage";
-import TermsOfService from "./pages/TermsOfService";
 
 function App() {
   const isMobile = useMobile();
@@ -71,12 +69,6 @@ export default function Home() {
   return (
     <MantineProvider>
       <Router base="/whatsapp-superchat">
-        <Route path="/privacy-policy">
-          <PrivacyPolicy />
-        </Route>
-        <Route path="/terms">
-          <TermsOfService />
-        </Route>
         <FacebookProvider appId="1866926953815951">
           <AppProvider id="facebook-ckxlfbp">
             <UserProvider fallback={<LoginFacebook />}>

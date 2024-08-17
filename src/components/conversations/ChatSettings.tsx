@@ -58,7 +58,7 @@ export const ChatSettings = () => {
               </Accordion.Panel>
             </Accordion.Item>
             <Accordion.Item value="flows">
-              <Accordion.Control>Flows reply (newest top)</Accordion.Control>
+              <Accordion.Control>Flows replies (newest top)</Accordion.Control>
               <Accordion.Panel>
                 <FlowsReply />
               </Accordion.Panel>
