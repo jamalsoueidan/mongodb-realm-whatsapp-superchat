@@ -2,12 +2,12 @@ import { ScrollArea } from "@mantine/core";
 import { useEffect, useRef } from "react";
 import { useParams } from "wouter";
 import { useMessages } from "../../hooks/useMessages";
-import { MessageSystem } from "./messages-types/MesageSystem";
-import { MessageImage } from "./messages-types/MessageImage";
-import { MessageInteractive } from "./messages-types/MessageInteractive";
-import { MessageInteractiveReply } from "./messages-types/MessageInteractiveReply";
-import { MessageText } from "./messages-types/MessageText";
-import { MessageUnknown } from "./messages-types/MessageUnknown";
+import { MessageSystem } from "./messages/MesageSystem";
+import { MessageImage } from "./messages/MessageImage";
+import { MessageInteractive } from "./messages/MessageInteractive";
+import { MessageInteractiveReply } from "./messages/MessageInteractiveReply";
+import { MessageText } from "./messages/MessageText";
+import { MessageUnknown } from "./messages/MessageUnknown";
 
 export function ChatMessages() {
   const { conversationId } = useParams<{ conversationId: string }>();

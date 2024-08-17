@@ -86,6 +86,7 @@ function Assigned() {
     );
 
   const handleUserSelectionChange = (selectedUserIds: string[]) => {
+    console.log(selectedUserIds);
     realm.write(() => {
       // First, remove all unselected users from the conversation
       users.forEach((user) => {
@@ -144,8 +145,8 @@ function Assigned() {
     <MultiSelect
       placeholder="Pick user"
       description="Choose which users can view this conversation?"
-      value={assignedUsers.map((u) => u.name)}
-      data={unassignedUsers.map((u) => ({
+      value={assignedUsers.map((u) => u.user_id)}
+      data={users.map((u) => ({
         label: u.name,
         value: u.user_id,
       }))}

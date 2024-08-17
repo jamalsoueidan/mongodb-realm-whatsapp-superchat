@@ -18,7 +18,10 @@ export const LoginFacebook = () => {
   const { login, isLoading } = useLogin();
 
   const [visible, { open, close }] = useDisclosure(true);
-  const accessToken = localStorage.getItem("facebookAccessToken");
+  const accessToken =
+    import.meta.env.MODE === "development"
+      ? import.meta.env.VITE_FACEBOOK_ACCESS_TOKEN
+      : localStorage.getItem("facebookAccessToken");
 
   useEffect(() => {
     open();

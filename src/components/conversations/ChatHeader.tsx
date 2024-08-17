@@ -5,6 +5,7 @@ import {
   Indicator,
   Popover,
   Text,
+  UnstyledButton,
 } from "@mantine/core";
 import {
   IconArrowLeft,
@@ -72,6 +73,7 @@ export function ChatHeader() {
               size={16}
               color={isMobile ? "#3a5664" : "#54656f"}
               mt="4px"
+              component={UnstyledButton}
             >
               <IconUsersGroup color={isMobile ? "white" : "#54656f"} />
             </Indicator>
