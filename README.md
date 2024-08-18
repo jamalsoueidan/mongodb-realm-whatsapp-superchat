@@ -1,6 +1,23 @@
-# My Project
+# Whatsapp Application
 
-This is a whatsapp application
+This project is a WhatsApp-based chat application that allows users to interact with WhatsApp via the WhatsApp Business API. The application provides a frontend interface built with React, using Realm for data storage and state management. It supports real-time chat functionality, user conversations, and message management.
+
+## Features
+
+- **Real-time Chat**: Users can engage in real-time conversations.
+- **Unread Message Count**: The application tracks unread messages per conversation, showing users how many new messages they have.
+- **User Conversations**: Each user has their own conversation history, and the application tracks when the user last viewed each conversation.
+- **WhatsApp Business API Integration**: The application integrates with the WhatsApp Business API to handle incoming and outgoing messages.
+- **Responsive Design**: The UI adapts to mobile and desktop layouts, providing a smooth experience across devices.
+- **Attachments Support**: Users can send and receive attachments, such as images or documents.
+- **Settings Drawer**: Users can access and manage conversation settings through a settings drawer in the UI.
+
+## Tech Stack
+
+- **Frontend**: React, Mantine UI components, Wouter for routing
+- **State Management**: Realm for local storage and real-time data synchronization
+- **Backend**: WhatsApp Business API for messaging integration
+- **Styling**: Mantine for UI components and layout
 
 ## Screenshot
 
