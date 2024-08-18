@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { useLocation, useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
 import { useVisualViewportHeight } from "../../hooks/useVisualViewportHeight";
-import { ChatFlows } from "./ChatFlows";
+import { ChatAttachments } from "./ChatAttachments";
 import { ChatHeader } from "./ChatHeader";
 import { ChatInput } from "./ChatInput";
 import { ChatMessages } from "./ChatMessages";
@@ -19,16 +19,18 @@ export const Chat = () => {
         <ChatMessages />
         <ChatInput />
         <ChatSettings />
-        <ChatFlows />
+        <ChatAttachments />
       </>
     ),
     []
   );
 
+  // on mobile we just want to render it inside a drawer
   if (isMobile) {
     return <ChatDrawer>{components}</ChatDrawer>;
   }
 
+  // on desktop we want to render it in a flex layout
   return (
     <>
       <Flex

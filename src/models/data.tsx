@@ -35,6 +35,7 @@ export type Message = {
   text?: Message_text;
   timestamp: number;
   type: string;
+  hidden?: boolean;
   user?: User;
 };
 
@@ -56,6 +57,7 @@ export const MessageSchema = {
     timestamp: "double",
     type: "string",
     user: "User",
+    hidden: "bool?",
   },
   primaryKey: "_id",
 };

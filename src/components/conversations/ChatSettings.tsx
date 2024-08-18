@@ -167,16 +167,21 @@ function Assigned() {
 function FlowsReply() {
   //TODO:
   // show only last 24 hours, or last 7 days?
+  const { conversationId } = useParams<{ conversationId: string }>();
+  const conversation = useGetConversation(conversationId);
 
   const flows = useQuery<Message>(MessageSchema.name, (collection) =>
-    collection.filtered("type = 'interactive_reply' AND reply != $0", null)
+    collection.filtered(
+      "type = 'interactive_reply' AND reply != $0 AND conversation == $1",
+      null,
+      conversation
+    )
   );
 
-  return (
-    <ScrollArea type="auto" pr="md" flex="1" h="300px">
+  return flows.length > 0 ? (
+    <ScrollArea type="always" pr="md" flex="1" h="300px">
       <Stack>
         {flows.map((flow) => {
-          const flowParent = flow.reply;
           const receivedDate = new Date(flow.timestamp * 1000);
 
           return (
@@ -199,5 +204,7 @@ function FlowsReply() {
         })}
       </Stack>
     </ScrollArea>
+  ) : (
+    <Text fw="bold">No flows send to the user yet!</Text>
   );
 }

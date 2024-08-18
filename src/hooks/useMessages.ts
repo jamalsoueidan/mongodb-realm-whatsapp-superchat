@@ -10,8 +10,9 @@ export function useMessages({ conversationId }: { conversationId: string }) {
     MessageSchema.name,
     (collection) =>
       collection.filtered(
-        `conversation._id = $0 SORT(timestamp ASC)`, //SORT(timestamp DESC) LIMIT(${limit}) SORT(timestamp ASC)
-        new Realm.BSON.ObjectId(conversationId)
+        `conversation._id = $0 AND hidden == $1 SORT(timestamp ASC)`, //SORT(timestamp DESC) LIMIT(${limit}) SORT(timestamp ASC)
+        new Realm.BSON.ObjectId(conversationId),
+        null
       ),
     [requeryFlag, limit, conversationId]
   );

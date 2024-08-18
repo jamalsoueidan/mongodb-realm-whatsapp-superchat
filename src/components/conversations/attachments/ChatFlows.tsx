@@ -16,11 +16,11 @@ import {
 import { useForm } from "@mantine/form";
 import { IconArrowRight, IconEye } from "@tabler/icons-react";
 import { Route, Router, useLocation, useParams, useRoute } from "wouter";
-import { useGetConversation } from "../../hooks/useGetConversation";
-import { useSendMessage } from "../../hooks/useSendMessage";
-import { useUserFunction } from "../../hooks/useUserFunction";
-import { Conversation } from "../../models/data";
-import { CustomModal } from "../CustomModal";
+import { useGetConversation } from "../../../hooks/useGetConversation";
+import { useSendMessage } from "../../../hooks/useSendMessage";
+import { useUserFunction } from "../../../hooks/useUserFunction";
+import { Conversation } from "../../../models/data";
+import { CustomModal } from "../../CustomModal";
 
 type Flow = {
   id: string;
@@ -37,7 +37,7 @@ type GetFlow = {
   };
 } & Flow;
 
-export const ChatFlows = () => {
+export const AttachmentFlows = () => {
   const [, setLocation] = useLocation();
   const [isMatch, params] = useRoute("/conversation/:conversationId/flows/*?");
   const { conversationId } = useParams<{ conversationId: string }>();

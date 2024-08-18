@@ -78,13 +78,15 @@ export function ChatHeader() {
               <IconUsersGroup color={isMobile ? "white" : "#54656f"} />
             </Indicator>
           </Popover.Target>
-          <Popover.Dropdown>
-            {assignedUsers.map((user) => (
-              <Flex key={user.user_id} gap="xs" align="center">
-                <Text>{user.name}</Text>
-              </Flex>
-            ))}
-          </Popover.Dropdown>
+          {assignedUsers.length > 0 ? (
+            <Popover.Dropdown>
+              {assignedUsers.map((user) => (
+                <Flex key={user.user_id} gap="xs" align="center">
+                  <Text>{user.name}</Text>
+                </Flex>
+              ))}
+            </Popover.Dropdown>
+          ) : null}
         </Popover>
 
         <ActionIcon
