@@ -483,6 +483,24 @@ export const Message_textSchema = {
   },
 };
 
+export type UserConversation = {
+  _id: Realm.BSON.ObjectId;
+  user?: User;
+  conversation?: Conversation;
+  last_seen_at: number;
+};
+
+export const UserConversationSchema = {
+  name: "UserConversation",
+  properties: {
+    _id: "objectId",
+    user: "User",
+    conversation: "Conversation",
+    last_seen_at: "double",
+  },
+  primaryKey: "_id",
+};
+
 export type User = {
   _id: Realm.BSON.ObjectId;
   business_phone_number_ids: Realm.List<string>;
@@ -493,6 +511,7 @@ export type User = {
   name: string;
   picture?: string;
   user_id: string;
+  created_at: number;
 };
 
 export const UserSchema = {
@@ -507,6 +526,7 @@ export const UserSchema = {
     name: "string",
     picture: "string?",
     user_id: "string",
+    created_at: "double",
   },
   primaryKey: "_id",
 };

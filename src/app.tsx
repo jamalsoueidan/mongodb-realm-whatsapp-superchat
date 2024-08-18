@@ -39,6 +39,7 @@ import {
   Message_templateSchema,
   Message_textSchema,
   MessageSchema,
+  UserConversationSchema,
   UserSchema,
 } from "./models/data";
 import { ConversationPage } from "./pages/ConversationPage";
@@ -102,6 +103,7 @@ export default function Home() {
                   Message_interactive_reply_feedback_commentSchema,
                   Message_interactive_reply_feedback_foodSchema,
                   Message_interactive_reply_feedback_serviceSchema,
+                  UserConversationSchema,
                   UserSchema,
                 ]}
                 sync={{
@@ -111,6 +113,9 @@ export default function Home() {
                       mutableSubs.add(realm.objects(ConversationSchema.name));
                       mutableSubs.add(realm.objects(MessageSchema.name));
                       mutableSubs.add(realm.objects(UserSchema.name));
+                      mutableSubs.add(
+                        realm.objects(UserConversationSchema.name)
+                      );
                     },
                   },
                 }}

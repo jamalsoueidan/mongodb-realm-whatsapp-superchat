@@ -1,4 +1,4 @@
-import { useQuery } from "@realm/react";
+import { useQuery, useUser } from "@realm/react";
 import { useMemo } from "react";
 import Realm from "realm";
 import { User, UserSchema } from "../models/data";
@@ -7,12 +7,14 @@ export const useUsersAssignedConversation = (
   { conversationId }: { conversationId: string },
   deps: Array<any> = []
 ) => {
+  const user = useUser();
   const users = useQuery<User>(
     UserSchema.name,
     (collection) =>
       collection.filtered(
-        "business_phone_number_ids CONTAINS $0",
-        "364826260050460"
+        "business_phone_number_ids CONTAINS $0 AND user_id != $1",
+        "364826260050460",
+        user.id
       ),
     [deps]
   );

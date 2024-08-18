@@ -94,7 +94,6 @@ function Assigned() {
     );
 
   const handleUserSelectionChange = (selectedUserIds: string[]) => {
-    console.log(selectedUserIds);
     realm.write(() => {
       // First, remove all unselected users from the conversation
       users.forEach((user) => {

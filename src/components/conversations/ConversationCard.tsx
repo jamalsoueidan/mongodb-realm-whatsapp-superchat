@@ -8,7 +8,9 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
+import Realm from "realm";
 import { Link } from "wouter";
+import { useUnreadMessageCount } from "../../hooks/useUnreadMessageCount";
 import { Conversation } from "../../models/data";
 
 export const ConversationCard = ({
@@ -20,6 +22,7 @@ export const ConversationCard = ({
 }) => {
   // const message = useLastMessage({ conversation: conversation._id });
   const receivedDate = new Date(conversation.timestamp * 1000);
+  const unreadMessageCount = useUnreadMessageCount(conversation);
 
   return (
     <>
@@ -36,15 +39,17 @@ export const ConversationCard = ({
           <Flex flex={1}>
             <Stack gap="0" flex={1}>
               <Text>{conversation.name}</Text>
-              <Text>{receivedDate.toLocaleString()}</Text>
+              <Text>Du kan komme forbi?</Text>
             </Stack>
             <Stack align="flex-end" justify="center" gap="2px">
               <Text c="green" size="xs" fw="500">
-                14:33
+                {receivedDate.toLocaleTimeString().substring(0, 5)}
               </Text>
-              <Badge color="green" size="md" radius="200px" p="7px">
-                1
-              </Badge>
+              {unreadMessageCount > 0 && (
+                <Badge color="green" size="md" radius="200px" p="7px">
+                  {unreadMessageCount}
+                </Badge>
+              )}
             </Stack>
           </Flex>
         </Group>

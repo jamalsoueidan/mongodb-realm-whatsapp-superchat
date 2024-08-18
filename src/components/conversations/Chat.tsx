@@ -1,16 +1,20 @@
 import { Drawer, Flex, ScrollArea } from "@mantine/core";
 import React, { useMemo } from "react";
-import { useLocation, useRoute } from "wouter";
+import { useLocation, useParams, useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
+import { useUserConversation } from "../../hooks/useUserConversation";
 import { useVisualViewportHeight } from "../../hooks/useVisualViewportHeight";
 import { ChatAttachments } from "./ChatAttachments";
 import { ChatHeader } from "./ChatHeader";
 import { ChatInput } from "./ChatInput";
 import { ChatMessages } from "./ChatMessages";
 import { ChatSettings } from "./ChatSettings";
+
 export const Chat = () => {
   const isMobile = useMobile();
   const [isMatch] = useRoute("/conversation/:conversationId/settings/*?");
+  const { conversationId } = useParams<{ conversationId: string }>();
+  useUserConversation(conversationId);
 
   const components = useMemo(
     () => (
