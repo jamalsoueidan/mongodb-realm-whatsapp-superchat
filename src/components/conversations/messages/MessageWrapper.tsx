@@ -16,7 +16,7 @@ export const MessageWrapper = ({
   const justify = isRecipientDifferent ? "flex-end" : undefined;
 
   return (
-    <Flex justify={justify} my="xs">
+    <Flex justify={justify} m="xs">
       <Card
         bg={bg}
         py="4px"

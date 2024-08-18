@@ -11,7 +11,7 @@ export const useUnreadMessageCount = (
     "UserConversation",
     (collection) =>
       collection.filtered(
-        "user._id == $0 && conversation == $1",
+        "user._id == $0 AND conversation == $1 ",
         new Realm.BSON.ObjectId((user.customData as any)._id),
         conversation
       ),
@@ -26,8 +26,9 @@ export const useUnreadMessageCount = (
     "Message",
     (collection) =>
       collection.filtered(
-        "conversation == $0 && timestamp > $1",
+        "conversation == $0 AND recipient == $1 AND timestamp > $2",
         conversation,
+        conversation.customer_phone_number,
         last_seen_at
       ),
     [conversation, last_seen_at]

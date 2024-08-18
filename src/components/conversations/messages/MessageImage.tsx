@@ -22,6 +22,7 @@ export function MessageImage({
             //src={`${msg.media?.signed_url}`}
             mah={200}
             maw={300}
+            loading="lazy"
           />
         </UnstyledButton>
         <MessageTime msg={msg} />
@@ -29,6 +30,7 @@ export function MessageImage({
       <CustomModal opened={opened} onClose={close} centered>
         <Image
           src={`https://data.mongodb-api.com/app/facebook-ckxlfbp/endpoint/media?id=${msg.media?.file_name}`}
+          loading="lazy"
         />
       </CustomModal>
     </>

@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import Realm from "realm";
 import { Link } from "wouter";
+import { useLastMessage } from "../../hooks/useLastMessage";
 import { useUnreadMessageCount } from "../../hooks/useUnreadMessageCount";
 import { Conversation } from "../../models/data";
 
@@ -20,7 +21,7 @@ export const ConversationCard = ({
   conversation: Conversation & Realm.Object<Conversation>;
   selected: boolean;
 }) => {
-  // const message = useLastMessage({ conversation: conversation._id });
+  const message = useLastMessage(conversation);
   const receivedDate = new Date(conversation.timestamp * 1000);
   const unreadMessageCount = useUnreadMessageCount(conversation);
 
@@ -39,7 +40,11 @@ export const ConversationCard = ({
           <Flex flex={1}>
             <Stack gap="0" flex={1}>
               <Text>{conversation.name}</Text>
-              <Text>Du kan komme forbi?</Text>
+              <Text lineClamp={1}>
+                {message.text?.body ||
+                  message.interactive?.body?.text ||
+                  message.interactive_reply?.flow_name}
+              </Text>
             </Stack>
             <Stack align="flex-end" justify="center" gap="2px">
               <Text c="green" size="xs" fw="500">
