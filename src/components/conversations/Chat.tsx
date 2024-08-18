@@ -1,4 +1,4 @@
-import { Drawer, Flex, ScrollArea } from "@mantine/core";
+import { Drawer, Flex } from "@mantine/core";
 import React, { useMemo } from "react";
 import { useLocation, useParams, useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
@@ -63,7 +63,7 @@ const ChatDrawer = ({ children }: { children: React.ReactNode }) => {
       size="100%"
       opened
       onClose={() => setLocation("../conversation")}
-      scrollAreaComponent={ScrollArea.Autosize}
+      lockScroll={false} //fix mobile infinity scroll
     >
       <Drawer.Content>
         <Drawer.Body p="0">
