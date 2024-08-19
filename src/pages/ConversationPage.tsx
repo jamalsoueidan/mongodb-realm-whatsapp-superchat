@@ -15,7 +15,7 @@ export const ConversationPage = () => {
         return (
           <>
             {!isMobile || !openedConversation ? (
-              <Flex bg="white" flex=".4" direction="column">
+              <Flex bg="white" flex=".5" direction="column">
                 <ConversationList />
               </Flex>
             ) : null}

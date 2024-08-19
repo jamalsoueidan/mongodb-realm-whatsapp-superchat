@@ -112,7 +112,7 @@ export function ChatMessages() {
                   style={{
                     position: isSticky ? "absolute" : "static",
                     top: isSticky ? "0px" : "auto",
-                    zIndex: isSticky ? 10 : "auto",
+                    zIndex: index + 10,
                   }}
                 >
                   <Text c="dimmed" fz="sm" fw="400" ta="center">

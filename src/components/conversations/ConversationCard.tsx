@@ -41,9 +41,13 @@ export const ConversationCard = ({
             <Stack gap="0" flex={1}>
               <Text>{conversation.name}</Text>
               <Text lineClamp={1}>
-                {message.text?.body ||
-                  message.interactive?.body?.text ||
-                  message.interactive_reply?.flow_name}
+                {truncateText(
+                  message.text?.body ||
+                    message.interactive?.body?.text ||
+                    message.interactive_reply?.flow_name ||
+                    "",
+                  25 // Set the maximum length (e.g., 100 characters)
+                )}
               </Text>
             </Stack>
             <Stack align="flex-end" justify="center" gap="2px">
@@ -62,4 +66,11 @@ export const ConversationCard = ({
       <Divider p="0" m="0" mr="xs" />
     </>
   );
+};
+
+const truncateText = (text: string, maxLength: number): string => {
+  if (text.length > maxLength) {
+    return text.substring(0, maxLength) + "...";
+  }
+  return text;
 };
