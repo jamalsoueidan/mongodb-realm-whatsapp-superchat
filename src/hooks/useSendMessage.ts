@@ -1,10 +1,12 @@
-import { useRealm } from "@realm/react";
+import { useRealm, useUser } from "@realm/react";
 import Realm from "realm";
 import { useParams } from "wouter";
+import { User } from "../models/data";
 import { useGetConversation } from "./useGetConversation";
 
 export const useSendMessage = () => {
   const { conversationId } = useParams<{ conversationId: string }>();
+  const user = useUser();
   const conversation = useGetConversation(conversationId);
   const realm = useRealm();
 
@@ -23,6 +25,10 @@ export const useSendMessage = () => {
           preview_url: true,
           body,
         },
+        user: realm.objectForPrimaryKey<User>(
+          "User",
+          new Realm.BSON.ObjectId((user.customData as any)._id)
+        ),
       });
     });
   };
@@ -38,6 +44,10 @@ export const useSendMessage = () => {
         timestamp: Math.floor(Date.now() / 1000),
         statuses: [],
         type: "interactive",
+        user: realm.objectForPrimaryKey<User>(
+          "User",
+          new Realm.BSON.ObjectId((user.customData as any)._id)
+        ),
         ...rest,
       });
     });

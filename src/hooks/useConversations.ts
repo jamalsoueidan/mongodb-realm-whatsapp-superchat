@@ -7,7 +7,7 @@ export function useConversations() {
 
   const conversations = useQuery<Conversation>(
     ConversationSchema.name,
-    (collection) => collection,
+    (collection) => collection.sorted("timestamp", true),
     [requeryFlag]
   );
 

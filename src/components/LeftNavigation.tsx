@@ -2,8 +2,9 @@ import "@mantine/core/styles.css";
 import { useUser } from "@realm/react";
 import { Link } from "wouter";
 
-import { ActionIcon, Flex, Stack, Tooltip } from "@mantine/core";
-import { IconGraph, IconInbox, IconLogout } from "@tabler/icons-react";
+import { ActionIcon, Avatar, Flex, Stack, Tooltip } from "@mantine/core";
+import { IconGraph, IconInbox } from "@tabler/icons-react";
+import { getInitials } from "../lib/getInitials";
 
 export const LeftNavigation = () => {
   const user = useUser();
@@ -51,7 +52,9 @@ export const LeftNavigation = () => {
               user.logOut();
             }}
           >
-            <IconLogout style={{ width: "70%", height: "70%" }} stroke={1.5} />
+            <Avatar color="cyan" radius="xl">
+              {getInitials((user.customData as any).name)}
+            </Avatar>
           </ActionIcon>
         </Tooltip>
       </Stack>

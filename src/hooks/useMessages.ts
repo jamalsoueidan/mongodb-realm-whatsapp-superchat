@@ -3,25 +3,44 @@ import { useState } from "react";
 import Realm from "realm";
 import { Message, MessageSchema } from "../models/data";
 
-export function useMessages({ conversationId }: { conversationId: string }) {
-  const [limit, setLimit] = useState(10);
-  const messages = useQuery<Message>(
+export function useMessages({
+  conversationId,
+  perPage,
+}: {
+  conversationId: string;
+  perPage: number;
+}) {
+  const [limit, setLimit] = useState(perPage);
+
+  const totalMessageCount = useQuery<Message>(
     MessageSchema.name,
     (collection) =>
       collection.filtered(
-        `conversation._id = $0 AND hidden == $1 SORT(timestamp ASC)`, //SORT(timestamp DESC) LIMIT(${limit}) SORT(timestamp ASC)
+        `conversation._id = $0 AND hidden == $1`, //
         new Realm.BSON.ObjectId(conversationId),
         null
       ),
-    [limit, conversationId]
+    [conversationId]
   );
 
-  const showMore = () => {
-    setLimit((value) => value + 5);
-  };
+  const messages = useQuery<Message>(
+    MessageSchema.name,
+    (collection) => {
+      return collection.filtered(
+        `conversation._id = $0 AND hidden == $1 SORT(timestamp DESC) LIMIT(${limit}) SORT(timestamp ASC)`,
+        new Realm.BSON.ObjectId(conversationId),
+        null,
+        limit
+      );
+    },
+    [conversationId, limit]
+  );
+
+  const loadMore = () => setLimit((prev) => prev + perPage);
 
   return {
     messages,
-    showMore,
+    totalMessageCount,
+    loadMore,
   };
 }

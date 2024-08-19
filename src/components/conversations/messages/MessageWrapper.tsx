@@ -1,6 +1,7 @@
-import { Card, Flex } from "@mantine/core";
+import { Avatar, Card, Flex } from "@mantine/core";
 import Realm from "realm";
 import { useMessageInfo } from "../../../hooks/useMessageInfo";
+import { getInitials } from "../../../lib/getInitials";
 import { Message } from "../../../models/data";
 
 export type MessageWrapperProps = {
@@ -16,7 +17,12 @@ export const MessageWrapper = ({
   const justify = isRecipientDifferent ? "flex-end" : undefined;
 
   return (
-    <Flex justify={justify} mx="xs" my="6px">
+    <Flex justify={justify} mx="xs" my="6px" gap="6px" id={msg._id.toJSON()}>
+      {msg.user ? (
+        <Avatar color="cyan" radius="xl">
+          {getInitials(msg.user.name)}
+        </Avatar>
+      ) : null}
       <Card
         bg={bg}
         py="4px"
