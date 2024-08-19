@@ -25,7 +25,8 @@ This project is a WhatsApp-based chat application that allows users to interact 
 
 ## Screenshot
 
-![Screenshot of the Application](screenshots/app.png)
+![Desktop](screenshots/desktop.png)
+![Mobile](screenshots/mobile.jpeg)
 
 ## Authentication (After deployment)
 
