@@ -20,7 +20,7 @@ export function BookingsByDays() {
       setReports(response);
     }
     fetchReports();
-  }, []);
+  }, [user]);
 
   return (
     <>

@@ -18,7 +18,7 @@ export const useWindowDimensions = (innerWidth: number) => {
 
     window.addEventListener("resize", windowResizeHandler);
     return () => window.removeEventListener("resize", windowResizeHandler);
-  }, []);
+  }, [innerWidth]);
 
   return isMobileSize;
 };

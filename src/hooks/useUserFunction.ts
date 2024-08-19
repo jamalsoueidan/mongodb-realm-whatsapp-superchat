@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useUser } from "@realm/react";
 import useSWR from "swr";
 

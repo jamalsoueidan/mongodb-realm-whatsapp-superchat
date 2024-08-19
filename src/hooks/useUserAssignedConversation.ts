@@ -5,7 +5,7 @@ import { User, UserSchema } from "../models/data";
 
 export const useUsersAssignedConversation = (
   { conversationId }: { conversationId: string },
-  deps: Array<any> = []
+  deps: Array<unknown> = []
 ) => {
   const user = useUser();
   const users = useQuery<User>(

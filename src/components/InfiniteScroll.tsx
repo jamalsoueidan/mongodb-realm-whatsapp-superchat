@@ -75,16 +75,19 @@ export const InfiniteScroll = forwardRef<
       { threshold: 1 }
     );
 
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current);
+    // Store the current ref value in a local variable
+    const currentTarget = observerTarget.current;
+
+    if (currentTarget) {
+      observer.observe(currentTarget);
     }
 
     return () => {
-      if (observerTarget.current) {
-        observer.unobserve(observerTarget.current);
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
       }
     };
-  }, [observerTarget, data, totalData]);
+  }, [observerTarget, data, totalData, loadMore]);
 
   // Scroll to last visible message when new messages are added while scrolling up
   useEffect(() => {
@@ -139,3 +142,5 @@ export const InfiniteScroll = forwardRef<
     </>
   );
 });
+
+InfiniteScroll.displayName = "InfiniteScroll";

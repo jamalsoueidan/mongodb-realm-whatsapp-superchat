@@ -1,5 +1,4 @@
 import { ActionIcon, Flex, Menu, Title, rem } from "@mantine/core";
-import { useUser } from "@realm/react";
 import {
   IconGraph,
   IconInbox,
@@ -7,9 +6,10 @@ import {
   IconMenu2,
 } from "@tabler/icons-react";
 import { Link } from "wouter";
+import { useRealmUser } from "../hooks/useRealmUser";
 
 export function TopNavigation() {
-  const user = useUser();
+  const user = useRealmUser();
 
   return (
     <Flex

@@ -16,10 +16,8 @@ import {
 import { useForm } from "@mantine/form";
 import { IconArrowRight, IconEye } from "@tabler/icons-react";
 import { Route, Router, useLocation, useParams, useRoute } from "wouter";
-import { useGetConversation } from "../../../hooks/useGetConversation";
 import { useSendMessage } from "../../../hooks/useSendMessage";
 import { useUserFunction } from "../../../hooks/useUserFunction";
-import { Conversation } from "../../../models/data";
 import { CustomModal } from "../../CustomModal";
 
 type Flow = {
@@ -40,8 +38,6 @@ type GetFlow = {
 export const AttachmentFlows = () => {
   const [, setLocation] = useLocation();
   const [isMatch, params] = useRoute("/conversation/:conversationId/flows/*?");
-  const { conversationId } = useParams<{ conversationId: string }>();
-  const conversation = useGetConversation(conversationId);
   const { data, error } = useUserFunction<Array<Flow>>("func-flow-list", {
     business_phone_number_id: "364826260050460",
   });
@@ -64,7 +60,7 @@ export const AttachmentFlows = () => {
           <Preview />
         </Route>
         <Route path="/:flowId/send">
-          <Send conversation={conversation} />
+          <Send />
         </Route>
         <Route path="/">
           <Stack>
@@ -130,11 +126,7 @@ function Preview() {
   return <iframe src={data?.preview.preview_url} width="100%" height="900" />;
 }
 
-function Send({
-  conversation,
-}: {
-  conversation: Conversation & Realm.Object<Conversation>;
-}) {
+function Send() {
   const [, setLocation] = useLocation();
   const { flowId } = useParams<{ flowId: string }>();
   const { data } = useUserFunction<GetFlow>("func-flow-get", {

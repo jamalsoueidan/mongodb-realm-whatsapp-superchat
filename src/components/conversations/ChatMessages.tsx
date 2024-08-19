@@ -69,13 +69,12 @@ export function ChatMessages() {
 
   useLayoutEffect(() => {
     const viewportElement = viewport.current;
-    console.log(viewportElement);
     viewportElement?.addEventListener("scroll", handleScroll);
 
     return () => {
       viewportElement?.removeEventListener("scroll", handleScroll);
     };
-  }, [messages]);
+  }, []);
 
   return (
     <InfiniteScroll

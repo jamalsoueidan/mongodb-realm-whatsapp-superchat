@@ -22,7 +22,7 @@ export function BookingsOverTime() {
       );
     }
     fetchReports();
-  }, []);
+  }, [user]);
 
   return (
     <>

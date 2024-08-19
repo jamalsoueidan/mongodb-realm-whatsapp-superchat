@@ -1,12 +1,13 @@
-import { useRealm, useUser } from "@realm/react";
+import { useRealm } from "@realm/react";
 import Realm from "realm";
 import { useParams } from "wouter";
 import { User } from "../models/data";
 import { useGetConversation } from "./useGetConversation";
+import { useRealmUser } from "./useRealmUser";
 
 export const useSendMessage = () => {
   const { conversationId } = useParams<{ conversationId: string }>();
-  const user = useUser();
+  const user = useRealmUser();
   const conversation = useGetConversation(conversationId);
   const realm = useRealm();
 
@@ -27,7 +28,7 @@ export const useSendMessage = () => {
         },
         user: realm.objectForPrimaryKey<User>(
           "User",
-          new Realm.BSON.ObjectId((user.customData as any)._id)
+          new Realm.BSON.ObjectId(user.customData._id)
         ),
       });
     });
@@ -46,7 +47,7 @@ export const useSendMessage = () => {
         type: "interactive",
         user: realm.objectForPrimaryKey<User>(
           "User",
-          new Realm.BSON.ObjectId((user.customData as any)._id)
+          new Realm.BSON.ObjectId(user.customData._id)
         ),
         ...rest,
       });

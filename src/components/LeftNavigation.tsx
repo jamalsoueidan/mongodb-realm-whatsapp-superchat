@@ -1,13 +1,13 @@
 import "@mantine/core/styles.css";
-import { useUser } from "@realm/react";
 import { Link } from "wouter";
 
 import { ActionIcon, Avatar, Flex, Stack, Tooltip } from "@mantine/core";
 import { IconGraph, IconInbox } from "@tabler/icons-react";
+import { useRealmUser } from "../hooks/useRealmUser";
 import { getInitials } from "../lib/getInitials";
 
 export const LeftNavigation = () => {
-  const user = useUser();
+  const user = useRealmUser();
 
   return (
     <Flex align="flex-start" bg="gray.1">
@@ -53,7 +53,7 @@ export const LeftNavigation = () => {
             }}
           >
             <Avatar color="cyan" radius="xl">
-              {getInitials((user.customData as any).name)}
+              {getInitials(user.customData.name)}
             </Avatar>
           </ActionIcon>
         </Tooltip>

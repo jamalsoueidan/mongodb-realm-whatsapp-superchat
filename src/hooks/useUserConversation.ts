@@ -1,11 +1,12 @@
-import { useRealm, useUser } from "@realm/react";
+import { useRealm } from "@realm/react";
 import { startTransition, useEffect } from "react";
 import Realm from "realm";
 import { Conversation, User, UserConversation } from "../models/data";
+import { useRealmUser } from "./useRealmUser";
 
 export function useUserConversation(conversationId: string) {
   const realm = useRealm();
-  const user = useUser();
+  const user = useRealmUser();
 
   useEffect(() => {
     if (!conversationId || !user) return;
@@ -15,7 +16,7 @@ export function useUserConversation(conversationId: string) {
         .objects<UserConversation>("UserConversation")
         .filtered(
           "user._id == $0 && conversation._id == $1",
-          new Realm.BSON.ObjectId((user.customData as any)._id),
+          new Realm.BSON.ObjectId(user.customData._id),
           new Realm.BSON.ObjectId(conversationId)
         )[0];
 
@@ -28,7 +29,7 @@ export function useUserConversation(conversationId: string) {
             _id,
             user: realm.objectForPrimaryKey<User>(
               "User",
-              new Realm.BSON.ObjectId((user.customData as any)._id)
+              new Realm.BSON.ObjectId(user.customData._id)
             ),
             conversation: realm.objectForPrimaryKey<Conversation>(
               "Conversation",
