@@ -21,7 +21,7 @@ export function useMessages({
         null
       ),
     [conversationId]
-  );
+  ).length;
 
   const messages = useQuery<Message>(
     MessageSchema.name,

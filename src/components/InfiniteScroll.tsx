@@ -1,20 +1,34 @@
 import { ActionIcon, Affix, rem, ScrollArea, Transition } from "@mantine/core";
 import { IconArrowDown } from "@tabler/icons-react";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import {
+  forwardRef,
+  ReactNode,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import { Object, Results } from "realm";
 import { Message } from "../models/data";
 
-export const InfiniteScroll: React.FC<{
-  data: Results<Message & Object<Message>>;
-  totalData: number;
-  loadMore: () => void;
-  children: ReactNode;
-}> = ({ data, totalData, loadMore, children }) => {
+export const InfiniteScroll = forwardRef<
+  HTMLDivElement | null,
+  {
+    key: string;
+    data: Results<Message & Object<Message>>;
+    totalData: number;
+    loadMore: () => void;
+    children: ReactNode;
+  }
+>(({ data, totalData, loadMore, children, key }, ref) => {
   const [lastVisibleMessageId, setLastVisibleMessageId] = useState<
     string | null
   >(null);
-  const viewport = useRef<HTMLDivElement>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
+  const viewport = useRef<HTMLDivElement>(null);
+
+  // Use useImperativeHandle to expose the ref
+  useImperativeHandle(ref, () => viewport.current as HTMLDivElement);
   const observerTarget = useRef(null);
 
   const scrollToMessage = (messageId: string) => {
@@ -77,26 +91,22 @@ export const InfiniteScroll: React.FC<{
     if (lastVisibleMessageId) {
       scrollToMessage(lastVisibleMessageId);
     }
-  }, [data]);
+  }, [lastVisibleMessageId]);
 
   // Attach scroll event listener to ScrollArea
   useEffect(() => {
     const viewportElement = viewport.current;
-    if (viewportElement) {
-      viewportElement.addEventListener("scroll", handleScroll);
-    }
+    viewportElement?.addEventListener("scroll", handleScroll);
 
     return () => {
-      if (viewportElement) {
-        viewportElement.removeEventListener("scroll", handleScroll);
-      }
+      viewportElement?.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   // Scroll to bottom onload
   useEffect(() => {
     scrollToBottom();
-  }, []);
+  }, [key]);
 
   return (
     <>
@@ -128,4 +138,4 @@ export const InfiniteScroll: React.FC<{
       </Affix>
     </>
   );
-};
+});
