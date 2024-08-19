@@ -8,9 +8,13 @@ This project is a WhatsApp-based chat application that allows users to interact 
 - **Unread Message Count**: The application tracks unread messages per conversation, showing users how many new messages they have.
 - **User Conversations**: Each user has their own conversation history, and the application tracks when the user last viewed each conversation.
 - **WhatsApp Business API Integration**: The application integrates with the WhatsApp Business API to handle incoming and outgoing messages.
+- **Interactive Message Flows**: Automate responses using interactive message flows, such as sending lists or buttons to users, and handle user responses to trigger further actions.
 - **Responsive Design**: The UI adapts to mobile and desktop layouts, providing a smooth experience across devices.
 - **Attachments Support**: Users can send and receive attachments, such as images or documents.
 - **Settings Drawer**: Users can access and manage conversation settings through a settings drawer in the UI.
+- **Conversation and User Management**: Admins have the ability to manage users and conversations, including assigning users to specific conversations or business phone numbers.
+- **Sticky Date Headers**: While scrolling through messages, date headers remain sticky, providing context for when messages were sent, and enhancing the readability of the chat history.
+- **Infinity Scroll for Conversations**: Load older messages as the user scrolls up, with a smooth infinity scroll that ensures efficient message loading without overwhelming the interface.
 
 ## Tech Stack
 
