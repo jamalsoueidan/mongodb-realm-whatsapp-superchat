@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useParams } from "wouter";
 import { useGetConversation } from "../../hooks/useGetConversation";
+import { useLastSeenConversation } from "../../hooks/useLastSeenConversation";
 import { useMessages } from "../../hooks/useMessages";
 import { useUnreadMessageCount } from "../../hooks/useUnreadMessageCount";
-import { useUserConversation } from "../../hooks/useUserConversation";
 import { InfiniteScroll } from "../InfiniteScroll";
 import { ScrollProvider } from "../providers/ScrollProvider";
 import { ScrollToBottomButton } from "../ScrollToBottomButton";
@@ -13,7 +13,7 @@ export function ChatBody() {
   const { conversationId } = useParams<{ conversationId: string }>();
   const conversation = useGetConversation(conversationId);
   const unreadMessageCount = useUnreadMessageCount(conversation);
-  const updateLastSeenAt = useUserConversation();
+  const updateLastSeenAt = useLastSeenConversation();
   const viewport = useRef<HTMLDivElement>(null);
   const { messages, totalMessageCount, loadMore } = useMessages({
     conversationId,
