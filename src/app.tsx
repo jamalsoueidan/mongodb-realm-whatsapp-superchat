@@ -55,7 +55,7 @@ function App() {
     if (isMatch) {
       setLocation("/conversation");
     }
-  }, [isMatch]);
+  }, [isMatch, setLocation]);
 
   return (
     <Flex h={`${viewportHeight}px`} direction={isMobile ? "column" : "row"}>
