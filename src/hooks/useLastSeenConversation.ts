@@ -10,7 +10,7 @@ This is used to update the last seen at for the user conversation
 We are using this method when user scrolls to the bottom of the chat
 AND when user click on a conversation
 */
-export function useUserConversation() {
+export function useLastSeenConversation() {
   const realm = useRealm();
   const user = useRealmUser();
   const { conversationId } = useParams<{ conversationId: string }>();

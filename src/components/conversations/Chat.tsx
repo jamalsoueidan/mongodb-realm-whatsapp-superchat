@@ -1,8 +1,8 @@
 import { Drawer, Flex } from "@mantine/core";
 import React, { useEffect, useMemo } from "react";
 import { useLocation, useRoute } from "wouter";
+import { useLastSeenConversation } from "../../hooks/useLastSeenConversation";
 import { useMobile } from "../../hooks/useMobile";
-import { useUserConversation } from "../../hooks/useUserConversation";
 import { useVisualViewportHeight } from "../../hooks/useVisualViewportHeight";
 import { ChatAttachments } from "./ChatAttachments";
 import { ChatBody } from "./ChatBody";
@@ -14,7 +14,7 @@ export const Chat = () => {
   const isMobile = useMobile();
   const [isMatch] = useRoute("/conversation/:conversationId/settings/*?");
 
-  const updateLastSeenAt = useUserConversation();
+  const updateLastSeenAt = useLastSeenConversation();
 
   const components = useMemo(
     () => (
