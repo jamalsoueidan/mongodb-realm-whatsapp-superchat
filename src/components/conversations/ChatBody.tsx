@@ -6,7 +6,7 @@ import { useUnreadMessageCount } from "../../hooks/useUnreadMessageCount";
 import { useUserConversation } from "../../hooks/useUserConversation";
 import { InfiniteScroll } from "../InfiniteScroll";
 import { ScrollProvider } from "../providers/ScrollProvider";
-import { ScrollToTopButton } from "../SctollToTopButton";
+import { ScrollToBottomButton } from "../ScrollToBottomButton";
 import { ChatMessages } from "./ChatMessages";
 
 export function ChatBody() {
@@ -55,7 +55,10 @@ export function ChatBody() {
         onBottomReached={onBottomReached}
       >
         <ChatMessages viewportRef={viewport} messages={messages} />
-        <ScrollToTopButton viewportRef={viewport} label={unreadMessageCount} />
+        <ScrollToBottomButton
+          viewportRef={viewport}
+          label={unreadMessageCount}
+        />
       </InfiniteScroll>
     </ScrollProvider>
   );

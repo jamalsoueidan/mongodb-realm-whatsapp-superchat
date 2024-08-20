@@ -3,7 +3,7 @@ import { IconArrowDown } from "@tabler/icons-react";
 
 import { useScroll } from "./providers/ScrollProvider";
 
-export const ScrollToTopButton: React.FC<{
+export const ScrollToBottomButton: React.FC<{
   viewportRef: React.RefObject<HTMLDivElement>;
   label: number;
 }> = ({ viewportRef, label }) => {
