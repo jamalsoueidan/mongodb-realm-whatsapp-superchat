@@ -1,4 +1,4 @@
-import { ActionIcon, Affix, Indicator, rem, Transition } from "@mantine/core";
+import { ActionIcon, Indicator, rem, Transition } from "@mantine/core";
 import { IconArrowDown } from "@tabler/icons-react";
 
 import { useScroll } from "./providers/ScrollProvider";
@@ -12,7 +12,7 @@ export const ScrollToBottomButton: React.FC<{
   const isAtBottom =
     viewportRef.current &&
     scrollPosition.y <
-      viewportRef.current.scrollHeight - viewportRef.current.clientHeight;
+      viewportRef.current.scrollHeight - viewportRef.current.clientHeight - 30;
 
   const scrollToBottom = () => {
     if (viewportRef.current) {
@@ -24,7 +24,7 @@ export const ScrollToBottomButton: React.FC<{
   };
 
   return (
-    <Affix position={{ bottom: 80, right: 15 }}>
+    <div style={{ position: "absolute", bottom: "10px", right: "10px" }}>
       <Transition transition="slide-up" mounted={!!isAtBottom}>
         {(transitionStyles) => (
           <Indicator
@@ -49,6 +49,6 @@ export const ScrollToBottomButton: React.FC<{
           </Indicator>
         )}
       </Transition>
-    </Affix>
+    </div>
   );
 };

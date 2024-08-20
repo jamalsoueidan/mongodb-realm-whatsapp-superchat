@@ -82,7 +82,7 @@ export function ChatMessages({
             data-message-date={date}
           >
             {showDateHeader && (
-              <Flex justify="center">
+              <Flex justify="center" mih="32px" p="0" m="0">
                 <Card
                   px="xs"
                   py="2px"
