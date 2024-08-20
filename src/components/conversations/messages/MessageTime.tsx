@@ -1,13 +1,13 @@
 import { em, Flex, Group, Text } from "@mantine/core";
 import { IconCheck, IconChecks } from "@tabler/icons-react";
-import { useMessageInfo } from "../../../hooks/useMessageInfo";
+import dayjs from "dayjs";
 import { MessageWrapperProps } from "./MessageWrapper";
 
 export function MessageTime({
   msg,
   withChecks = true,
 }: MessageWrapperProps & { withChecks?: boolean }) {
-  const { receivedDate } = useMessageInfo(msg);
+  const messageDate = dayjs(msg.timestamp * 1000);
   const isRead = !!msg.statuses?.find((r) => r.status === "read");
 
   const checks =
@@ -23,7 +23,7 @@ export function MessageTime({
     <Flex justify="flex-end">
       <Group gap="4px">
         <Text size="xs" c="gray.6">
-          {receivedDate.toLocaleString()}
+          {messageDate.format("HH:mm")}
         </Text>
         {withChecks ? checks : null}
       </Group>

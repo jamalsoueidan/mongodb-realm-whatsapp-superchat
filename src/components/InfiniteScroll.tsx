@@ -1,12 +1,5 @@
-import {
-  ActionIcon,
-  Affix,
-  Indicator,
-  rem,
-  ScrollArea,
-  Transition,
-} from "@mantine/core";
-import { IconArrowDown } from "@tabler/icons-react";
+import { ScrollArea, ScrollAreaProps } from "@mantine/core";
+import { useThrottledCallback } from "@mantine/hooks";
 import {
   forwardRef,
   ReactNode,
@@ -18,27 +11,30 @@ import {
 } from "react";
 import { Object, Results } from "realm";
 import { Message } from "../models/data";
+import { useScroll } from "./providers/ScrollProvider";
 
 export const InfiniteScroll = forwardRef<
   HTMLDivElement | null,
   {
-    key: string;
+    conversationId: string; //this is important so we know when we require to rerun the useeffect for scroll-to-bottom-or-such
     data: Results<Message & Object<Message>>;
     totalData: number;
     loadMore: () => void;
     children: ReactNode;
-    onScroll?: (viewport: HTMLDivElement) => void;
-  }
->(({ data, totalData, loadMore, children, key, onScroll }, ref) => {
+  } & ScrollAreaProps
+>(({ data, totalData, loadMore, children, conversationId, ...rest }, ref) => {
+  const { setScrollPosition } = useScroll();
+  const throttledSetScrollPosition = useThrottledCallback(
+    (value) => setScrollPosition(value),
+    500
+  );
   const [lastVisibleMessageId, setLastVisibleMessageId] = useState<
     string | null
   >(null);
-  const [isAtBottom, setIsAtBottom] = useState(true);
   const viewport = useRef<HTMLDivElement>(null);
 
   // Use useImperativeHandle to expose the ref
   useImperativeHandle(ref, () => viewport.current as HTMLDivElement);
-  const observerTarget = useRef(null);
 
   const scrollToMessage = useCallback((messageId: string) => {
     const element = document.getElementById(messageId);
@@ -57,111 +53,41 @@ export const InfiniteScroll = forwardRef<
   }, []);
 
   // Load more when user scrolls to the top
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          if (data.length < totalData) {
-            const firstVisibleMessage = data[0];
-            if (firstVisibleMessage) {
-              setLastVisibleMessageId(firstVisibleMessage._id.toString());
-            }
-            loadMore();
-          }
-        }
-      },
-      { threshold: 1 }
-    );
-
-    // Store the current ref value in a local variable
-    const currentTarget = observerTarget.current;
-
-    if (currentTarget) {
-      observer.observe(currentTarget);
-    }
-
-    return () => {
-      if (currentTarget) {
-        observer.unobserve(currentTarget);
+  const onTopReached = useCallback(() => {
+    if (data.length < totalData) {
+      const firstVisibleMessage = data[0];
+      if (firstVisibleMessage) {
+        setLastVisibleMessageId(firstVisibleMessage._id.toString());
       }
-    };
-  }, [observerTarget, data, totalData, loadMore]);
+      loadMore();
+    }
+  }, [data, loadMore, totalData]);
 
-  // Scroll to last visible message when new messages are added while scrolling up
+  // Scroll to last visible message when load more is called
   useEffect(() => {
     if (lastVisibleMessageId) {
-      console.log("scrollToMessage", lastVisibleMessageId);
       scrollToMessage(lastVisibleMessageId);
     }
   }, [lastVisibleMessageId, scrollToMessage]);
 
-  // Attach scroll event listener to ScrollArea
-  useEffect(() => {
-    const handleScroll = () => {
-      if (viewport.current) {
-        const scrollTop = viewport.current.scrollTop;
-        const scrollHeight = viewport.current.scrollHeight;
-        const clientHeight = viewport.current.clientHeight;
-
-        // Check if user is at the bottom
-        setIsAtBottom(scrollTop + clientHeight >= scrollHeight);
-        if (onScroll) {
-          onScroll(viewport.current);
-        }
-      }
-    };
-
-    const viewportElement = viewport.current;
-    viewportElement?.addEventListener("scroll", handleScroll);
-
-    return () => {
-      viewportElement?.removeEventListener("scroll", handleScroll);
-    };
-  }, [onScroll]);
-
-  // Scroll to bottom onload
+  // Scroll to bottom whenever user change conversationId
   useEffect(() => {
     scrollToBottom();
-  }, [key, scrollToBottom]);
+  }, [conversationId, scrollToBottom]);
 
   return (
-    <>
-      <ScrollArea
-        type="auto"
-        bg="#efeae2"
-        px="xs"
-        flex="1"
-        viewportRef={viewport}
-      >
-        <div ref={observerTarget}></div>
-        {children}
-      </ScrollArea>
-      <Affix position={{ bottom: 80, right: 15 }}>
-        <Transition transition="slide-up" mounted={!isAtBottom}>
-          {(transitionStyles) => (
-            <Indicator
-              position="top-start"
-              offset={7}
-              inline
-              label="1"
-              color="green"
-              size={18}
-            >
-              <ActionIcon
-                variant="default"
-                style={transitionStyles}
-                onClick={() => scrollToBottom()}
-                color="white"
-                radius="xl"
-                size="xl"
-              >
-                <IconArrowDown style={{ width: rem(24), height: rem(24) }} />
-              </ActionIcon>
-            </Indicator>
-          )}
-        </Transition>
-      </Affix>
-    </>
+    <ScrollArea
+      type="auto"
+      bg="#efeae2"
+      px="xs"
+      flex="1"
+      onScrollPositionChange={throttledSetScrollPosition}
+      onTopReached={onTopReached}
+      viewportRef={viewport}
+      {...rest}
+    >
+      {children}
+    </ScrollArea>
   );
 });
 

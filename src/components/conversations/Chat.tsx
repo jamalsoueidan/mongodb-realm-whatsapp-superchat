@@ -5,9 +5,9 @@ import { useMobile } from "../../hooks/useMobile";
 import { useUserConversation } from "../../hooks/useUserConversation";
 import { useVisualViewportHeight } from "../../hooks/useVisualViewportHeight";
 import { ChatAttachments } from "./ChatAttachments";
+import { ChatBody } from "./ChatBody";
 import { ChatHeader } from "./ChatHeader";
 import { ChatInput } from "./ChatInput";
-import { ChatMessages } from "./ChatMessages";
 import { ChatSettings } from "./ChatSettings";
 
 export const Chat = () => {
@@ -20,7 +20,7 @@ export const Chat = () => {
     () => (
       <>
         <ChatHeader />
-        <ChatMessages />
+        <ChatBody />
         <ChatInput />
         <ChatSettings />
         <ChatAttachments />

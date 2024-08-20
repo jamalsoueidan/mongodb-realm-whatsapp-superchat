@@ -1,12 +1,9 @@
 import { Card, Flex, Text } from "@mantine/core";
-import { useThrottledCallback } from "@mantine/hooks";
 import dayjs from "dayjs";
-import { useEffect, useRef, useState } from "react";
-import { useParams } from "wouter";
-import { useMessages } from "../../hooks/useMessages";
-import { useUserConversation } from "../../hooks/useUserConversation";
+import { useEffect, useState } from "react";
+import { Results } from "realm";
 import { Message } from "../../models/data";
-import { InfiniteScroll } from "../InfiniteScroll";
+import { useScroll } from "../providers/ScrollProvider";
 import { MessageSystem } from "./messages/MesageSystem";
 import { MessageImage } from "./messages/MessageImage";
 import { MessageInteractive } from "./messages/MessageInteractive";
@@ -14,17 +11,14 @@ import { MessageInteractiveReply } from "./messages/MessageInteractiveReply";
 import { MessageText } from "./messages/MessageText";
 import { MessageUnknown } from "./messages/MessageUnknown";
 
-export function ChatMessages() {
-  const { conversationId } = useParams<{ conversationId: string }>();
-  const viewport = useRef<HTMLDivElement>(null);
-  const { messages, totalMessageCount, loadMore } = useMessages({
-    conversationId,
-    perPage: 20,
-  });
-
-  const updateLastSeenAt = useUserConversation();
-  const throttledUpdateLastSeen = useThrottledCallback(updateLastSeenAt, 3000);
-
+export function ChatMessages({
+  messages,
+  viewportRef,
+}: {
+  messages: Results<Message & Realm.Object<Message>>;
+  viewportRef: React.RefObject<HTMLDivElement>;
+}) {
+  const { scrollPosition } = useScroll();
   const [stickyStates, setStickyStates] = useState<Record<string, boolean>>({});
 
   const formatDate = (timestamp: number) => {
@@ -50,8 +44,10 @@ export function ChatMessages() {
     );
   };
 
-  const handleScroll = (viewport: HTMLDivElement) => {
-    const messagesElements = viewport.querySelectorAll("[data-message-id]");
+  useEffect(() => {
+    if (!viewportRef.current) return;
+    const messagesElements =
+      viewportRef.current.querySelectorAll("[data-message-id]");
 
     const newStickyStates: Record<string, boolean> = {};
 
@@ -66,42 +62,10 @@ export function ChatMessages() {
     });
 
     setStickyStates(newStickyStates);
-    if (
-      viewport.scrollTop + viewport.clientHeight >=
-      viewport.scrollHeight - 10
-    ) {
-      throttledUpdateLastSeen();
-    }
-  };
-
-  /* Scroll to bottom when sending a message from the input field */
-  const lastMessageRef = useRef(messages[messages.length - 1]);
-  useEffect(() => {
-    const newestMessage = messages[messages.length - 1];
-
-    if (
-      lastMessageRef.current.message_id !== newestMessage.message_id &&
-      newestMessage.recipient ===
-        lastMessageRef.current.conversation?.customer_phone_number &&
-      viewport.current
-    ) {
-      viewport.current.scrollTo({
-        top: viewport.current.scrollHeight,
-        behavior: "instant",
-      });
-      lastMessageRef.current = newestMessage;
-    }
-  }, [messages]);
+  }, [scrollPosition, viewportRef]);
 
   return (
-    <InfiniteScroll
-      key={conversationId}
-      data={messages}
-      totalData={totalMessageCount}
-      loadMore={loadMore}
-      onScroll={handleScroll}
-      ref={viewport}
-    >
+    <>
       {messages.map((msg, index) => {
         const showDateHeader =
           index === 0 || hasDayChanged(msg, messages[index - 1]);
@@ -155,6 +119,6 @@ export function ChatMessages() {
           </div>
         );
       })}
-    </InfiniteScroll>
+    </>
   );
 }

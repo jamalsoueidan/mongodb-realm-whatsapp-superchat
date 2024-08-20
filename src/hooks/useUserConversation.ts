@@ -5,6 +5,11 @@ import { useParams } from "wouter";
 import { Conversation, User, UserConversation } from "../models/data";
 import { useRealmUser } from "./useRealmUser";
 
+/*
+This is used to update the last seen at for the user conversation
+We are using this method when user scrolls to the bottom of the chat
+AND when user click on a conversation
+*/
 export function useUserConversation() {
   const realm = useRealm();
   const user = useRealmUser();
@@ -12,7 +17,6 @@ export function useUserConversation() {
 
   const updateLastSeenAt = useCallback(() => {
     if (!conversationId || !user) return;
-    console.log("updatedonversation", conversationId);
     const existingUserConversation = realm
       .objects<UserConversation>("UserConversation")
       .filtered(
