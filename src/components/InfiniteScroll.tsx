@@ -1,8 +1,16 @@
-import { ActionIcon, Affix, rem, ScrollArea, Transition } from "@mantine/core";
+import {
+  ActionIcon,
+  Affix,
+  Indicator,
+  rem,
+  ScrollArea,
+  Transition,
+} from "@mantine/core";
 import { IconArrowDown } from "@tabler/icons-react";
 import {
   forwardRef,
   ReactNode,
+  useCallback,
   useEffect,
   useImperativeHandle,
   useRef,
@@ -19,8 +27,9 @@ export const InfiniteScroll = forwardRef<
     totalData: number;
     loadMore: () => void;
     children: ReactNode;
+    onScroll?: (viewport: HTMLDivElement) => void;
   }
->(({ data, totalData, loadMore, children, key }, ref) => {
+>(({ data, totalData, loadMore, children, key, onScroll }, ref) => {
   const [lastVisibleMessageId, setLastVisibleMessageId] = useState<
     string | null
   >(null);
@@ -31,32 +40,21 @@ export const InfiniteScroll = forwardRef<
   useImperativeHandle(ref, () => viewport.current as HTMLDivElement);
   const observerTarget = useRef(null);
 
-  const scrollToMessage = (messageId: string) => {
+  const scrollToMessage = useCallback((messageId: string) => {
     const element = document.getElementById(messageId);
     if (element) {
       element.scrollIntoView({ behavior: "instant", block: "start" });
     }
-  };
+  }, []);
 
-  const handleScroll = () => {
-    if (viewport.current) {
-      const scrollTop = viewport.current.scrollTop;
-      const scrollHeight = viewport.current.scrollHeight;
-      const clientHeight = viewport.current.clientHeight;
-
-      // Check if user is at the bottom
-      setIsAtBottom(scrollTop + clientHeight >= scrollHeight);
-    }
-  };
-
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     if (viewport.current) {
       viewport.current.scrollTo({
         top: viewport.current.scrollHeight,
         behavior: "instant",
       });
     }
-  };
+  }, []);
 
   // Load more when user scrolls to the top
   useEffect(() => {
@@ -92,24 +90,39 @@ export const InfiniteScroll = forwardRef<
   // Scroll to last visible message when new messages are added while scrolling up
   useEffect(() => {
     if (lastVisibleMessageId) {
+      console.log("scrollToMessage", lastVisibleMessageId);
       scrollToMessage(lastVisibleMessageId);
     }
-  }, [lastVisibleMessageId]);
+  }, [lastVisibleMessageId, scrollToMessage]);
 
   // Attach scroll event listener to ScrollArea
   useEffect(() => {
+    const handleScroll = () => {
+      if (viewport.current) {
+        const scrollTop = viewport.current.scrollTop;
+        const scrollHeight = viewport.current.scrollHeight;
+        const clientHeight = viewport.current.clientHeight;
+
+        // Check if user is at the bottom
+        setIsAtBottom(scrollTop + clientHeight >= scrollHeight);
+        if (onScroll) {
+          onScroll(viewport.current);
+        }
+      }
+    };
+
     const viewportElement = viewport.current;
     viewportElement?.addEventListener("scroll", handleScroll);
 
     return () => {
       viewportElement?.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [onScroll]);
 
   // Scroll to bottom onload
   useEffect(() => {
     scrollToBottom();
-  }, [key]);
+  }, [key, scrollToBottom]);
 
   return (
     <>
@@ -126,16 +139,25 @@ export const InfiniteScroll = forwardRef<
       <Affix position={{ bottom: 80, right: 15 }}>
         <Transition transition="slide-up" mounted={!isAtBottom}>
           {(transitionStyles) => (
-            <ActionIcon
-              variant="default"
-              style={transitionStyles}
-              onClick={() => scrollToBottom()}
-              color="white"
-              radius="xl"
-              size="xl"
+            <Indicator
+              position="top-start"
+              offset={7}
+              inline
+              label="1"
+              color="green"
+              size={18}
             >
-              <IconArrowDown style={{ width: rem(24), height: rem(24) }} />
-            </ActionIcon>
+              <ActionIcon
+                variant="default"
+                style={transitionStyles}
+                onClick={() => scrollToBottom()}
+                color="white"
+                radius="xl"
+                size="xl"
+              >
+                <IconArrowDown style={{ width: rem(24), height: rem(24) }} />
+              </ActionIcon>
+            </Indicator>
           )}
         </Transition>
       </Affix>

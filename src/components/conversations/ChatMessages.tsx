@@ -1,8 +1,10 @@
 import { Card, Flex, Text } from "@mantine/core";
+import { useThrottledCallback } from "@mantine/hooks";
 import dayjs from "dayjs";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "wouter";
 import { useMessages } from "../../hooks/useMessages";
+import { useUserConversation } from "../../hooks/useUserConversation";
 import { Message } from "../../models/data";
 import { InfiniteScroll } from "../InfiniteScroll";
 import { MessageSystem } from "./messages/MesageSystem";
@@ -15,11 +17,13 @@ import { MessageUnknown } from "./messages/MessageUnknown";
 export function ChatMessages() {
   const { conversationId } = useParams<{ conversationId: string }>();
   const viewport = useRef<HTMLDivElement>(null);
-  const observerTarget = useRef(null);
   const { messages, totalMessageCount, loadMore } = useMessages({
     conversationId,
     perPage: 20,
   });
+
+  const updateLastSeenAt = useUserConversation();
+  const throttledUpdateLastSeen = useThrottledCallback(updateLastSeenAt, 3000);
 
   const [stickyStates, setStickyStates] = useState<Record<string, boolean>>({});
 
@@ -46,35 +50,48 @@ export function ChatMessages() {
     );
   };
 
-  const handleScroll = () => {
-    if (viewport.current) {
-      const messagesElements =
-        viewport.current.querySelectorAll("[data-message-id]");
+  const handleScroll = (viewport: HTMLDivElement) => {
+    const messagesElements = viewport.querySelectorAll("[data-message-id]");
 
-      const newStickyStates: Record<string, boolean> = {};
+    const newStickyStates: Record<string, boolean> = {};
 
-      messagesElements.forEach((element: Element) => {
-        const rect = element.getBoundingClientRect();
-        const messageDate = element.getAttribute("data-message-date");
+    messagesElements.forEach((element: Element) => {
+      const rect = element.getBoundingClientRect();
+      const messageDate = element.getAttribute("data-message-date");
 
-        if (messageDate && !newStickyStates[messageDate]) {
-          // Make the date sticky if it's above the current viewport (i.e., it has scrolled past)
-          newStickyStates[messageDate] = rect.top <= 70;
-        }
-      });
+      if (messageDate && !newStickyStates[messageDate]) {
+        // Make the date sticky if it's above the current viewport (i.e., it has scrolled past)
+        newStickyStates[messageDate] = rect.top <= 70;
+      }
+    });
 
-      setStickyStates(newStickyStates);
+    setStickyStates(newStickyStates);
+    if (
+      viewport.scrollTop + viewport.clientHeight >=
+      viewport.scrollHeight - 10
+    ) {
+      throttledUpdateLastSeen();
     }
   };
 
-  useLayoutEffect(() => {
-    const viewportElement = viewport.current;
-    viewportElement?.addEventListener("scroll", handleScroll);
+  /* Scroll to bottom when sending a message from the input field */
+  const lastMessageRef = useRef(messages[messages.length - 1]);
+  useEffect(() => {
+    const newestMessage = messages[messages.length - 1];
 
-    return () => {
-      viewportElement?.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+    if (
+      lastMessageRef.current.message_id !== newestMessage.message_id &&
+      newestMessage.recipient ===
+        lastMessageRef.current.conversation?.customer_phone_number &&
+      viewport.current
+    ) {
+      viewport.current.scrollTo({
+        top: viewport.current.scrollHeight,
+        behavior: "instant",
+      });
+      lastMessageRef.current = newestMessage;
+    }
+  }, [messages]);
 
   return (
     <InfiniteScroll
@@ -82,9 +99,9 @@ export function ChatMessages() {
       data={messages}
       totalData={totalMessageCount}
       loadMore={loadMore}
+      onScroll={handleScroll}
       ref={viewport}
     >
-      <div ref={observerTarget}></div>
       {messages.map((msg, index) => {
         const showDateHeader =
           index === 0 || hasDayChanged(msg, messages[index - 1]);

@@ -6,6 +6,7 @@ export type Conversation = {
   customer_phone_number: string;
   name?: string;
   timestamp: number;
+  hidden?: boolean;
 };
 
 export const ConversationSchema = {
@@ -16,6 +17,7 @@ export const ConversationSchema = {
     customer_phone_number: "string",
     name: "string?",
     timestamp: "double",
+    hidden: "bool?",
   },
   primaryKey: "_id",
 };

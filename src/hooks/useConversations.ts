@@ -7,12 +7,14 @@ export function useConversations() {
 
   const conversations = useQuery<Conversation>(
     ConversationSchema.name,
-    (collection) => collection.sorted("timestamp", true),
+    (collection) =>
+      collection
+        .filtered("hidden == false OR hidden == null")
+        .sorted("timestamp", true),
     [requeryFlag]
   );
 
   useEffect(() => {
-    // Temporary solution for making `useQuery` update the `tasks` reference.
     // (The value doesn't matter, only that it is different from the initial value.)
     setRequeryFlag(true);
   }, []);

@@ -1,6 +1,6 @@
 import { Drawer, Flex } from "@mantine/core";
-import React, { useMemo } from "react";
-import { useLocation, useParams, useRoute } from "wouter";
+import React, { useEffect, useMemo } from "react";
+import { useLocation, useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
 import { useUserConversation } from "../../hooks/useUserConversation";
 import { useVisualViewportHeight } from "../../hooks/useVisualViewportHeight";
@@ -13,8 +13,8 @@ import { ChatSettings } from "./ChatSettings";
 export const Chat = () => {
   const isMobile = useMobile();
   const [isMatch] = useRoute("/conversation/:conversationId/settings/*?");
-  const { conversationId } = useParams<{ conversationId: string }>();
-  useUserConversation(conversationId);
+
+  const updateLastSeenAt = useUserConversation();
 
   const components = useMemo(
     () => (
@@ -28,6 +28,11 @@ export const Chat = () => {
     ),
     []
   );
+
+  // In case conversation dont have a scroll, we still need to update the last seen at
+  useEffect(() => {
+    updateLastSeenAt();
+  }, [updateLastSeenAt]);
 
   // on mobile we just want to render it inside a drawer
   if (isMobile) {
