@@ -1,6 +1,7 @@
 import "@mantine/charts/styles.css";
 import { Flex, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
+import { useViewportSize } from "@mantine/hooks";
 import { AppProvider, RealmProvider, UserProvider } from "@realm/react";
 import { useEffect } from "react";
 import { FacebookProvider } from "react-facebook";
@@ -9,7 +10,6 @@ import { LeftNavigation } from "./components/LeftNavigation";
 import { LoginFacebook } from "./components/Login";
 import { TopNavigation } from "./components/TopNavigation";
 import { useMobile } from "./hooks/useMobile";
-import { useVisualViewportHeight } from "./hooks/useVisualViewportHeight";
 import {
   ConversationSchema,
   Message_interactive_action_parameters_flow_action_payloadSchema,
@@ -47,7 +47,7 @@ import { ReportsPage } from "./pages/ReportsPage";
 
 function App() {
   const isMobile = useMobile();
-  const viewportHeight = useVisualViewportHeight();
+  const { height } = useViewportSize();
   const [isMatch] = useRoute("/");
   const [, setLocation] = useLocation();
 
@@ -58,7 +58,7 @@ function App() {
   }, [isMatch, setLocation]);
 
   return (
-    <Flex h={`${viewportHeight}px`} direction={isMobile ? "column" : "row"}>
+    <Flex h={`${height}px`} direction={isMobile ? "column" : "row"}>
       {!isMobile ? <LeftNavigation /> : <TopNavigation />}
       <ConversationPage />
       <ReportsPage />

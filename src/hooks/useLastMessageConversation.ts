@@ -1,7 +1,7 @@
 import { useQuery } from "@realm/react";
 import { Conversation, Message, MessageSchema } from "../models/data";
 
-export function useLastMessage(
+export function useLastMessageConversation(
   conversation: Conversation & Realm.Object<Conversation>
 ) {
   const message = useQuery<Message>(

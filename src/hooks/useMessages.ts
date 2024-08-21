@@ -38,9 +38,12 @@ export function useMessages({
 
   const loadMore = () => setLimit((prev) => prev + perPage);
 
+  const lastMessageInConversation = messages[messages.length - 1];
+
   return {
     messages,
     totalMessageCount,
     loadMore,
+    lastMessageInConversation,
   };
 }

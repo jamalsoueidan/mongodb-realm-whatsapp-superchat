@@ -1,9 +1,8 @@
 import { Drawer, Flex } from "@mantine/core";
-import React, { useEffect, useMemo } from "react";
+import { useViewportSize } from "@mantine/hooks";
+import React, { useMemo } from "react";
 import { useLocation, useRoute } from "wouter";
-import { useLastSeenConversation } from "../../hooks/useLastSeenConversation";
 import { useMobile } from "../../hooks/useMobile";
-import { useVisualViewportHeight } from "../../hooks/useVisualViewportHeight";
 import { ChatAttachments } from "./ChatAttachments";
 import { ChatBody } from "./ChatBody";
 import { ChatHeader } from "./ChatHeader";
@@ -13,8 +12,6 @@ import { ChatSettings } from "./ChatSettings";
 export const Chat = () => {
   const isMobile = useMobile();
   const [isMatch] = useRoute("/conversation/:conversationId/settings/*?");
-
-  const updateLastSeenAt = useLastSeenConversation();
 
   const components = useMemo(
     () => (
@@ -28,11 +25,6 @@ export const Chat = () => {
     ),
     []
   );
-
-  // In case conversation dont have a scroll, we still need to update the last seen at
-  useEffect(() => {
-    updateLastSeenAt();
-  }, [updateLastSeenAt]);
 
   // on mobile we just want to render it inside a drawer
   if (isMobile) {
@@ -60,7 +52,7 @@ export const Chat = () => {
 
 const ChatDrawer = ({ children }: { children: React.ReactNode }) => {
   const [, setLocation] = useLocation();
-  const viewportHeight = useVisualViewportHeight();
+  const { height } = useViewportSize();
 
   return (
     <Drawer.Root
@@ -72,7 +64,7 @@ const ChatDrawer = ({ children }: { children: React.ReactNode }) => {
     >
       <Drawer.Content>
         <Drawer.Body p="0">
-          <Flex direction="column" h={`calc(${viewportHeight}px)`}>
+          <Flex direction="column" h={`${height}px`}>
             {children}
           </Flex>
         </Drawer.Body>

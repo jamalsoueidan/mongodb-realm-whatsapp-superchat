@@ -1,5 +1,4 @@
 import { Card, Flex, Text } from "@mantine/core";
-import { MessageTime } from "./MessageTime";
 import { MessageWrapperProps } from "./MessageWrapper";
 
 export const MessageSystem = ({ msg }: MessageWrapperProps) => {
@@ -17,7 +16,6 @@ export const MessageSystem = ({ msg }: MessageWrapperProps) => {
           c="gray.9"
           dangerouslySetInnerHTML={{ __html: msg.text?.body || "" }}
         />
-        <MessageTime msg={msg} withChecks={false} />
       </Card>
     </Flex>
   );

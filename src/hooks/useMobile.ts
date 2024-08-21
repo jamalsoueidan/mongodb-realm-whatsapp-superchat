@@ -1,7 +1,8 @@
 import { useMantineTheme } from "@mantine/core";
-import { useWindowDimensions } from "./useMediaDimensions";
+import { useMediaQuery } from "@mantine/hooks";
 
 export const useMobile = () => {
   const theme = useMantineTheme();
-  return useWindowDimensions(parseInt(theme.breakpoints.md) * 16);
+  const isMobileSize = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
+  return isMobileSize;
 };

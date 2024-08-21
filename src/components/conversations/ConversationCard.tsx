@@ -10,8 +10,8 @@ import {
 } from "@mantine/core";
 import Realm from "realm";
 import { Link } from "wouter";
-import { useLastMessage } from "../../hooks/useLastMessage";
-import { useUnreadMessageCount } from "../../hooks/useUnreadMessageCount";
+import { useCountUnreadMessages } from "../../hooks/useCountUnreadMessages";
+import { useLastMessageConversation } from "../../hooks/useLastMessageConversation";
 import { Conversation } from "../../models/data";
 
 export const ConversationCard = ({
@@ -21,9 +21,9 @@ export const ConversationCard = ({
   conversation: Conversation & Realm.Object<Conversation>;
   selected: boolean;
 }) => {
-  const message = useLastMessage(conversation);
+  const message = useLastMessageConversation(conversation);
   const receivedDate = new Date(conversation.timestamp * 1000);
-  const unreadMessageCount = useUnreadMessageCount(conversation);
+  const unreadMessageCount = useCountUnreadMessages(conversation);
 
   return (
     <>

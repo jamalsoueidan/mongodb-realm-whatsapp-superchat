@@ -2,6 +2,7 @@ import {
   Accordion,
   ActionIcon,
   Button,
+  Checkbox,
   Divider,
   Drawer,
   Flex,
@@ -11,12 +12,14 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { useQuery, useRealm } from "@realm/react";
 import { IconX } from "@tabler/icons-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Realm } from "realm";
 import { Link, Router, useParams, useRoute } from "wouter";
 import { useGetConversation } from "../../hooks/useGetConversation";
+import { useLoggedInUser } from "../../hooks/useLoggedInUser";
 import { useMobile } from "../../hooks/useMobile";
 import { useUsers } from "../../hooks/useUsers";
 import { Message, MessageSchema } from "../../models/data";
@@ -78,82 +81,98 @@ export const ChatSettings = () => {
 };
 
 function Assigned() {
-  const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
+  const [checked, setChecked] = useState(false);
+  const [changed, { toggle }] = useDisclosure(false);
   const { conversationId } = useParams<{ conversationId: string }>();
-
   const realm = useRealm();
-
+  const user = useLoggedInUser();
   const conversation = useGetConversation(conversationId);
-  const { users } = useUsers(selectedUserIds);
+  const { users } = useUsers([changed]);
 
-  const handleUserSelectionChange = (selectedUserIds: string[]) => {
-    realm.write(() => {
-      users.forEach((user) => {
-        const index = user.conversation_ids.findIndex((id) =>
-          id.equals(conversation._id)
-        );
+  const handleUserSelectionChange = useCallback(
+    (selectedUserIds: string[]) => {
+      realm.write(() => {
+        users.forEach((u) => {
+          const index = u.conversation_ids.findIndex((id) =>
+            id.equals(conversation._id)
+          );
 
-        if (selectedUserIds.includes(user.user_id)) {
-          if (index === -1) {
-            //must not exist before
-            user.conversation_ids.push(conversation._id);
-            user.updated_at = Math.floor(Date.now() / 1000);
-            realm.create("Message", {
-              _id: new Realm.BSON.ObjectId(),
-              message_id: "system",
-              conversation,
-              business_phone_number_id: "364826260050460",
-              recipient: conversation.customer_phone_number,
-              timestamp: Math.floor(Date.now() / 1000),
-              statuses: [],
-              type: "system",
-              text: {
-                body: `<strong>${user.name}</strong> is assigned to this conversation.`,
-              },
-            });
+          if (selectedUserIds.includes(u.user_id)) {
+            if (index === -1) {
+              //must not exist before
+              u.conversation_ids.push(conversation._id);
+              u.updated_at = Math.floor(Date.now() / 1000);
+              if (checked) {
+                realm.create("Message", {
+                  _id: new Realm.BSON.ObjectId(),
+                  message_id: "system",
+                  conversation,
+                  business_phone_number_id: "364826260050460",
+                  recipient: conversation.customer_phone_number,
+                  timestamp: Math.floor(Date.now() / 1000),
+                  statuses: [],
+                  type: "system",
+                  text: {
+                    body: `<strong>${u.name}</strong> is added.`,
+                  },
+                  user,
+                });
+              }
+            }
+          } else {
+            if (index !== -1) {
+              //must exit before
+              u.conversation_ids.remove(index);
+              u.updated_at = Math.floor(Date.now() / 1000);
+              if (checked) {
+                realm.create("Message", {
+                  _id: new Realm.BSON.ObjectId(),
+                  message_id: "system",
+                  conversation,
+                  business_phone_number_id: "364826260050460",
+                  recipient: conversation.customer_phone_number,
+                  timestamp: Math.floor(Date.now() / 1000),
+                  statuses: [],
+                  type: "system",
+                  text: {
+                    body: `<strong>${u.name}</strong> was removed.`,
+                  },
+                  user,
+                });
+              }
+            }
           }
-        } else {
-          if (index !== -1) {
-            //must exit before
-            user.conversation_ids.remove(index);
-            user.updated_at = Math.floor(Date.now() / 1000);
-            realm.create("Message", {
-              _id: new Realm.BSON.ObjectId(),
-              message_id: "system",
-              conversation,
-              business_phone_number_id: "364826260050460",
-              recipient: conversation.customer_phone_number,
-              timestamp: Math.floor(Date.now() / 1000),
-              statuses: [],
-              type: "system",
-              text: {
-                body: `<strong>${user.name}</strong> was removed from this conversation.`,
-              },
-            });
-          }
-        }
+        });
       });
-    });
-    setSelectedUserIds(selectedUserIds);
-  };
+      toggle();
+    },
+    [checked, conversation, realm, toggle, user, users]
+  );
 
   return (
-    <MultiSelect
-      placeholder="Pick user"
-      description="Choose which users can view this conversation?"
-      value={users
-        .filtered(
-          "$0 IN conversation_ids",
-          new Realm.BSON.ObjectId(conversationId)
-        )
-        .map((u) => u.user_id)}
-      data={users.map((u) => ({
-        label: u.name,
-        value: u.user_id,
-      }))}
-      size="md"
-      onChange={handleUserSelectionChange}
-    />
+    <Stack>
+      <MultiSelect
+        placeholder="Pick user"
+        description="Choose which users can view this conversation?"
+        value={users
+          .filtered(
+            "$0 IN conversation_ids",
+            new Realm.BSON.ObjectId(conversationId)
+          )
+          .map((u) => u.user_id)}
+        data={users.map((u) => ({
+          label: u.name,
+          value: u.user_id,
+        }))}
+        size="md"
+        onChange={handleUserSelectionChange}
+      />
+      <Checkbox
+        checked={checked}
+        onChange={(event) => setChecked(event.currentTarget.checked)}
+        label="Send message in the chat"
+      />
+    </Stack>
   );
 }
 
