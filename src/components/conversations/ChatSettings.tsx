@@ -98,12 +98,38 @@ function Assigned() {
             //must not exist before
             user.conversation_ids.push(conversation._id);
             user.updated_at = Math.floor(Date.now() / 1000);
+            realm.create("Message", {
+              _id: new Realm.BSON.ObjectId(),
+              message_id: "system",
+              conversation,
+              business_phone_number_id: "364826260050460",
+              recipient: conversation.customer_phone_number,
+              timestamp: Math.floor(Date.now() / 1000),
+              statuses: [],
+              type: "system",
+              text: {
+                body: `<strong>${user.name}</strong> is assigned to this conversation.`,
+              },
+            });
           }
         } else {
           if (index !== -1) {
             //must exit before
             user.conversation_ids.remove(index);
             user.updated_at = Math.floor(Date.now() / 1000);
+            realm.create("Message", {
+              _id: new Realm.BSON.ObjectId(),
+              message_id: "system",
+              conversation,
+              business_phone_number_id: "364826260050460",
+              recipient: conversation.customer_phone_number,
+              timestamp: Math.floor(Date.now() / 1000),
+              statuses: [],
+              type: "system",
+              text: {
+                body: `<strong>${user.name}</strong> was removed from this conversation.`,
+              },
+            });
           }
         }
       });
