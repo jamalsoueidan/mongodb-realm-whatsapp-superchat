@@ -11,16 +11,15 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import { useQuery, useRealm } from "@realm/react";
 import { IconX } from "@tabler/icons-react";
-import Realm from "realm";
+import { useState } from "react";
+import { Realm } from "realm";
 import { Link, Router, useParams, useRoute } from "wouter";
 import { useGetConversation } from "../../hooks/useGetConversation";
 import { useMobile } from "../../hooks/useMobile";
-import { useUsersAssignedConversation } from "../../hooks/useUserAssignedConversation";
+import { useUsers } from "../../hooks/useUsers";
 import { Message, MessageSchema } from "../../models/data";
-
 export const ChatSettings = () => {
   const isMobile = useMobile();
   const { conversationId } = useParams<{ conversationId: string }>();
@@ -54,7 +53,7 @@ export const ChatSettings = () => {
             <Accordion
               chevronPosition="right"
               variant="default"
-              defaultValue="flows"
+              defaultValue="assignments"
             >
               <Accordion.Item value="assignments">
                 <Accordion.Control>User assignment</Accordion.Control>
@@ -79,80 +78,49 @@ export const ChatSettings = () => {
 };
 
 function Assigned() {
+  const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
   const { conversationId } = useParams<{ conversationId: string }>();
-  const [opened, { toggle }] = useDisclosure(false);
 
   const realm = useRealm();
 
   const conversation = useGetConversation(conversationId);
-  const { users, assignedUsers, unassignedUsers } =
-    useUsersAssignedConversation(
-      {
-        conversationId,
-      },
-      [opened]
-    );
+  const { users } = useUsers(selectedUserIds);
 
   const handleUserSelectionChange = (selectedUserIds: string[]) => {
     realm.write(() => {
-      // First, remove all unselected users from the conversation
       users.forEach((user) => {
-        const userId = user.user_id;
+        const index = user.conversation_ids.findIndex((id) =>
+          id.equals(conversation._id)
+        );
 
-        if (!selectedUserIds.includes(userId)) {
-          // If the user is not in the selectedUserIds, remove the conversation ID from their list
-          const conversationIdIndex = user.conversation_ids.findIndex((id) =>
-            id.equals(new Realm.BSON.ObjectId(conversationId))
-          );
-          if (conversationIdIndex !== -1) {
-            user.conversation_ids.remove(conversationIdIndex);
-            realm.create("Message", {
-              _id: new Realm.BSON.ObjectId(),
-              message_id: "system",
-              conversation,
-              business_phone_number_id: "364826260050460",
-              recipient: conversation.customer_phone_number,
-              timestamp: Math.floor(Date.now() / 1000),
-              statuses: [],
-              type: "system",
-              text: {
-                body: `<strong>${user.name}</strong> was removed from this conversation.`,
-              },
-            });
+        if (selectedUserIds.includes(user.user_id)) {
+          if (index === -1) {
+            //must not exist before
+            user.conversation_ids.push(conversation._id);
+            user.updated_at = Math.floor(Date.now() / 1000);
           }
         } else {
-          // If the user is in selectedUserIds, add the conversation ID if it's not already there
-          if (
-            !user.conversation_ids.some((id) =>
-              id.equals(new Realm.BSON.ObjectId(conversationId))
-            )
-          ) {
-            user.conversation_ids.push(new Realm.BSON.ObjectId(conversationId));
-            realm.create("Message", {
-              _id: new Realm.BSON.ObjectId(),
-              message_id: "system",
-              conversation,
-              business_phone_number_id: "364826260050460",
-              recipient: conversation.customer_phone_number,
-              timestamp: Math.floor(Date.now() / 1000),
-              statuses: [],
-              type: "system",
-              text: {
-                body: `<strong>${user.name}</strong> is assigned to this conversation.`,
-              },
-            });
+          if (index !== -1) {
+            //must exit before
+            user.conversation_ids.remove(index);
+            user.updated_at = Math.floor(Date.now() / 1000);
           }
         }
       });
     });
-    toggle();
+    setSelectedUserIds(selectedUserIds);
   };
 
   return (
     <MultiSelect
       placeholder="Pick user"
       description="Choose which users can view this conversation?"
-      value={assignedUsers.map((u) => u.user_id)}
+      value={users
+        .filtered(
+          "$0 IN conversation_ids",
+          new Realm.BSON.ObjectId(conversationId)
+        )
+        .map((u) => u.user_id)}
       data={users.map((u) => ({
         label: u.name,
         value: u.user_id,

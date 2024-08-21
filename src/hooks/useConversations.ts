@@ -1,9 +1,22 @@
 import { useQuery } from "@realm/react";
-import { useEffect, useState } from "react";
-import { Conversation, ConversationSchema } from "../models/data";
+import {
+  Conversation,
+  ConversationSchema,
+  User,
+  UserSchema,
+} from "../models/data";
+import { useRealmUser } from "./useRealmUser";
 
 export function useConversations() {
-  const [requeryFlag, setRequeryFlag] = useState(false); // Temporary flag
+  const user = useRealmUser();
+
+  const myUser = useQuery<User>(
+    UserSchema.name,
+    (collection) => {
+      return collection.filtered("user_id = $0", user?.id);
+    },
+    []
+  );
 
   const conversations = useQuery<Conversation>(
     ConversationSchema.name,
@@ -11,13 +24,8 @@ export function useConversations() {
       collection
         .filtered("hidden == false OR hidden == null")
         .sorted("timestamp", true),
-    [requeryFlag]
+    [myUser[0].updated_at]
   );
-
-  useEffect(() => {
-    // (The value doesn't matter, only that it is different from the initial value.)
-    setRequeryFlag(true);
-  }, []);
 
   return {
     conversations,

@@ -513,7 +513,8 @@ export type User = {
   name: string;
   picture?: string;
   user_id: string;
-  created_at: number;
+  created_at?: number;
+  updated_at?: number;
 };
 
 export const UserSchema = {
@@ -528,7 +529,8 @@ export const UserSchema = {
     name: "string",
     picture: "string?",
     user_id: "string",
-    created_at: "double",
+    created_at: "double?",
+    updated_at: "double?",
   },
   primaryKey: "_id",
 };
