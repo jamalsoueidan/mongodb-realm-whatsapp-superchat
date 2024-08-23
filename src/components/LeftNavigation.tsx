@@ -2,12 +2,15 @@ import "@mantine/core/styles.css";
 import { Link } from "wouter";
 
 import { ActionIcon, Avatar, Flex, Stack, Tooltip } from "@mantine/core";
+import { useRealm } from "@realm/react";
 import { IconGraph, IconInbox } from "@tabler/icons-react";
 import { useRealmUser } from "../hooks/useRealmUser";
 import { getInitials } from "../lib/getInitials";
+import { SyncProgress } from "./monitor/SyncProgress";
 
 export const LeftNavigation = () => {
   const user = useRealmUser();
+  const realm = useRealm();
 
   return (
     <Flex align="flex-start" bg="gray.1">
@@ -57,6 +60,9 @@ export const LeftNavigation = () => {
             </Avatar>
           </ActionIcon>
         </Tooltip>
+        {realm.syncSession ? (
+          <SyncProgress syncSession={realm.syncSession} />
+        ) : null}
       </Stack>
     </Flex>
   );
