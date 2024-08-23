@@ -15,5 +15,5 @@ export function useLastMessageConversation(
     [conversation]
   );
 
-  return message[0];
+  return message.length > 0 ? message[0] : null;
 }
