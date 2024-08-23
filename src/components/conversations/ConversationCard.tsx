@@ -40,15 +40,17 @@ export const ConversationCard = ({
           <Flex flex={1}>
             <Stack gap="0" flex={1}>
               <Text>{conversation.name}</Text>
-              <Text lineClamp={1}>
-                {truncateText(
-                  message.text?.body ||
-                    message.interactive?.body?.text ||
-                    message.interactive_reply?.flow_name ||
-                    "",
-                  25 // Set the maximum length (e.g., 100 characters)
-                )}
-              </Text>
+              {message ? (
+                <Text lineClamp={1}>
+                  {truncateText(
+                    message.text?.body ||
+                      message.interactive?.body?.text ||
+                      message.interactive_reply?.flow_name ||
+                      "",
+                    25 // Set the maximum length (e.g., 100 characters)
+                  )}
+                </Text>
+              ) : null}
             </Stack>
             <Stack align="flex-end" justify="center" gap="2px">
               <Text c="green" size="xs" fw="500">
