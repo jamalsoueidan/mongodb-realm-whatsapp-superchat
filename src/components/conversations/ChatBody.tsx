@@ -1,3 +1,4 @@
+import { usePrevious } from "@mantine/hooks";
 import { useCallback, useEffect, useRef } from "react";
 import { useParams } from "wouter";
 import { useCountUnreadMessages } from "../../hooks/useCountUnreadMessages";
@@ -17,29 +18,27 @@ export function ChatBody() {
   const unreadMessageCount = useCountUnreadMessages(conversation);
   const [, setLastSeenAt] = useLastSeenConversation(conversation);
   const viewport = useRef<HTMLDivElement>(null);
-  const { messages, totalMessageCount, loadMore, lastMessageInConversation } =
-    useMessages({
-      conversationId,
-      perPage: 20,
-    });
+  const { messages, totalMessageCount, loadMore, lastMessage } = useMessages({
+    conversationId,
+    perPage: 10,
+  });
 
-  /* Scroll to bottom when sending a message from the input field */
-  const lastScrolledMessageRef = useRef(messages[messages.length - 1]);
+  const previousMessage = usePrevious(lastMessage);
   useEffect(() => {
-    const isDifferentMessageId = !lastScrolledMessageRef.current._id.equals(
-      lastMessageInConversation._id
-    );
-    const isMessageSentByMe =
-      lastMessageInConversation.user?.user_id === user.customData.user_id;
+    if (!lastMessage || !previousMessage) return;
 
+    const isDifferentMessageId = !previousMessage._id.equals(lastMessage._id);
+    const isMessageSentByMe =
+      lastMessage.user?.user_id === user.customData.user_id;
+
+    /* Scroll to bottom when sending a message from the input field */
     if (isDifferentMessageId && isMessageSentByMe && viewport.current) {
       viewport.current.scrollTo({
         top: viewport.current.scrollHeight,
         behavior: "instant",
       });
-      lastScrolledMessageRef.current = lastMessageInConversation;
     }
-  }, [lastMessageInConversation, messages, user.customData.user_id, user.id]);
+  }, [lastMessage, previousMessage, user.customData.user_id]);
 
   // Register last seen at when scroll at the bottom
   const onBottomReached = useCallback(() => {
@@ -49,7 +48,8 @@ export function ChatBody() {
   // In case conversation dont have a scroll, we still need to update the last seen at
   useEffect(() => {
     setLastSeenAt();
-  }, [setLastSeenAt]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ScrollProvider>
