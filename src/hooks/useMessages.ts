@@ -16,7 +16,7 @@ export function useMessages({
     MessageSchema.name,
     (collection) =>
       collection.filtered(
-        `conversation._id = $0 AND hidden == $1`, //
+        `conversation._id = $0 AND hidden == $1`,
         new Realm.BSON.ObjectId(conversationId),
         null
       ),
@@ -38,12 +38,13 @@ export function useMessages({
 
   const loadMore = () => setLimit((prev) => prev + perPage);
 
-  const lastMessageInConversation = messages[messages.length - 1];
+  const lastMessage =
+    messages.length > 0 ? messages[messages.length - 1] : null;
 
   return {
     messages,
     totalMessageCount,
     loadMore,
-    lastMessageInConversation,
+    lastMessage,
   };
 }
