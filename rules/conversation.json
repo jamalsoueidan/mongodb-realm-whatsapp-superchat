@@ -1,0 +1,46 @@
+{
+  "roles": [
+    {
+      "name": "admin",
+      "apply_when": {
+        "%%user.custom_data.is_admin": true
+      },
+      "document_filters": {
+        "write": {
+          "business_phone_number_id": {
+            "$in": "%%user.custom_data.business_phone_number_ids"
+          }
+        },
+        "read": {
+          "business_phone_number_id": {
+            "$in": "%%user.custom_data.business_phone_number_ids"
+          }
+        }
+      },
+      "read": true,
+      "write": true,
+      "insert": true,
+      "delete": false,
+      "search": true
+    },
+    {
+      "name": "user",
+      "apply_when": {
+        "%%user.custom_data.is_admin": false
+      },
+      "document_filters": {
+        "write": {
+          "user_ids": "%%user.custom_data.user_id"
+        },
+        "read": {
+          "user_ids": "%%user.custom_data.user_id"
+        }
+      },
+      "read": true,
+      "write": true,
+      "insert": true,
+      "delete": false,
+      "search": true
+    }
+  ]
+}

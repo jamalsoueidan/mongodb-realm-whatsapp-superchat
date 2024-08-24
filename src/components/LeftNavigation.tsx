@@ -3,7 +3,7 @@ import { Link } from "wouter";
 
 import { ActionIcon, Avatar, Flex, Stack, Tooltip } from "@mantine/core";
 import { useRealm } from "@realm/react";
-import { IconGraph, IconInbox } from "@tabler/icons-react";
+import { IconGraph, IconInbox, IconUsers } from "@tabler/icons-react";
 import { useRealmUser } from "../hooks/useRealmUser";
 import { getInitials } from "../lib/getInitials";
 import { SyncProgress } from "./monitor/SyncProgress";
@@ -13,7 +13,12 @@ export const LeftNavigation = () => {
   const realm = useRealm();
 
   return (
-    <Flex align="flex-start" bg="gray.1">
+    <Flex
+      align="flex-start"
+      bg="gray.1"
+      direction="column"
+      justify="space-between"
+    >
       <Stack justify="center" align="center" p="md">
         <Tooltip label="Conversations" position="bottom">
           <ActionIcon
@@ -43,6 +48,24 @@ export const LeftNavigation = () => {
           </ActionIcon>
         </Tooltip>
 
+        <Tooltip label="Team">
+          <ActionIcon
+            variant="transparent"
+            color="#555"
+            aria-label="Team"
+            radius="xl"
+            size="lg"
+            component={Link}
+            to="/team"
+          >
+            <IconUsers style={{ width: "70%", height: "70%" }} stroke={1.5} />
+          </ActionIcon>
+        </Tooltip>
+      </Stack>
+      <Stack justify="center" align="center" p="md">
+        {realm.syncSession ? (
+          <SyncProgress syncSession={realm.syncSession} />
+        ) : null}
         <Tooltip label="Logout">
           <ActionIcon
             variant="transparent"
@@ -60,9 +83,6 @@ export const LeftNavigation = () => {
             </Avatar>
           </ActionIcon>
         </Tooltip>
-        {realm.syncSession ? (
-          <SyncProgress syncSession={realm.syncSession} />
-        ) : null}
       </Stack>
     </Flex>
   );

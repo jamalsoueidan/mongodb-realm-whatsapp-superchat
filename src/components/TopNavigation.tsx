@@ -4,6 +4,7 @@ import {
   IconInbox,
   IconLogout,
   IconMenu2,
+  IconUsers,
 } from "@tabler/icons-react";
 import { Link } from "wouter";
 import { useRealmUser } from "../hooks/useRealmUser";
@@ -53,6 +54,15 @@ export function TopNavigation() {
             to="/reports"
           >
             Reports
+          </Menu.Item>
+          <Menu.Item
+            leftSection={
+              <IconUsers style={{ width: rem(14), height: rem(14) }} />
+            }
+            component={Link}
+            to="/team"
+          >
+            Team
           </Menu.Item>
           <Menu.Item
             leftSection={

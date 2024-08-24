@@ -1,12 +1,14 @@
 import { Flex, Stack, Text, Title } from "@mantine/core";
 import { IconPhone } from "@tabler/icons-react";
-import { Route } from "wouter";
+import { Route, useLocation } from "wouter";
 import { Chat } from "../components/conversations/Chat";
 import { ConversationList } from "../components/conversations/ConversationList";
+import { CustomDrawer } from "../components/CustomDrawer";
 import { useMobile } from "../hooks/useMobile";
 
 export const ConversationPage = () => {
   const isMobile = useMobile();
+  const [, setLocation] = useLocation();
 
   return (
     <Route path="/conversation/*?">
@@ -48,7 +50,20 @@ export const ConversationPage = () => {
             ) : null}
 
             <Route path="/conversation/:conversationId/*?">
-              {() => (!isMobile || openedConversation ? <Chat /> : null)}
+              {() =>
+                openedConversation ? (
+                  isMobile ? (
+                    <CustomDrawer
+                      onClose={() => setLocation("/conversation")}
+                      opened
+                    >
+                      <Chat />
+                    </CustomDrawer>
+                  ) : (
+                    <Chat />
+                  )
+                ) : null
+              }
             </Route>
           </>
         );

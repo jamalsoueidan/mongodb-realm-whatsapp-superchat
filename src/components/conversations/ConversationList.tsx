@@ -1,4 +1,5 @@
 import { Divider, Flex, ScrollArea, Title } from "@mantine/core";
+import { IconInbox } from "@tabler/icons-react";
 import { useRoute } from "wouter";
 import { useConversations } from "../../hooks/useConversations";
 import { ConversationCard } from "./ConversationCard";
@@ -9,7 +10,8 @@ export function ConversationList() {
 
   return (
     <>
-      <Flex p="md" h="60px">
+      <Flex p="md" h="60px" align="center" gap="xs">
+        <IconInbox size={24} />
         <Title order={3}>Chat</Title>
       </Flex>
       <Divider />

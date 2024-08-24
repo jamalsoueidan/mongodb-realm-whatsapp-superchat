@@ -1,7 +1,6 @@
-import { Drawer, Flex } from "@mantine/core";
-import { useViewportSize } from "@mantine/hooks";
-import React, { useMemo } from "react";
-import { useLocation, useRoute } from "wouter";
+import { Flex } from "@mantine/core";
+import { useMemo } from "react";
+import { useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
 import { ChatAttachments } from "./ChatAttachments";
 import { ChatBody } from "./ChatBody";
@@ -26,9 +25,8 @@ export const Chat = () => {
     []
   );
 
-  // on mobile we just want to render it inside a drawer
   if (isMobile) {
-    return <ChatDrawer>{components}</ChatDrawer>;
+    return components;
   }
 
   // on desktop we want to render it in a flex layout
@@ -47,28 +45,5 @@ export const Chat = () => {
         {components}
       </Flex>
     </>
-  );
-};
-
-const ChatDrawer = ({ children }: { children: React.ReactNode }) => {
-  const [, setLocation] = useLocation();
-  const { height } = useViewportSize();
-
-  return (
-    <Drawer.Root
-      position="right"
-      size="100%"
-      opened
-      onClose={() => setLocation("../conversation")}
-      lockScroll={false} //fix mobile infinity scroll
-    >
-      <Drawer.Content>
-        <Drawer.Body p="0">
-          <Flex direction="column" h={`${height}px`}>
-            {children}
-          </Flex>
-        </Drawer.Body>
-      </Drawer.Content>
-    </Drawer.Root>
   );
 };

@@ -41,26 +41,26 @@ export function SyncProgress({ syncSession }: { syncSession: SyncSession }) {
     <>
       <Tooltip label="Upload progress">
         <RingProgress
-          size={40}
+          size={36}
           thickness={4}
           label={
             <Text size="xs" ta="center">
               UP
             </Text>
           }
-          sections={[{ value: uploadProgress, color: "blue" }]}
+          sections={[{ value: uploadProgress, color: "blue.2" }]}
         />
       </Tooltip>
       <Tooltip label="Download progress">
         <RingProgress
-          size={40}
+          size={36}
           thickness={4}
           label={
             <Text size="xs" ta="center">
               DL
             </Text>
           }
-          sections={[{ value: downloadProgress, color: "blue" }]}
+          sections={[{ value: downloadProgress, color: "blue.2" }]}
         />
       </Tooltip>
     </>

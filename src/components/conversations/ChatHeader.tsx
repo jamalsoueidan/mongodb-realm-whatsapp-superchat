@@ -15,7 +15,6 @@ import {
 import { Link, useLocation, useParams, useRoute } from "wouter";
 import { useGetConversation } from "../../hooks/useGetConversation";
 import { useMobile } from "../../hooks/useMobile";
-import { useUsersAssignedConversation } from "../../hooks/useUserAssignedConversation";
 export function ChatHeader() {
   const [, setLocation] = useLocation();
   const isMobile = useMobile();
@@ -23,11 +22,7 @@ export function ChatHeader() {
   const [isMatch] = useRoute("/conversation/:conversationId/settings");
 
   const conversation = useGetConversation(conversationId);
-  const receivedDate = new Date(conversation.timestamp * 1000);
-
-  const { assignedUsers } = useUsersAssignedConversation({
-    conversationId,
-  });
+  const receivedDate = new Date(conversation?.timestamp || 0 * 1000);
 
   return (
     <Flex
@@ -52,7 +47,7 @@ export function ChatHeader() {
           <Avatar color="white" radius="xl" bg="gray.1" size="md" />
           <Flex direction="column" gap="0">
             <Text lh="xs" c={{ base: "white", md: "black" }}>
-              {conversation.name || conversation.customer_phone_number}{" "}
+              {conversation?.name || conversation?.customer_phone_number}{" "}
             </Text>
             <Text lh="xs" fz="xs" c={{ base: "white", md: "black" }}>
               {receivedDate.toLocaleDateString()}
@@ -69,7 +64,7 @@ export function ChatHeader() {
         >
           <Popover.Target>
             <Indicator
-              label={`+${assignedUsers.length}`}
+              label={`+${conversation?.user_ids.length}`}
               size={16}
               color={isMobile ? "#3a5664" : "#54656f"}
               mt="4px"
@@ -78,15 +73,6 @@ export function ChatHeader() {
               <IconUsersGroup color={isMobile ? "white" : "#54656f"} />
             </Indicator>
           </Popover.Target>
-          {assignedUsers.length > 0 ? (
-            <Popover.Dropdown>
-              {assignedUsers.map((user) => (
-                <Flex key={user.user_id} gap="xs" align="center">
-                  <Text>{user.name}</Text>
-                </Flex>
-              ))}
-            </Popover.Dropdown>
-          ) : null}
         </Popover>
 
         <ActionIcon
@@ -96,8 +82,8 @@ export function ChatHeader() {
           component={Link}
           to={
             !isMatch
-              ? `/conversation/${conversation._id}/settings`
-              : `/conversation/${conversation._id}`
+              ? `/conversation/${conversation?._id}/settings`
+              : `/conversation/${conversation?._id}`
           }
         >
           <IconGripVertical stroke={2.5} />

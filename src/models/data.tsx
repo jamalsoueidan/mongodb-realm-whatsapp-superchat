@@ -6,7 +6,7 @@ export type Conversation = {
   customer_phone_number: string;
   name?: string;
   timestamp: number;
-  hidden?: boolean;
+  user_ids: Realm.List<string>;
 };
 
 export const ConversationSchema = {
@@ -17,7 +17,7 @@ export const ConversationSchema = {
     customer_phone_number: "string",
     name: "string?",
     timestamp: "double",
-    hidden: "bool?",
+    user_ids: "string[]",
   },
   primaryKey: "_id",
 };
@@ -506,7 +506,6 @@ export const UserConversationSchema = {
 export type User = {
   _id: Realm.BSON.ObjectId;
   business_phone_number_ids: Realm.List<string>;
-  conversation_ids: Realm.List<Realm.BSON.ObjectId>;
   email: string;
   is_admin: boolean;
   is_team_admin: boolean;
@@ -522,7 +521,6 @@ export const UserSchema = {
   properties: {
     _id: "objectId",
     business_phone_number_ids: "string[]",
-    conversation_ids: "objectId[]",
     email: "string",
     is_admin: "bool",
     is_team_admin: "bool",

@@ -44,6 +44,7 @@ import {
 } from "./models/data";
 import { ConversationPage } from "./pages/ConversationPage";
 import { ReportsPage } from "./pages/ReportsPage";
+import { TeamPage } from "./pages/TeamPage";
 
 function App() {
   const isMobile = useMobile();
@@ -62,6 +63,7 @@ function App() {
       {!isMobile ? <LeftNavigation /> : <TopNavigation />}
       <ConversationPage />
       <ReportsPage />
+      <TeamPage />
     </Flex>
   );
 }
