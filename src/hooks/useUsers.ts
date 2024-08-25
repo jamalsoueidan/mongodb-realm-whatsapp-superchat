@@ -7,7 +7,9 @@ export const useUsers = (deps: Array<unknown> = []) => {
   const users = useQuery<User>(
     UserSchema.name,
     (collection) =>
-      collection.filtered("user_id != $0", user.customData.user_id),
+      collection
+        .filtered("user_id != $0", user.customData.user_id)
+        .sorted("name"),
     deps
   );
 

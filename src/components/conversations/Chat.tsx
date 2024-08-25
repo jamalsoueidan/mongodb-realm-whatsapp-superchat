@@ -2,10 +2,9 @@ import { Flex } from "@mantine/core";
 import { useMemo } from "react";
 import { useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
-import { ChatAttachments } from "./ChatAttachments";
 import { ChatBody } from "./ChatBody";
+import { ChatEditor } from "./ChatEditor";
 import { ChatHeader } from "./ChatHeader";
-import { ChatInput } from "./ChatInput";
 import { ChatSettings } from "./ChatSettings";
 
 export const Chat = () => {
@@ -17,9 +16,8 @@ export const Chat = () => {
       <>
         <ChatHeader />
         <ChatBody />
-        <ChatInput />
+        <ChatEditor />
         <ChatSettings />
-        <ChatAttachments />
       </>
     ),
     []
