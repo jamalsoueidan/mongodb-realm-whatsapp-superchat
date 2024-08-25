@@ -1,5 +1,4 @@
 import { Divider, Flex, ScrollArea, Title } from "@mantine/core";
-import { IconUsers } from "@tabler/icons-react";
 import { useRoute } from "wouter";
 import { useUsers } from "../../hooks/useUsers";
 import { TeamUserCard } from "./TeamUserCard";
@@ -11,7 +10,6 @@ export function TeamList() {
   return (
     <>
       <Flex p="md" h="60px" align="center" gap="xs">
-        <IconUsers size={24} />
         <Title order={3}>Team members</Title>
       </Flex>
       <Divider />

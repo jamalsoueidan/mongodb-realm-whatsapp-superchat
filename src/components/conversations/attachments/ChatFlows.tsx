@@ -38,9 +38,13 @@ type GetFlow = {
 export const AttachmentFlows = () => {
   const [, setLocation] = useLocation();
   const [isMatch, params] = useRoute("/conversation/:conversationId/flows/*?");
-  const { data, error } = useUserFunction<Array<Flow>>("func-flow-list", {
-    business_phone_number_id: "364826260050460",
-  });
+  const { data, error } = useUserFunction<Array<Flow>>(
+    "func-flow-list",
+    {
+      business_phone_number_id: "364826260050460",
+    },
+    isMatch
+  );
 
   if (error) return <p>Error: {error.message}</p>;
 

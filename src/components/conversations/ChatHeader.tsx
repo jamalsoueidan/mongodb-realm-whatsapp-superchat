@@ -12,11 +12,10 @@ import {
   IconGripVertical,
   IconUsersGroup,
 } from "@tabler/icons-react";
-import { Link, useLocation, useParams, useRoute } from "wouter";
+import { Link, useParams, useRoute } from "wouter";
 import { useGetConversation } from "../../hooks/useGetConversation";
 import { useMobile } from "../../hooks/useMobile";
 export function ChatHeader() {
-  const [, setLocation] = useLocation();
   const isMobile = useMobile();
   const { conversationId } = useParams<{ conversationId: string }>();
   const [isMatch] = useRoute("/conversation/:conversationId/settings");
@@ -38,7 +37,8 @@ export function ChatHeader() {
           variant="transparent"
           aria-label="Back"
           color="white"
-          onClick={() => setLocation("/conversation")}
+          component={Link}
+          to="/"
           hiddenFrom="md"
         >
           <IconArrowLeft stroke={2.5} />
@@ -82,8 +82,8 @@ export function ChatHeader() {
           component={Link}
           to={
             !isMatch
-              ? `/conversation/${conversation?._id}/settings`
-              : `/conversation/${conversation?._id}`
+              ? `/${conversation?._id}/settings`
+              : `/${conversation?._id}`
           }
         >
           <IconGripVertical stroke={2.5} />

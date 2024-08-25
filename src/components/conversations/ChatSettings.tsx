@@ -91,25 +91,12 @@ function Assigned() {
   const handleUserSelectionChange = useCallback(
     (selectedUserIds: string[]) => {
       realm.write(() => {
-        const value = Math.floor(Date.now() / 1000);
-
         // Find the users who were added or removed
         const addedUsers = selectedUserIds.filter(
           (id) => !conversation.user_ids.includes(id)
         );
         const removedUsers = conversation.user_ids.filter(
           (id) => !selectedUserIds.includes(id)
-        );
-
-        // Update the conversation with the new user_ids
-        realm.create(
-          "Conversation",
-          {
-            _id: conversation._id, // The primary key to find the conversation
-            timestamp: value, // The updated timestamp
-            user_ids: selectedUserIds, // The updated array of user IDs
-          },
-          Realm.UpdateMode.Modified
         );
 
         // Helper function to create a message
@@ -139,6 +126,16 @@ function Assigned() {
         // Create messages for removed users
         removedUsers.forEach((userId) =>
           createSystemMessage(userId, "removed")
+        );
+
+        // Update the conversation with the new user_ids
+        realm.create(
+          "Conversation",
+          {
+            _id: conversation._id,
+            user_ids: selectedUserIds,
+          },
+          Realm.UpdateMode.Modified
         );
       });
     },

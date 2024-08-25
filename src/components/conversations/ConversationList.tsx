@@ -1,18 +1,29 @@
-import { Divider, Flex, ScrollArea, Title } from "@mantine/core";
-import { IconInbox } from "@tabler/icons-react";
-import { useRoute } from "wouter";
+import { ActionIcon, Divider, Flex, ScrollArea, Title } from "@mantine/core";
+import { IconCirclePlus } from "@tabler/icons-react";
+import { useLocation, useRoute } from "wouter";
 import { useConversations } from "../../hooks/useConversations";
 import { ConversationCard } from "./ConversationCard";
 
 export function ConversationList() {
   const { conversations } = useConversations();
-  const [, params] = useRoute("/conversation/:conversationId");
+  const [location, setLocation] = useLocation();
+  const [, params] = useRoute("/:conversationId");
 
   return (
     <>
-      <Flex p="md" h="60px" align="center" gap="xs">
-        <IconInbox size={24} />
+      <Flex p="md" h="60px" justify="space-between" align="center" gap="xs">
         <Title order={3}>Chat</Title>
+        <ActionIcon
+          onClick={() => setLocation(`${location}?contacts`)}
+          variant="transparent"
+          color="#666"
+          size="lg"
+        >
+          <IconCirclePlus
+            stroke="1.5"
+            style={{ width: "100%", height: "100%" }}
+          />
+        </ActionIcon>
       </Flex>
       <Divider />
 

@@ -31,7 +31,7 @@ export const ConversationCard = ({
         p="xs"
         mr="xs"
         component={Link}
-        to={`/conversation/${conversation._id}`}
+        to={`/${conversation._id}`}
         bg={selected ? "gray.1" : undefined}
         radius="0"
       >
