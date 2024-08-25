@@ -37,7 +37,7 @@ type GetFlow = {
 
 export const AttachmentFlows = () => {
   const [, setLocation] = useLocation();
-  const [isMatch, params] = useRoute("/conversation/:conversationId/flows/*?");
+  const [isMatch, params] = useRoute("/:conversationId/flows/*?");
   const { data, error } = useUserFunction<Array<Flow>>(
     "func-flow-list",
     {
@@ -49,10 +49,10 @@ export const AttachmentFlows = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <Router base={`/conversation/${params?.conversationId}/flows`}>
+    <Router base={`/${params?.conversationId}/flows`}>
       <CustomModal
         opened={isMatch}
-        onClose={() => setLocation(`/conversation/${params?.conversationId}`)}
+        onClose={() => setLocation(`/${params?.conversationId}`)}
         back={params && params["*"] ? "/" : undefined}
       >
         <LoadingOverlay

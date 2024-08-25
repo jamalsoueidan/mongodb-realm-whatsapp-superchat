@@ -24,7 +24,7 @@ import { Message, MessageSchema } from "../../models/data";
 export const ChatSettings = () => {
   const isMobile = useMobile();
   const { conversationId } = useParams<{ conversationId: string }>();
-  const [isMatch] = useRoute("/conversation/:conversationId/settings/*?");
+  const [isMatch] = useRoute("/:conversationId/settings/*?");
 
   return (
     <Drawer.Root
@@ -44,14 +44,14 @@ export const ChatSettings = () => {
               aria-label="Back"
               color="black"
               component={Link}
-              to={`/conversation/${conversationId}`}
+              to={`/${conversationId}`}
             >
               <IconX stroke={1.5} />
             </ActionIcon>
           </Flex>
 
           <Divider />
-          <Router base={`/conversation/${conversationId}/settings`}>
+          <Router base={`/${conversationId}/settings`}>
             <Accordion
               chevronPosition="right"
               variant="default"

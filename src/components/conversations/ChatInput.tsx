@@ -81,7 +81,7 @@ function AttachmentsMenu() {
             <IconFaceId style={{ width: rem(14), height: rem(14) }} />
           }
           component={Link}
-          to={`/conversation/${conversationId}/flows`}
+          to={`/${conversationId}/flows`}
         >
           Flows
         </Menu.Item>

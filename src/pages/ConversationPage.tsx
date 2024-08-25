@@ -14,9 +14,11 @@ export const ConversationPage = () => {
 
   return (
     <Router base="/conversation">
-      <Flex bg="white" flex=".5" direction="column">
-        {searchString === "contacts" ? <Contacts /> : <ConversationList />}
-      </Flex>
+      <Route path="/*?">
+        <Flex bg="white" flex=".5" direction="column">
+          {searchString === "contacts" ? <Contacts /> : <ConversationList />}
+        </Flex>
+      </Route>
 
       <Switch>
         <Route path=":conversationId/*?">

@@ -10,7 +10,7 @@ export function useMessages({
   conversationId: string;
   perPage: number;
 }) {
-  const [limit, setLimit] = useState(perPage);
+  const [limit, setLimit] = useState(25);
 
   const totalMessageCount = useQuery<Message>(
     MessageSchema.name,
