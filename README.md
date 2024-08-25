@@ -12,9 +12,13 @@ This project is a WhatsApp-based chat application that allows users to interact 
 - **Responsive Design**: The UI adapts to mobile and desktop layouts, providing a smooth experience across devices.
 - **Attachments Support**: Users can send and receive attachments, such as images or documents.
 - **Settings Drawer**: Users can access and manage conversation settings through a settings drawer in the UI.
-- **Conversation and User Management**: Admins have the ability to manage users and conversations, including assigning users to specific conversations or business phone numbers.
+- **Conversation**: Admins have the ability to manage users and conversations, including assigning users to specific conversations.
 - **Sticky Date Headers**: While scrolling through messages, date headers remain sticky, providing context for when messages were sent, and enhancing the readability of the chat history.
 - **Infinity Scroll for Conversations**: Load older messages as the user scrolls up, with a smooth infinity scroll that ensures efficient message loading without overwhelming the interface.
+- **Dynamic User Assignment**: Admins can dynamically assign or remove users from conversations, with system messages automatically generated to notify participants of these changes.
+- **Team Page & Role Management**: Users can view a list of team members, and admins have the ability to change user roles, ensuring proper access control and management within the team.
+- **Contacts**: Users can access and search through contacts, making it easy to re-engage with past customers and send new messages.
+- **Internal Messaging with Mentions**: Users can send internal messages to team members within the chat using mentions (@), enabling streamlined communication and collaboration directly in the chat interface.
 
 ## Tech Stack
 
