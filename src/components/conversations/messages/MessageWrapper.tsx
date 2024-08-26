@@ -13,27 +13,27 @@ export const MessageWrapper = ({
   children,
 }: MessageWrapperProps & { children: React.ReactNode }) => {
   const { isRecipientDifferent } = useMessageInfo(msg);
-  const bg = isRecipientDifferent ? "#d9fdd3" : "white";
-  const justify = isRecipientDifferent ? "flex-end" : undefined;
+  const bg = isRecipientDifferent ? "white" : "#d9fdd3";
+  const justify = isRecipientDifferent ? "flex-start" : "flex-end";
 
   return (
     <Flex justify={justify} align="start" mr="xs" my={rem(8)} gap="6px">
-      {msg.user ? (
-        <Avatar color="cyan" radius="xl" size="sm">
-          {getInitials(msg.user.name)}
-        </Avatar>
-      ) : null}
       <Card
         bg={bg}
         py="4px"
         pl="6px"
-        pr={rem(54)}
+        pr={isRecipientDifferent ? "6px" : rem(54)}
         shadow="xs"
         radius="md"
         maw={{ base: "80%", md: "40%" }}
       >
         {children}
       </Card>
+      {msg.user ? (
+        <Avatar color="cyan" radius="xl" size={rem(30)}>
+          {getInitials(msg.user.name)}
+        </Avatar>
+      ) : null}
     </Flex>
   );
 };

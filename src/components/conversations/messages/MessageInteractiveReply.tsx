@@ -20,14 +20,14 @@ export const MessageInteractiveReply = ({ msg }: MessageWrapperProps) => {
       default:
         return <Text>Unknown flow</Text>;
     }
-  }, [flowName]);
+  }, [flowName, interactiveReply?.bookatable, interactiveReply?.feedback]);
 
   return (
     <MessageWrapper msg={msg}>
       <Card.Section>
         <Notification
           color="green"
-          bg="green.2"
+          bg="green.1"
           px="md"
           py="4px"
           mt="md"
