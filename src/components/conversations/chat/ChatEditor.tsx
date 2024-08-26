@@ -9,7 +9,7 @@ import { Extension, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
 import Emoji, { gitHubEmojis } from "@tiptap-pro/extension-emoji";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMobile } from "../../../hooks/useMobile";
 import { useSendMessage } from "../../../hooks/useSendMessage";
 import { useSuggestion } from "../../../hooks/useSuggestion";
@@ -22,24 +22,33 @@ export const ChatEditor = () => {
 
   const KeyboardHandler = Extension.create({
     name: "keyboardHandler",
+    addStorage() {
+      return {
+        isMobile: false,
+      };
+    },
     addKeyboardShortcuts() {
       return {
-        Enter: () => {
+        Enter: ({ editor }) => {
+          if (this.storage.isMobile) {
+            return editor.commands.first(({ commands }) => [
+              () => commands.newlineInCode(),
+              () => commands.liftEmptyBlock(),
+            ]);
+          }
           sendText(this.editor.getText());
           return this.editor.commands.clearContent();
         },
-
-        "Mod-Enter": () => {
-          sendText(this.editor.getText());
-          return this.editor.commands.clearContent();
-        },
-
-        "Shift-Enter": () => {
-          return this.editor.commands.first(({ commands }) => [
+        "Mod-Enter": ({ editor }) => {
+          return editor.commands.first(({ commands }) => [
             () => commands.newlineInCode(),
-            () => commands.createParagraphNear(),
             () => commands.liftEmptyBlock(),
-            () => commands.splitBlock(),
+          ]);
+        },
+        "Shift-Enter": ({ editor }) => {
+          return editor.commands.first(({ commands }) => [
+            () => commands.newlineInCode(),
+            () => commands.liftEmptyBlock(),
           ]);
         },
       };
@@ -73,6 +82,17 @@ export const ChatEditor = () => {
       editor.commands.clearContent();
     }
   };
+
+  useEffect(() => {
+    if (editor && isMobile !== undefined) {
+      const keyboardHandlerExtension = editor.extensionManager.extensions.find(
+        (extension) => extension.name === "keyboardHandler"
+      );
+      if (keyboardHandlerExtension) {
+        keyboardHandlerExtension.storage.isMobile = isMobile;
+      }
+    }
+  }, [isMobile, editor]);
 
   return (
     <Flex

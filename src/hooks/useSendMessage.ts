@@ -11,6 +11,8 @@ export const useSendMessage = () => {
   const realm = useRealm();
 
   const sendText = (body: string) => {
+    if (body.length === 0) return;
+
     realm.write(() => {
       realm.create("Message", {
         _id: new Realm.BSON.ObjectId(),

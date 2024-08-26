@@ -14,13 +14,14 @@
 }
 
 .ProseMirror {
-  padding: var(--mantine-spacing-xs) !important;
-  border-radius: 20px;
+  padding: 8px !important;
+  border-radius: var(--mantine-spacing-xs);
   border: 1px solid #2d9fd9;
   background: white;
 
-  &:focus {
-    outline: none;
-    border: 1px solid #a0d18c;
+  p {
+    line-height: var(--mantine-spacing-lg);
+    margin: 0;
+    padding: 0;
   }
 }
