@@ -12,16 +12,21 @@ import {
   IconGripVertical,
   IconUsersGroup,
 } from "@tabler/icons-react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { Link, useParams, useRoute } from "wouter";
 import { useGetConversation } from "../../../hooks/useGetConversation";
 import { useMobile } from "../../../hooks/useMobile";
+
+dayjs.extend(relativeTime);
+
 export function ChatHeader() {
   const isMobile = useMobile();
   const { conversationId } = useParams<{ conversationId: string }>();
   const [isMatch] = useRoute("/conversation/:conversationId/settings");
 
   const conversation = useGetConversation(conversationId);
-  const receivedDate = new Date(conversation?.timestamp || 0 * 1000);
+  const receivedDate = dayjs(conversation?.timestamp * 1000);
 
   return (
     <Flex
@@ -50,7 +55,7 @@ export function ChatHeader() {
               {conversation?.name || conversation?.customer_phone_number}{" "}
             </Text>
             <Text lh="xs" fz="xs" c={{ base: "white", md: "black" }}>
-              {receivedDate.toLocaleDateString()}
+              last seend {receivedDate.fromNow()}
             </Text>
           </Flex>
         </Flex>

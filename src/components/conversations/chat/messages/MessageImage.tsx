@@ -1,8 +1,9 @@
 import { Image, UnstyledButton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Realm from "realm";
-import { Message } from "../../../models/data";
-import { CustomModal } from "../../CustomModal";
+
+import { Message } from "../../../../models/data";
+import { CustomModal } from "../../../CustomModal";
 import { MessageTime } from "./MessageTime";
 import { MessageWrapper } from "./MessageWrapper";
 

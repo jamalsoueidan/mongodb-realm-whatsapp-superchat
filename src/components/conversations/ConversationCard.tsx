@@ -8,11 +8,21 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
+import dayjs from "dayjs";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import relativeTime from "dayjs/plugin/relativeTime";
 import Realm from "realm";
 import { Link } from "wouter";
 import { useCountUnreadMessages } from "../../hooks/useCountUnreadMessages";
 import { useLastMessageConversation } from "../../hooks/useLastMessageConversation";
 import { Conversation } from "../../models/data";
+
+dayjs.extend(relativeTime);
+dayjs.extend(localizedFormat);
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
 
 export const ConversationCard = ({
   conversation,
@@ -54,7 +64,7 @@ export const ConversationCard = ({
             </Stack>
             <Stack align="flex-end" justify="center" gap="2px">
               <Text c="green" size="xs" fw="500">
-                {receivedDate.toLocaleTimeString().substring(0, 5)}
+                {formatReceivedDate(receivedDate)}
               </Text>
               {unreadMessageCount > 0 && (
                 <Badge color="green" size="md" radius="200px" p="7px">
@@ -76,3 +86,25 @@ const truncateText = (text: string, maxLength: number): string => {
   }
   return text;
 };
+
+function formatReceivedDate(receivedDate: Date) {
+  const now = dayjs();
+  const date = dayjs(receivedDate);
+
+  if (date.isSame(now, "day")) {
+    // If the date is today, return the time (e.g., 13:34)
+    return date.format("HH:mm");
+  } else if (date.isSame(now.subtract(1, "day"), "day")) {
+    // If the date is yesterday, return 'yesterday'
+    return "yesterday";
+  } else if (
+    date.isSameOrAfter(now.startOf("week")) &&
+    date.isSameOrBefore(now.endOf("week"))
+  ) {
+    // If the date is within this week, return the day of the week (e.g., Saturday)
+    return date.format("dddd");
+  } else {
+    // If the date is further away, return the full date (e.g., 18/08/2024)
+    return date.format("DD/MM/YYYY");
+  }
+}

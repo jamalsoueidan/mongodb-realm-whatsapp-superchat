@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { Card, Notification, Rating, Stack, Text } from "@mantine/core";
 import { useMemo } from "react";
+
 import {
   Message_interactive_reply_bookatable,
   Message_interactive_reply_feedback,
-} from "../../../models/data";
+} from "../../../../models/data";
 import { MessageTime } from "./MessageTime";
 import { MessageWrapper, MessageWrapperProps } from "./MessageWrapper";
 

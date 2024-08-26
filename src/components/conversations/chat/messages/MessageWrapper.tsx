@@ -1,8 +1,8 @@
 import { Avatar, Card, Flex, rem } from "@mantine/core";
 import Realm from "realm";
-import { useMessageInfo } from "../../../hooks/useMessageInfo";
-import { getInitials } from "../../../lib/getInitials";
-import { Message } from "../../../models/data";
+import { useMessageInfo } from "../../../../hooks/useMessageInfo";
+import { getInitials } from "../../../../lib/getInitials";
+import { Message } from "../../../../models/data";
 
 export type MessageWrapperProps = {
   msg: Message & Realm.Object<Message>;

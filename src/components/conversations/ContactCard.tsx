@@ -1,11 +1,8 @@
 import { Avatar, Card, Divider, Flex, Group, Stack, Text } from "@mantine/core";
 import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import Realm from "realm";
 import { Link } from "wouter";
 import { Conversation } from "../../models/data";
-
-dayjs.extend(relativeTime);
 
 export const ContactCard = ({
   conversation,
