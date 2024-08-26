@@ -29,7 +29,7 @@ export const InfiniteScroll = forwardRef<
     if (props.onScrollPositionChange) {
       props.onScrollPositionChange(value);
     }
-  }, 500);
+  }, 250);
 
   const [lastVisibleMessageId, setLastVisibleMessageId] = useState<
     string | null
