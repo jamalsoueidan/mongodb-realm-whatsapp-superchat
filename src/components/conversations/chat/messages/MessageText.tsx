@@ -10,7 +10,7 @@ export const MessageText = ({ msg }: MessageWrapperProps) => {
         c="gray.9"
         style={{ whiteSpace: "pre-line" }}
         dangerouslySetInnerHTML={{
-          __html: (msg.text?.body || "").replace(/\n/g, "<br />"),
+          __html: (msg.text?.body || "").replace(/\n\n/g, "<br />"),
         }}
       />
       <MessageTime msg={msg} />

@@ -4,7 +4,7 @@ import { useUsers } from "../../hooks/useUsers";
 import { TeamUserCard } from "./TeamUserCard";
 
 export function TeamList() {
-  const { users } = useUsers();
+  const users = useUsers();
   const [, params] = useRoute("/team/:userId");
 
   return (

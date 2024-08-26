@@ -15,12 +15,14 @@ import {
 import { useQuery, useRealm } from "@realm/react";
 import { IconX } from "@tabler/icons-react";
 import { useCallback, useState } from "react";
+import Realm from "realm";
 import { Link, Router, useParams, useRoute } from "wouter";
 import { useGetConversation } from "../../../hooks/useGetConversation";
 import { useLoggedInUser } from "../../../hooks/useLoggedInUser";
 import { useMobile } from "../../../hooks/useMobile";
 import { useUsers } from "../../../hooks/useUsers";
 import { Message, MessageSchema } from "../../../models/data";
+
 export const ChatSettings = () => {
   const isMobile = useMobile();
   const { conversationId } = useParams<{ conversationId: string }>();
@@ -86,7 +88,7 @@ function Assigned() {
   const realm = useRealm();
   const loggedInUser = useLoggedInUser();
   const conversation = useGetConversation(conversationId);
-  const { users } = useUsers();
+  const users = useUsers();
 
   const handleUserSelectionChange = useCallback(
     (selectedUserIds: string[]) => {
@@ -97,6 +99,16 @@ function Assigned() {
         );
         const removedUsers = conversation.user_ids.filter(
           (id) => !selectedUserIds.includes(id)
+        );
+
+        // Update the conversation with the new user_ids
+        realm.create(
+          "Conversation",
+          {
+            _id: conversation._id,
+            user_ids: selectedUserIds,
+          },
+          Realm.UpdateMode.Modified
         );
 
         // Helper function to create a message
@@ -120,26 +132,18 @@ function Assigned() {
           }
         };
 
-        // Create messages for added users
-        addedUsers.forEach((userId) => createSystemMessage(userId, "added"));
+        if (checked) {
+          // Create messages for added users
+          addedUsers.forEach((userId) => createSystemMessage(userId, "added"));
 
-        // Create messages for removed users
-        removedUsers.forEach((userId) =>
-          createSystemMessage(userId, "removed")
-        );
-
-        // Update the conversation with the new user_ids
-        realm.create(
-          "Conversation",
-          {
-            _id: conversation._id,
-            user_ids: selectedUserIds,
-          },
-          Realm.UpdateMode.Modified
-        );
+          // Create messages for removed users
+          removedUsers.forEach((userId) =>
+            createSystemMessage(userId, "removed")
+          );
+        }
       });
     },
-    [conversation, loggedInUser, realm, users]
+    [checked, conversation, loggedInUser, realm, users]
   );
 
   return (
