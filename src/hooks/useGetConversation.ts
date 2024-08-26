@@ -1,17 +1,17 @@
-import { useQuery } from "@realm/react";
+import { useRealm } from "@realm/react";
 import Realm from "realm";
 import { Conversation, ConversationSchema } from "../models/data";
 
 export function useGetConversation(conversationId?: string) {
-  const conversations = useQuery<Conversation>(
+  const realm = useRealm();
+  const conversation = realm.objectForPrimaryKey<Conversation>(
     ConversationSchema.name,
-    (collection) =>
-      collection.filtered(
-        `_id = $0 LIMIT(1)`,
-        new Realm.BSON.ObjectId(conversationId)
-      ),
-    [conversationId]
+    new Realm.BSON.ObjectId(conversationId)
   );
 
-  return conversations[0];
+  if (!conversation) {
+    throw new Error("Conversation not found");
+  }
+
+  return conversation;
 }

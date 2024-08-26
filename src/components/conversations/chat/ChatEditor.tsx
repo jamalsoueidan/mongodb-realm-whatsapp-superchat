@@ -5,14 +5,15 @@ import "@mantine/tiptap/styles.css";
 import { IconSend } from "@tabler/icons-react";
 import Mention from "@tiptap/extension-mention";
 import Placeholder from "@tiptap/extension-placeholder";
-import { Extension, useEditor } from "@tiptap/react";
+import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
 import Emoji, { gitHubEmojis } from "@tiptap-pro/extension-emoji";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useMobile } from "../../../hooks/useMobile";
 import { useSendMessage } from "../../../hooks/useSendMessage";
 import { useSuggestion } from "../../../hooks/useSuggestion";
+import { KeyboardExtension } from "../../../lib/KeyboardExtension";
 import { ChatAttachments } from "./ChatAttachments";
 
 export const ChatEditor = () => {
@@ -20,45 +21,12 @@ export const ChatEditor = () => {
   const { sendText } = useSendMessage();
   const [editorContent, setEditorContent] = useState("");
 
-  const KeyboardHandler = Extension.create({
-    name: "keyboardHandler",
-    addStorage() {
-      return {
-        isMobile: false,
-      };
-    },
-    addKeyboardShortcuts() {
-      return {
-        Enter: ({ editor }) => {
-          if (this.storage.isMobile) {
-            return editor.commands.first(({ commands }) => [
-              () => commands.newlineInCode(),
-              () => commands.liftEmptyBlock(),
-            ]);
-          }
-          sendText(this.editor.getText());
-          return this.editor.commands.clearContent();
-        },
-        "Mod-Enter": ({ editor }) => {
-          return editor.commands.first(({ commands }) => [
-            () => commands.newlineInCode(),
-            () => commands.liftEmptyBlock(),
-          ]);
-        },
-        "Shift-Enter": ({ editor }) => {
-          return editor.commands.first(({ commands }) => [
-            () => commands.newlineInCode(),
-            () => commands.liftEmptyBlock(),
-          ]);
-        },
-      };
-    },
-  });
-
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Placeholder.configure({ placeholder: "Type a message..." }),
+      Placeholder.configure({
+        placeholder: `Type a message...`,
+      }),
       Mention.configure({
         HTMLAttributes: {
           class: "mention",
@@ -69,30 +37,31 @@ export const ChatEditor = () => {
         enableEmoticons: true,
         emojis: gitHubEmojis,
       }),
-      KeyboardHandler,
+      KeyboardExtension,
     ],
     onUpdate({ editor }) {
       setEditorContent(editor.getText());
     },
   });
 
-  const handler = () => {
+  const handler = useCallback(() => {
     if (editor) {
       sendText(editor.getText());
       editor.commands.clearContent();
     }
-  };
+  }, [editor, sendText]);
 
   useEffect(() => {
     if (editor && isMobile !== undefined) {
       const keyboardHandlerExtension = editor.extensionManager.extensions.find(
-        (extension) => extension.name === "keyboardHandler"
+        (extension) => extension.name === KeyboardExtension.name
       );
       if (keyboardHandlerExtension) {
         keyboardHandlerExtension.storage.isMobile = isMobile;
+        keyboardHandlerExtension.storage.send = handler;
       }
     }
-  }, [isMobile, editor]);
+  }, [isMobile, editor, handler]);
 
   return (
     <Flex
