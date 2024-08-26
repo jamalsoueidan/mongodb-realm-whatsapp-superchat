@@ -22,12 +22,15 @@ export const InfiniteScroll = forwardRef<
     loadMore: () => void;
     children: ReactNode;
   } & ScrollAreaProps
->(({ data, totalData, loadMore, children, conversationId, ...rest }, ref) => {
+>(({ data, totalData, loadMore, children, conversationId, ...props }, ref) => {
   const { setScrollPosition } = useScroll();
-  const throttledSetScrollPosition = useThrottledCallback(
-    (value) => setScrollPosition(value),
-    500
-  );
+  const throttledSetScrollPosition = useThrottledCallback((value) => {
+    setScrollPosition(value);
+    if (props.onScrollPositionChange) {
+      props.onScrollPositionChange(value);
+    }
+  }, 500);
+
   const [lastVisibleMessageId, setLastVisibleMessageId] = useState<
     string | null
   >(null);
@@ -61,7 +64,16 @@ export const InfiniteScroll = forwardRef<
       }
       loadMore();
     }
-  }, [data, loadMore, totalData]);
+    if (props.onTopReached) {
+      props.onTopReached();
+    }
+  }, [data, totalData, props, loadMore]);
+
+  const onBottomReached = useCallback(() => {
+    if (props.onBottomReached) {
+      props.onBottomReached();
+    }
+  }, [props]);
 
   // Scroll to last visible message when load more is called
   useEffect(() => {
@@ -83,8 +95,8 @@ export const InfiniteScroll = forwardRef<
       flex="1"
       onScrollPositionChange={throttledSetScrollPosition}
       onTopReached={onTopReached}
+      onBottomReached={onBottomReached}
       viewportRef={viewport}
-      {...rest}
     >
       {children}
     </ScrollArea>

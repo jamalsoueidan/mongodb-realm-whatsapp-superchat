@@ -56,3 +56,4 @@ public/
 # Optional: Gridsome files
 .cache/
 dist/
+.npmrc

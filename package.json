@@ -19,6 +19,7 @@
     "@mantine/tiptap": "^7.12.1",
     "@realm/react": "^0.6.1",
     "@tabler/icons-react": "^3.11.0",
+    "@tiptap-pro/extension-emoji": "^2.11.1",
     "@tiptap/extension-link": "^2.6.6",
     "@tiptap/extension-mention": "^2.6.6",
     "@tiptap/extension-placeholder": "^2.6.6",

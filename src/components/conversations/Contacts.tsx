@@ -11,7 +11,7 @@ import {
   Title,
 } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useLocation } from "wouter";
 import { useContacts } from "../../hooks/useContacts";
 import { Conversation } from "../../models/data";
@@ -80,7 +80,7 @@ export function Contacts() {
 
       <ScrollArea type="scroll" h="calc(100% - 40px)">
         {keys.sort().map((char) => (
-          <>
+          <React.Fragment key={char}>
             <Card py="xs" px="lg" mr="xs" radius="0">
               <Title order={4} c="green">
                 {char}
@@ -89,7 +89,7 @@ export function Contacts() {
             {groupedContacts[char].map((contact) => (
               <ContactCard conversation={contact} key={contact._id.toJSON()} />
             ))}
-          </>
+          </React.Fragment>
         ))}
         {keys.length === 0 ? (
           <Flex justify="center" p="xl">

@@ -5,9 +5,10 @@ import "@mantine/tiptap/styles.css";
 import { IconSend } from "@tabler/icons-react";
 import Mention from "@tiptap/extension-mention";
 import Placeholder from "@tiptap/extension-placeholder";
-import { useEditor } from "@tiptap/react";
+import { Extension, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
+import Emoji, { gitHubEmojis } from "@tiptap-pro/extension-emoji";
 import { useMobile } from "../../../hooks/useMobile";
 import { useSendMessage } from "../../../hooks/useSendMessage";
 import { useSuggestion } from "../../../hooks/useSuggestion";
@@ -16,6 +17,32 @@ import { ChatAttachments } from "./ChatAttachments";
 export const ChatEditor = () => {
   const isMobile = useMobile();
   const { sendText } = useSendMessage();
+
+  const KeyboardHandler = Extension.create({
+    name: "keyboardHandler",
+    addKeyboardShortcuts() {
+      return {
+        Enter: () => {
+          sendText(this.editor.getText());
+          return this.editor.commands.clearContent();
+        },
+
+        "Mod-Enter": () => {
+          sendText(this.editor.getText());
+          return this.editor.commands.clearContent();
+        },
+
+        "Shift-Enter": () => {
+          return this.editor.commands.first(({ commands }) => [
+            () => commands.newlineInCode(),
+            () => commands.createParagraphNear(),
+            () => commands.liftEmptyBlock(),
+            () => commands.splitBlock(),
+          ]);
+        },
+      };
+    },
+  });
 
   const editor = useEditor({
     extensions: [
@@ -27,6 +54,11 @@ export const ChatEditor = () => {
         },
         suggestion: useSuggestion(),
       }),
+      Emoji.configure({
+        enableEmoticons: true,
+        emojis: gitHubEmojis,
+      }),
+      KeyboardHandler,
     ],
   });
 
@@ -42,7 +74,6 @@ export const ChatEditor = () => {
       p={{ md: "xs" }}
       px={{ base: "2px", md: "xs" }}
       pb={{ base: "2px", md: "xs" }}
-      h={{ md: "70px" }}
       gap={{ base: "4px", md: "0" }}
       justify="center"
       align="center"

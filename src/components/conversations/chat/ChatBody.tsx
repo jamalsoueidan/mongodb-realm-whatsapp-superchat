@@ -1,5 +1,5 @@
 import { usePrevious } from "@mantine/hooks";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "wouter";
 import { useCountUnreadMessages } from "../../../hooks/useCountUnreadMessages";
 import { useGetConversation } from "../../../hooks/useGetConversation";
@@ -18,34 +18,47 @@ export function ChatBody() {
   const unreadMessageCount = useCountUnreadMessages(conversation);
   const [, setLastSeenAt] = useLastSeenConversation(conversation);
   const viewport = useRef<HTMLDivElement>(null);
+  const [isAtBottom, setIsAtBottom] = useState(true);
   const { messages, totalMessageCount, loadMore, lastMessage } = useMessages({
     conversationId,
     perPage: 10,
   });
 
+  // Scroll to the bottom when a new message is sent or received,
+  // Scroll to the bottom only if the user was already at the bottom before the message was added
   const previousMessage = usePrevious(lastMessage);
   useEffect(() => {
-    if (!lastMessage || !previousMessage) return;
+    if (!lastMessage || !previousMessage || !viewport.current) return;
 
     const isDifferentMessageId = !previousMessage._id.equals(lastMessage._id);
     const isMessageSentByMe =
       lastMessage.user?.user_id === user.customData.user_id;
 
-    /* Scroll to bottom when sending a message from the input field */
-    if (isDifferentMessageId && isMessageSentByMe && viewport.current) {
+    if ((isDifferentMessageId && isMessageSentByMe) || isAtBottom) {
       viewport.current.scrollTo({
         top: viewport.current.scrollHeight,
         behavior: "instant",
       });
     }
-  }, [lastMessage, previousMessage, user.customData.user_id]);
+  }, [isAtBottom, lastMessage, previousMessage, user.customData.user_id]);
+
+  const onScrollPositionChange = useCallback(() => {
+    if (!viewport.current) return;
+    const isBottom =
+      viewport.current?.scrollHeight -
+        viewport.current.scrollTop -
+        viewport.current.clientHeight <
+      10;
+
+    setIsAtBottom(isBottom);
+  }, []);
 
   // Register last seen at when scroll at the bottom
   const onBottomReached = useCallback(() => {
     setLastSeenAt();
   }, [setLastSeenAt]);
 
-  // In case conversation dont have a scroll, we still need to update the last seen at
+  // In case conversation we dont have a scroll, we still need to update the last seen at
   useEffect(() => {
     setLastSeenAt();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -59,6 +72,7 @@ export function ChatBody() {
         totalData={totalMessageCount}
         loadMore={loadMore}
         ref={viewport}
+        onScrollPositionChange={onScrollPositionChange}
         onBottomReached={onBottomReached}
       >
         <ChatMessages viewportRef={viewport} messages={messages} />
