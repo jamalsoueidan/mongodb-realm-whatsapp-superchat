@@ -9,6 +9,7 @@ import { Extension, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
 import Emoji, { gitHubEmojis } from "@tiptap-pro/extension-emoji";
+import { useState } from "react";
 import { useMobile } from "../../../hooks/useMobile";
 import { useSendMessage } from "../../../hooks/useSendMessage";
 import { useSuggestion } from "../../../hooks/useSuggestion";
@@ -17,6 +18,7 @@ import { ChatAttachments } from "./ChatAttachments";
 export const ChatEditor = () => {
   const isMobile = useMobile();
   const { sendText } = useSendMessage();
+  const [editorContent, setEditorContent] = useState("");
 
   const KeyboardHandler = Extension.create({
     name: "keyboardHandler",
@@ -60,6 +62,9 @@ export const ChatEditor = () => {
       }),
       KeyboardHandler,
     ],
+    onUpdate({ editor }) {
+      setEditorContent(editor.getText());
+    },
   });
 
   const handler = () => {
@@ -100,7 +105,9 @@ export const ChatEditor = () => {
       >
         <IconSend
           stroke={1.5}
-          color={isMobile ? "white" : "gray"}
+          color={
+            isMobile ? "white" : editorContent.length > 0 ? "green" : "gray"
+          }
           style={{ transform: "rotate(44deg)", width: "70%", height: "70%" }}
         />
       </ActionIcon>
