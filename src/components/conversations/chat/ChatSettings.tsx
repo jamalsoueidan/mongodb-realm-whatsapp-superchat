@@ -16,11 +16,11 @@ import { useQuery, useRealm } from "@realm/react";
 import { IconX } from "@tabler/icons-react";
 import { useCallback, useState } from "react";
 import { Link, Router, useParams, useRoute } from "wouter";
-import { useGetConversation } from "../../hooks/useGetConversation";
-import { useLoggedInUser } from "../../hooks/useLoggedInUser";
-import { useMobile } from "../../hooks/useMobile";
-import { useUsers } from "../../hooks/useUsers";
-import { Message, MessageSchema } from "../../models/data";
+import { useGetConversation } from "../../../hooks/useGetConversation";
+import { useLoggedInUser } from "../../../hooks/useLoggedInUser";
+import { useMobile } from "../../../hooks/useMobile";
+import { useUsers } from "../../../hooks/useUsers";
+import { Message, MessageSchema } from "../../../models/data";
 export const ChatSettings = () => {
   const isMobile = useMobile();
   const { conversationId } = useParams<{ conversationId: string }>();

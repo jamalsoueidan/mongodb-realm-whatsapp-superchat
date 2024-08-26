@@ -13,8 +13,8 @@ import {
   IconUsersGroup,
 } from "@tabler/icons-react";
 import { Link, useParams, useRoute } from "wouter";
-import { useGetConversation } from "../../hooks/useGetConversation";
-import { useMobile } from "../../hooks/useMobile";
+import { useGetConversation } from "../../../hooks/useGetConversation";
+import { useMobile } from "../../../hooks/useMobile";
 export function ChatHeader() {
   const isMobile = useMobile();
   const { conversationId } = useParams<{ conversationId: string }>();

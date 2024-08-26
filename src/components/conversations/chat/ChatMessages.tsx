@@ -2,14 +2,14 @@ import { Card, Flex, Text } from "@mantine/core";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { Results } from "realm";
-import { Message } from "../../models/data";
-import { useScroll } from "../providers/ScrollProvider";
-import { MessageSystem } from "./messages/MesageSystem";
-import { MessageImage } from "./messages/MessageImage";
-import { MessageInteractive } from "./messages/MessageInteractive";
-import { MessageInteractiveReply } from "./messages/MessageInteractiveReply";
-import { MessageText } from "./messages/MessageText";
-import { MessageUnknown } from "./messages/MessageUnknown";
+import { Message } from "../../../models/data";
+import { useScroll } from "../../providers/ScrollProvider";
+import { MessageSystem } from "../messages/MesageSystem";
+import { MessageImage } from "../messages/MessageImage";
+import { MessageInteractive } from "../messages/MessageInteractive";
+import { MessageInteractiveReply } from "../messages/MessageInteractiveReply";
+import { MessageText } from "../messages/MessageText";
+import { MessageUnknown } from "../messages/MessageUnknown";
 
 export function ChatMessages({
   messages,

@@ -11,15 +11,38 @@ import {
   Title,
 } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useLocation } from "wouter";
 import { useContacts } from "../../hooks/useContacts";
+import { Conversation } from "../../models/data";
 import { ContactCard } from "./ContactCard";
 
 export function Contacts() {
   const [location, setLocation] = useLocation();
   const [value, setValue] = useState("");
-  const groupedContacts = useContacts(value);
+  const contacts = useContacts(value);
+
+  const groupedContacts = useMemo(() => {
+    return contacts.reduce(
+      (
+        groups: Record<
+          string,
+          Array<Conversation & Realm.Object<Conversation>>
+        >,
+        contact
+      ) => {
+        const firstChar = contact.name ? contact.name[0].toUpperCase() : "#";
+
+        if (!groups[firstChar]) {
+          groups[firstChar] = [];
+        }
+
+        groups[firstChar].push(contact);
+        return groups;
+      },
+      {}
+    );
+  }, [contacts]);
 
   const keys = Object.keys(groupedContacts);
 

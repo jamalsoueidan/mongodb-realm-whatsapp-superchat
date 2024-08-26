@@ -1,5 +1,4 @@
 import { useQuery } from "@realm/react";
-import { useMemo } from "react";
 import { Conversation, ConversationSchema } from "../models/data";
 
 export function useContacts(searchString: string) {
@@ -12,27 +11,5 @@ export function useContacts(searchString: string) {
     [searchString]
   );
 
-  const groupedContacts = useMemo(() => {
-    return contacts.reduce(
-      (
-        groups: Record<
-          string,
-          Array<Conversation & Realm.Object<Conversation>>
-        >,
-        contact
-      ) => {
-        const firstChar = contact.name ? contact.name[0].toUpperCase() : "#";
-
-        if (!groups[firstChar]) {
-          groups[firstChar] = [];
-        }
-
-        groups[firstChar].push(contact);
-        return groups;
-      },
-      {}
-    );
-  }, [contacts]);
-
-  return groupedContacts;
+  return contacts;
 }

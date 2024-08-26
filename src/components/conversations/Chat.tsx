@@ -2,10 +2,10 @@ import { Flex } from "@mantine/core";
 import { useMemo } from "react";
 import { useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
-import { ChatBody } from "./ChatBody";
-import { ChatEditor } from "./ChatEditor";
-import { ChatHeader } from "./ChatHeader";
-import { ChatSettings } from "./ChatSettings";
+import { ChatBody } from "./chat/ChatBody";
+import { ChatEditor } from "./chat/ChatEditor";
+import { ChatHeader } from "./chat/ChatHeader";
+import { ChatSettings } from "./chat/ChatSettings";
 
 export const Chat = () => {
   const isMobile = useMobile();

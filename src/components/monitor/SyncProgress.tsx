@@ -1,6 +1,6 @@
 import { RingProgress, Text, Tooltip } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { SyncSession } from "realm";
+import { Realm, SyncSession } from "realm";
 
 export function SyncProgress({ syncSession }: { syncSession: SyncSession }) {
   const [uploadProgress, setUploadProgress] = useState(0);

@@ -8,10 +8,10 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-import { useMobile } from "../../hooks/useMobile";
-import { useSendMessage } from "../../hooks/useSendMessage";
+import { useMobile } from "../../../hooks/useMobile";
+import { useSendMessage } from "../../../hooks/useSendMessage";
+import { useSuggestion } from "../../../hooks/useSuggestion";
 import { ChatAttachments } from "./ChatAttachments";
-import { suggestion } from "./ChatMentions";
 
 export const ChatEditor = () => {
   const isMobile = useMobile();
@@ -25,7 +25,7 @@ export const ChatEditor = () => {
         HTMLAttributes: {
           class: "mention",
         },
-        suggestion,
+        suggestion: useSuggestion(),
       }),
     ],
   });
