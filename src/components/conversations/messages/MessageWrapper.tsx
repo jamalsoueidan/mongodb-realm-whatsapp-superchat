@@ -17,9 +17,9 @@ export const MessageWrapper = ({
   const justify = isRecipientDifferent ? "flex-end" : undefined;
 
   return (
-    <Flex justify={justify} align="start" mr="xs" my="6px" gap="6px">
+    <Flex justify={justify} align="start" mr="xs" my={rem(8)} gap="6px">
       {msg.user ? (
-        <Avatar color="cyan" radius="xl">
+        <Avatar color="cyan" radius="xl" size="sm">
           {getInitials(msg.user.name)}
         </Avatar>
       ) : null}
