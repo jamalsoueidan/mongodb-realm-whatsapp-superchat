@@ -1,7 +1,7 @@
 import { LoadingOverlay, Stack } from "@mantine/core";
 import { Route, Router, useLocation, useRoute } from "wouter";
-import { useUserFunction } from "../../../hooks/useUserFunction";
-import { CustomModal } from "../../CustomModal";
+import { useUserFunction } from "../../../../hooks/useUserFunction";
+import { CustomModal } from "../../../CustomModal";
 import { Flow, FlowItem } from "./flows/FlowItem";
 import { FlowPreview } from "./flows/FlowPreview";
 import { FlowSend } from "./flows/FlowSend";

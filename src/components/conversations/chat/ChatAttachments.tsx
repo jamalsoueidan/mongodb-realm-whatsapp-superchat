@@ -6,7 +6,7 @@ import {
   IconPlus,
 } from "@tabler/icons-react";
 import { Link, useParams } from "wouter";
-import { AttachmentFlows } from "../attachments/ChatFlows";
+import { AttachmentFlows } from "./attachments/ChatFlows";
 
 export function ChatAttachments() {
   const { conversationId } = useParams<{ conversationId: string }>();

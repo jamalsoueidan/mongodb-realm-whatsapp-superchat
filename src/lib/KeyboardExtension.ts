@@ -13,6 +13,11 @@ export const KeyboardExtension = Extension.create({
   addKeyboardShortcuts() {
     return {
       Enter: ({ editor }) => {
+        const mentionsElement = document.getElementById("mention-list");
+        if (mentionsElement) {
+          return false;
+        }
+
         if (this.storage.isMobile) {
           return editor.commands.first(({ commands }) => [
             () => commands.newlineInCode(),

@@ -10,8 +10,9 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useLocation, useParams } from "wouter";
-import { useSendMessage } from "../../../../hooks/useSendMessage";
-import { useUserFunction } from "../../../../hooks/useUserFunction";
+
+import { useSendMessage } from "../../../../../hooks/useSendMessage";
+import { useUserFunction } from "../../../../../hooks/useUserFunction";
 import { GetFlow } from "./FlowItem";
 
 export const FlowSend = () => {

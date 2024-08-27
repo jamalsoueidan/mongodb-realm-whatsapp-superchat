@@ -6,20 +6,22 @@ import { Message } from "../../../../models/data";
 
 export type MessageWrapperProps = {
   msg: Message & Realm.Object<Message>;
+  bg?: string;
 };
 
 export const MessageWrapper = ({
   msg,
   children,
+  bg,
 }: MessageWrapperProps & { children: React.ReactNode }) => {
   const { isRecipientDifferent } = useMessageInfo(msg);
-  const bg = isRecipientDifferent ? "white" : "#d9fdd3";
+  const backgroundColor = isRecipientDifferent ? "white" : "#d9fdd3";
   const justify = isRecipientDifferent ? "flex-start" : "flex-end";
 
   return (
     <Flex justify={justify} align="start" mr="xs" my={rem(8)} gap="6px">
       <Card
-        bg={bg}
+        bg={bg || backgroundColor}
         py="4px"
         pl="6px"
         pr={isRecipientDifferent ? "6px" : rem(54)}

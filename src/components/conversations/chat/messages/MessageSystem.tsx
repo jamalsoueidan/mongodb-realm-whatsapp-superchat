@@ -1,4 +1,5 @@
 import { Card, Flex, Text } from "@mantine/core";
+import "./MessageSystem.css";
 import { MessageWrapperProps } from "./MessageWrapper";
 
 export const MessageSystem = ({ msg }: MessageWrapperProps) => {
@@ -14,7 +15,9 @@ export const MessageSystem = ({ msg }: MessageWrapperProps) => {
         <Text
           size="sm"
           c="gray.9"
-          dangerouslySetInnerHTML={{ __html: msg.text?.body || "" }}
+          dangerouslySetInnerHTML={{
+            __html: msg.text?.body?.replace(/^<p>|<\/p>$/g, "") || "",
+          }}
         />
       </Card>
     </Flex>

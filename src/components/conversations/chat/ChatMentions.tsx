@@ -85,6 +85,7 @@ const MentionList = forwardRef<MentionRef, MentionProps>((props, ref) => {
       shadow="sm"
       p="6px"
       radius="md"
+      id="mention-list" //for keyboard extension when "ENTER" is pressed
     >
       {props.items.length ? (
         props.items.map((item, index) => (

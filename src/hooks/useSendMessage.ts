@@ -10,21 +10,42 @@ export const useSendMessage = () => {
   const user = useLoggedInUser();
   const conversation = useGetConversation(conversationId);
   const realm = useRealm();
+  const timestamp = Math.floor(Date.now() / 1000);
+
+  const sendInternalMessage = useCallback(
+    (body: string) => {
+      realm.write(() => {
+        realm.create("Message", {
+          _id: new Realm.BSON.ObjectId(),
+          message_id: "system",
+          type: "internal_message",
+          conversation,
+          business_phone_number_id: "364826260050460",
+          recipient: conversation.customer_phone_number,
+          timestamp,
+          statuses: [],
+          text: {
+            body,
+          },
+          user,
+        });
+      });
+    },
+    [conversation, realm, timestamp, user]
+  );
 
   const sendText = useCallback(
     (body: string) => {
-      if (body.length === 0) return;
-
       realm.write(() => {
         realm.create("Message", {
           _id: new Realm.BSON.ObjectId(),
           message_id: "not_send_yet",
+          type: "text",
           conversation,
           business_phone_number_id: "364826260050460",
           recipient: conversation.customer_phone_number,
-          timestamp: Math.floor(Date.now() / 1000),
+          timestamp,
           statuses: [],
-          type: "text",
           text: {
             preview_url: true,
             body,
@@ -33,7 +54,7 @@ export const useSendMessage = () => {
         });
       });
     },
-    [conversation, realm, user]
+    [conversation, realm, timestamp, user]
   );
 
   const sendFlow = useCallback(
@@ -56,5 +77,5 @@ export const useSendMessage = () => {
     [conversation, realm, user]
   );
 
-  return { sendText, sendFlow, conversation };
+  return { sendText, sendFlow, sendInternalMessage, conversation };
 };

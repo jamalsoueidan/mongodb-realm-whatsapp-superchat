@@ -18,7 +18,7 @@ import { ChatAttachments } from "./ChatAttachments";
 
 export const ChatEditor = () => {
   const isMobile = useMobile();
-  const { sendText } = useSendMessage();
+  const { sendText, sendInternalMessage } = useSendMessage();
   const [editorContent, setEditorContent] = useState("");
 
   const editor = useEditor({
@@ -46,10 +46,19 @@ export const ChatEditor = () => {
 
   const handler = useCallback(() => {
     if (editor) {
-      sendText(editor.getText());
+      const content = editor.getHTML();
+      const mentionRegex =
+        /<span[^>]*class\s*=\s*["'][^"']*mention[^"']*["'][^>]*>/i;
+      const hasMentions = mentionRegex.test(content);
+      if (hasMentions) {
+        sendInternalMessage(editor.getHTML());
+      } else {
+        sendText(editor.getText());
+      }
+
       editor.commands.clearContent();
     }
-  }, [editor, sendText]);
+  }, [editor, sendText, sendInternalMessage]);
 
   useEffect(() => {
     if (editor && isMobile !== undefined) {

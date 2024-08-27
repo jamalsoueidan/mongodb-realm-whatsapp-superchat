@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { Results } from "realm";
 import { Message } from "../../../models/data";
 import { useScroll } from "../../providers/ScrollProvider";
-import { MessageSystem } from "./messages/MesageSystem";
 import { MessageImage } from "./messages/MessageImage";
 import { MessageInteractive } from "./messages/MessageInteractive";
 import { MessageInteractiveReply } from "./messages/MessageInteractiveReply";
+import { MessageInternal } from "./messages/MessageInternal";
+import { MessageSystem } from "./messages/MessageSystem";
 import { MessageText } from "./messages/MessageText";
 import { MessageUnknown } from "./messages/MessageUnknown";
 
@@ -111,11 +112,13 @@ export function ChatMessages({
               <MessageInteractiveReply msg={msg} />
             )}
             {msg.type === "system" && <MessageSystem msg={msg} />}
+            {msg.type === "internal_message" && <MessageInternal msg={msg} />}
             {msg.type !== "text" &&
               msg.type !== "image" &&
               msg.type !== "interactive" &&
               msg.type !== "interactive_reply" &&
-              msg.type !== "system" && <MessageUnknown msg={msg} />}
+              msg.type !== "system" &&
+              msg.type !== "internal_message" && <MessageUnknown msg={msg} />}
           </div>
         );
       })}
