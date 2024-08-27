@@ -44,7 +44,7 @@ export function TopNavigation() {
             component={Link}
             to="/conversation"
           >
-            Conversation
+            Chat
           </Menu.Item>
           <Menu.Item
             leftSection={

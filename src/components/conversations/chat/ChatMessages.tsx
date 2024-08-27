@@ -90,7 +90,7 @@ export function ChatMessages({
                   mt="4px"
                   shadow="xs"
                   radius="md"
-                  miw="72px"
+                  miw="74px"
                   style={{
                     position: isSticky ? "absolute" : "static",
                     top: isSticky ? "0px" : "auto",

@@ -6,6 +6,7 @@ import { AppProvider, RealmProvider, UserProvider } from "@realm/react";
 import { useEffect } from "react";
 import { FacebookProvider } from "react-facebook";
 import { Router, useLocation, useRoute } from "wouter";
+import { BottomNavigation } from "./components/BottomNavigation";
 import { LeftNavigation } from "./components/LeftNavigation";
 import { LoginFacebook } from "./components/Login";
 import { TopNavigation } from "./components/TopNavigation";
@@ -64,6 +65,7 @@ function App() {
       <ConversationPage />
       <ReportsPage />
       <TeamPage />
+      {!isMobile ? null : <BottomNavigation />}
     </Flex>
   );
 }

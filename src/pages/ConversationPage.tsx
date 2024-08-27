@@ -15,7 +15,12 @@ export const ConversationPage = () => {
   return (
     <Router base="/conversation">
       <Route path="/*?">
-        <Flex bg="white" flex=".5" direction="column">
+        <Flex
+          bg="white"
+          flex={isMobile ? "1" : "0.5"}
+          direction="column"
+          style={{ border: "1px solid #e4e6eb" }}
+        >
           {searchString === "contacts" ? <Contacts /> : <ConversationList />}
         </Flex>
       </Route>

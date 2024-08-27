@@ -16,7 +16,7 @@ export const TeamPage = () => {
         return (
           <>
             {!isMobile || !openUser ? (
-              <Flex bg="white" flex=".5" direction="column">
+              <Flex bg="white" flex={isMobile ? 1 : ".5"} direction="column">
                 <TeamList />
               </Flex>
             ) : null}

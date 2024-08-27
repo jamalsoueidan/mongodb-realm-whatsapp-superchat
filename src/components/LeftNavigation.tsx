@@ -20,11 +20,11 @@ export const LeftNavigation = () => {
       justify="space-between"
     >
       <Stack justify="center" align="center" p="md">
-        <Tooltip label="Conversations" position="bottom">
+        <Tooltip label="Chat" position="bottom">
           <ActionIcon
             variant="transparent"
             color="#555"
-            aria-label="Conversations"
+            aria-label="Chat"
             radius="xl"
             size="lg"
             component={Link}
