@@ -78,7 +78,7 @@ export function Contacts() {
       />
       <Divider />
 
-      <ScrollArea type="scroll" h="calc(100% - 40px)">
+      <ScrollArea.Autosize type="scroll" mah="100%" w="100%" mx="auto">
         {keys.sort().map((char) => (
           <React.Fragment key={char}>
             <Card py="xs" px="lg" mr="xs" radius="0">
@@ -96,7 +96,7 @@ export function Contacts() {
             <Text c="dimmed">No results found for &apos;{value}&apos;</Text>
           </Flex>
         ) : null}
-      </ScrollArea>
+      </ScrollArea.Autosize>
     </>
   );
 }

@@ -18,7 +18,7 @@ export function TopNavigation() {
       align="center"
       pl="md"
       h="60px"
-      w="100&"
+      w="100%"
       bg={{ base: "#3a5664", md: "white" }}
     >
       <Title order={2} c="white" fw="500">

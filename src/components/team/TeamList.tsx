@@ -14,7 +14,7 @@ export function TeamList() {
       </Flex>
       <Divider />
 
-      <ScrollArea type="scroll" h="calc(100% - 40px)">
+      <ScrollArea.Autosize type="scroll" mah="100%" w="100%" mx="auto">
         {users?.map((user) => (
           <TeamUserCard
             user={user}
@@ -22,7 +22,7 @@ export function TeamList() {
             selected={user._id.toString() === params?.userId}
           />
         ))}
-      </ScrollArea>
+      </ScrollArea.Autosize>
     </>
   );
 }

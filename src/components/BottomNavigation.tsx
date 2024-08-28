@@ -7,10 +7,12 @@ export function BottomNavigation() {
     <Flex
       align="center"
       justify="space-around"
+      h="70px"
       py="xs"
       style={{
         backgroundColor: "white",
         boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.1)",
+        zIndex: 100,
       }}
     >
       <BottomNavigationLink to="/conversation" label="Chat" icon={IconInbox} />

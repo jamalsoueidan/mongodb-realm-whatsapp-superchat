@@ -17,9 +17,10 @@ export const ConversationPage = () => {
       <Route path="/*?">
         <Flex
           bg="white"
-          flex={isMobile ? "1" : "0.5"}
+          h="100%"
+          flex={isMobile ? 1 : 0.5}
           direction="column"
-          style={{ border: "1px solid #e4e6eb" }}
+          style={{ overflow: "hidden" }}
         >
           {searchString === "contacts" ? <Contacts /> : <ConversationList />}
         </Flex>

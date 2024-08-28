@@ -27,7 +27,7 @@ export function ConversationList() {
       </Flex>
       <Divider />
 
-      <ScrollArea type="scroll" h="calc(100% - 40px)">
+      <ScrollArea.Autosize type="scroll" mah="100%" w="100%" mx="auto">
         {conversations?.map((conversation) => (
           <ConversationCard
             conversation={conversation}
@@ -35,7 +35,7 @@ export function ConversationList() {
             selected={conversation._id.toString() === params?.conversationId}
           />
         ))}
-      </ScrollArea>
+      </ScrollArea.Autosize>
     </>
   );
 }
