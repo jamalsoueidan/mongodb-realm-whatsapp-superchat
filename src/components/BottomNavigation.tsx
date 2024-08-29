@@ -7,8 +7,7 @@ export function BottomNavigation() {
     <Flex
       align="center"
       justify="space-around"
-      h="70px"
-      py="xs"
+      h="80px"
       style={{
         backgroundColor: "white",
         boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.1)",

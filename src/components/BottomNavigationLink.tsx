@@ -16,7 +16,7 @@ export function BottomNavigationLink({
 
   return (
     <UnstyledButton component={Link} to={to}>
-      <Flex direction="column" align="center" justify="center">
+      <Flex direction="column" align="center" justify="center" gap="5px">
         <ActionIcon
           bg={isActive ? "gray.3" : "transparent"}
           c="black"
