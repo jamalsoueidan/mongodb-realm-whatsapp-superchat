@@ -1,0 +1,24 @@
+.root {
+  position: relative;
+  width: 100%;
+}
+
+.input {
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  transition: border 150ms ease, background-color 150ms ease;
+
+  &[data-focused="true"] {
+    border-bottom: 1px solid var(--mantine-color-blue-6);
+    background-color: var(--mantine-color-gray-0);
+  }
+
+  &::placeholder {
+    color: var(--mantine-color-gray-5);
+  }
+}
+
+.rightSection {
+  cursor: pointer;
+}

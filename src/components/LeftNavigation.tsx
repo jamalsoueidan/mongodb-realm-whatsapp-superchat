@@ -3,7 +3,12 @@ import { Link } from "wouter";
 
 import { ActionIcon, Avatar, Flex, Stack, Tooltip } from "@mantine/core";
 import { useRealm } from "@realm/react";
-import { IconGraph, IconInbox, IconUsers } from "@tabler/icons-react";
+import {
+  IconAlarm,
+  IconGraph,
+  IconInbox,
+  IconUsers,
+} from "@tabler/icons-react";
 import { useRealmUser } from "../hooks/useRealmUser";
 import { getInitials } from "../lib/getInitials";
 import { SyncProgress } from "./monitor/SyncProgress";
@@ -59,6 +64,20 @@ export const LeftNavigation = () => {
             to="/team"
           >
             <IconUsers style={{ width: "70%", height: "70%" }} stroke={1.5} />
+          </ActionIcon>
+        </Tooltip>
+
+        <Tooltip label="Team">
+          <ActionIcon
+            variant="transparent"
+            color="#555"
+            aria-label="Trigger"
+            radius="xl"
+            size="lg"
+            component={Link}
+            to="/trigger/controls"
+          >
+            <IconAlarm style={{ width: "70%", height: "70%" }} stroke={1.5} />
           </ActionIcon>
         </Tooltip>
       </Stack>

@@ -46,6 +46,7 @@ import {
 import { ConversationPage } from "./pages/ConversationPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import { TeamPage } from "./pages/TeamPage";
+import { TriggerPage } from "./pages/TriggerPage";
 
 function App() {
   const isMobile = useMobile();
@@ -65,6 +66,7 @@ function App() {
       <ConversationPage />
       <ReportsPage />
       <TeamPage />
+      <TriggerPage />
       {!isMobile ? null : <BottomNavigation />}
     </Flex>
   );

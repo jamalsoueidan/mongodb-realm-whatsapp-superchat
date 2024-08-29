@@ -17,7 +17,7 @@ export function TopNavigation() {
       justify="space-between"
       align="center"
       pl="md"
-      h="60px"
+      mah="80px"
       w="100%"
       bg={{ base: "#3a5664", md: "white" }}
     >
