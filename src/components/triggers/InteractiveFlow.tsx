@@ -1,8 +1,8 @@
 import { Text, Title } from "@mantine/core";
-import { Handle, NodeProps, Position } from "reactflow";
-import { BoxWrapper } from "./BoxWrapper";
+import { NodeProps } from "reactflow";
+import { withTrigger } from "./withTrigger";
 
-interface InterctiveFlow {
+export type InterctiveFlow = {
   type: string;
   interactive: {
     type: string;
@@ -31,20 +31,18 @@ interface InterctiveFlow {
       };
     };
   };
-}
-
-export const InteractiveFlow = ({
-  data: { interactive },
-  id,
-}: NodeProps<InterctiveFlow>) => {
-  return (
-    <BoxWrapper id={id}>
-      <Title order={4}>{interactive.header.text}</Title>
-      <Text fz="md">{interactive.body.text}</Text>
-      <Text c="dimmed" fz="sm">
-        {interactive.footer.text}
-      </Text>
-      <Handle type="target" position={Position.Left} />
-    </BoxWrapper>
-  );
 };
+
+export const InteractiveFlow = withTrigger(
+  ({ data: { interactive } }: NodeProps<InterctiveFlow>) => {
+    return (
+      <>
+        <Title order={4}>{interactive.header.text}</Title>
+        <Text fz="md">{interactive.body.text}</Text>
+        <Text c="dimmed" fz="sm">
+          {interactive.footer.text}
+        </Text>
+      </>
+    );
+  }
+);

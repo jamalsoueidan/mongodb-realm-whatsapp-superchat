@@ -1,25 +1,11 @@
-import {
-  ActionIcon,
-  Box,
-  Divider,
-  Drawer,
-  Flex,
-  ScrollArea,
-  Title,
-} from "@mantine/core";
-import { IconX } from "@tabler/icons-react";
-import { Dispatch, SetStateAction } from "react";
-import { Node } from "reactflow";
+import { Drawer, ScrollArea } from "@mantine/core";
 import "reactflow/dist/style.css";
-import { Link, Route, Switch, useRoute } from "wouter";
+import { Route, Switch, useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
-import { TriggerProvider } from "./TriggerProvider";
+import { TriggerDrawerControl } from "./TriggerDrawerControl";
+import { TriggerDrawerNode } from "./TriggerDrawerNode";
 
-type Props = {
-  setNodes: Dispatch<SetStateAction<Node<unknown, string | undefined>[]>>;
-};
-
-export const TriggerDrawer = (props: Props) => {
+export const TriggerDrawer = () => {
   const isMobile = useMobile();
   const [isMatch] = useRoute("/controls/:id?");
 
@@ -35,54 +21,10 @@ export const TriggerDrawer = (props: Props) => {
         <Drawer.Body p="0">
           <Switch>
             <Route path="/controls/:id">
-              <Flex
-                px="sm"
-                py="xs"
-                h="60px"
-                align="center"
-                justify="space-between"
-              >
-                <Title order={4}>Interactive</Title>
-                {isMobile ? (
-                  <ActionIcon
-                    variant="transparent"
-                    aria-label="Back"
-                    color="black"
-                    component={Link}
-                    to={`/`}
-                  >
-                    <IconX stroke={1.5} />
-                  </ActionIcon>
-                ) : null}
-              </Flex>{" "}
-              <Divider />
-              <Box p="md">asd</Box>
+              <TriggerDrawerNode />
             </Route>
             <Route>
-              <Flex
-                px="sm"
-                py="xs"
-                h="60px"
-                align="center"
-                justify="space-between"
-              >
-                <Title order={4}>Add an action</Title>
-                {isMobile ? (
-                  <ActionIcon
-                    variant="transparent"
-                    aria-label="Back"
-                    color="black"
-                    component={Link}
-                    to={`/`}
-                  >
-                    <IconX stroke={1.5} />
-                  </ActionIcon>
-                ) : null}
-              </Flex>
-              <Divider />
-              <Box p="md">
-                <TriggerProvider setNodes={props.setNodes} />
-              </Box>
+              <TriggerDrawerControl />
             </Route>
           </Switch>
         </Drawer.Body>

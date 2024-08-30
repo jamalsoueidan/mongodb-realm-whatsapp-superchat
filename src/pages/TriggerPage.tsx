@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { ComponentType, useCallback } from "react";
 import ReactFlow, {
   addEdge,
   Background,
@@ -7,6 +7,7 @@ import ReactFlow, {
   Edge,
   MiniMap,
   Node,
+  NodeProps,
   ReactFlowProvider,
   useEdgesState,
   useNodesState,
@@ -16,103 +17,33 @@ import { ActionIcon, Divider, Flex, Title } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import "reactflow/dist/style.css";
 import { Route, Router, useLocation, useRoute } from "wouter";
+import {
+  initialEdges,
+  initialNodes,
+  NodeTypes,
+} from "../components/triggers/defaultValues";
 import { InteractiveButtons } from "../components/triggers/InteractiveButtons";
 import { InteractiveFlow } from "../components/triggers/InteractiveFlow";
 import { InteractiveList } from "../components/triggers/InteractiveList";
+import { SelectTrigger } from "../components/triggers/SelectTrigger";
 import { TriggerDrawer } from "../components/triggers/TriggerDrawer";
+import { useTriggerPosition } from "../components/triggers/useTriggerPosition";
 import { useMobile } from "../hooks/useMobile";
 
-const initialNodes: Node[] = [
-  {
-    id: "1",
-    position: { x: 0, y: 0 },
-    type: "interactive-list",
-    data: {
-      type: "interactive",
-      interactive: {
-        type: "list",
-        header: {
-          type: "text",
-          text: "Choose Shipping Option",
-        },
-        body: {
-          text: "Which shipping option do you prefer?shipping option do you prefer?",
-        },
-        footer: {
-          text: "Lucky Shrub: Your gateway to succulents™ Your gateway to succulents™",
-        },
-        action: {
-          button: "Shipping Options",
-          sections: [
-            {
-              title: "I want it ASAP!",
-              rows: [
-                {
-                  id: "priority_express",
-                  title: "Priority Mail Express",
-                },
-                {
-                  id: "priority_mail",
-                  title: "Priority Mail",
-                },
-              ],
-            },
-          ],
-        },
-      },
-    },
-  },
-  {
-    id: "2",
-    position: { x: 400, y: 200 },
-    type: "interactive-flow",
-    data: {
-      type: "interactive",
-      interactive: {
-        type: "flow",
-        header: {
-          type: "text",
-          text: "values.header",
-        },
-        body: {
-          text: "values.body",
-        },
-        footer: {
-          text: "values.footer",
-        },
-        action: {
-          name: "flow",
-          parameters: {
-            flow_message_version: "3",
-            flow_token: "unused",
-            flow_id: "x", //must choose
-            mode: "draft",
-            flow_cta: "click me button",
-            flow_action: "navigate",
-            flow_action_payload: {
-              screen: "INITIAL",
-            },
-          },
-        },
-      },
-    },
-  },
-];
-
-const initialEdges: Edge[] = [{ id: "e1-2", source: "1", target: "2" }];
-
-const nodeTypes = {
-  "interactive-list": InteractiveList,
-  "interactive-flow": InteractiveFlow,
-  "interactive-buttons": InteractiveButtons,
+export const nodeTypes: Record<NodeTypes, ComponentType<NodeProps>> = {
+  [NodeTypes.InteractiveList]: InteractiveList,
+  [NodeTypes.InteractiveFlow]: InteractiveFlow,
+  [NodeTypes.InteractiveButtons]: InteractiveButtons,
+  [NodeTypes.SelectTrigger]: SelectTrigger,
 };
 
-export const TriggerPage = () => {
+const LayoutFlow = () => {
   const [, setLocation] = useLocation();
-  const [isMatch] = useRoute("/trigger/controls");
+  const [isMatch] = useRoute("/trigger/controls/:id");
   const isMobile = useMobile();
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  useTriggerPosition();
 
   const onNodeClick = (_: unknown, node: Node<unknown>) => {
     if (!isMobile) {
@@ -127,62 +58,60 @@ export const TriggerPage = () => {
   };
 
   const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
+    (params: Connection) =>
+      setEdges((edge: Array<Edge<unknown>>) => addEdge(params, edge)),
     [setEdges]
   );
 
   return (
+    <Flex direction="column" w={isMatch ? "calc(70% - 70px)" : "100%"} h="100%">
+      <Flex p="md" h="60px" justify="space-between" align="center" gap="xs">
+        <Title order={3}>Trigger</Title>
+        {isMobile ? (
+          <ActionIcon
+            onClick={() =>
+              setLocation(isMatch ? "/trigger" : "/trigger/controls")
+            }
+            variant="transparent"
+            color="#666"
+            size="lg"
+          >
+            <IconArrowRight
+              stroke="1.5"
+              style={{ width: "100%", height: "100%" }}
+            />
+          </ActionIcon>
+        ) : null}
+      </Flex>
+      <Divider />
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        elementsSelectable={true}
+        onNodeClick={onNodeClick}
+        onPaneClick={onPaneClick}
+        nodeTypes={nodeTypes}
+        fitView
+      >
+        <MiniMap />
+        <Controls />
+        <Background />
+      </ReactFlow>
+    </Flex>
+  );
+};
+
+export const TriggerPage = () => {
+  return (
     <Router base="/trigger">
       <ReactFlowProvider>
         <Route path="/:controls?/:id?">
-          <Flex
-            direction="column"
-            w={isMatch && !isMobile ? "calc(70% - 70px)" : "100%"}
-            h="100%"
-          >
-            <Flex
-              p="md"
-              h="60px"
-              justify="space-between"
-              align="center"
-              gap="xs"
-            >
-              <Title order={3}>Trigger</Title>
-              {isMobile ? (
-                <ActionIcon
-                  onClick={() =>
-                    setLocation(isMatch ? "/trigger" : "/trigger/controls")
-                  }
-                  variant="transparent"
-                  color="#666"
-                  size="lg"
-                >
-                  <IconArrowRight
-                    stroke="1.5"
-                    style={{ width: "100%", height: "100%" }}
-                  />
-                </ActionIcon>
-              ) : null}
-            </Flex>
-            <Divider />
-            <ReactFlow
-              nodes={nodes}
-              edges={edges}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              onConnect={onConnect}
-              elementsSelectable={true}
-              onNodeClick={onNodeClick}
-              onPaneClick={onPaneClick}
-              nodeTypes={nodeTypes}
-            >
-              <MiniMap />
-              <Controls />
-              <Background />
-            </ReactFlow>
-          </Flex>
+          <LayoutFlow />
         </Route>
-        <TriggerDrawer setNodes={setNodes} />
+        <TriggerDrawer />
       </ReactFlowProvider>
     </Router>
   );

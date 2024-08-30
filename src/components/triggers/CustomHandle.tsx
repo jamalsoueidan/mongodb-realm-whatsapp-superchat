@@ -9,6 +9,7 @@ export const CustomHandle = (props: HandleProps) => {
         height: rem(10),
         transform: "unset",
         top: "unset",
+        position: "fixed",
       }}
       {...props}
     />
