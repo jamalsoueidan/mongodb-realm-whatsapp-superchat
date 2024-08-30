@@ -75,7 +75,7 @@ export const LeftNavigation = () => {
             radius="xl"
             size="lg"
             component={Link}
-            to="/trigger/controls"
+            to="/trigger"
           >
             <IconAlarm style={{ width: "70%", height: "70%" }} stroke={1.5} />
           </ActionIcon>

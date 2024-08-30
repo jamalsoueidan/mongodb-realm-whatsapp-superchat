@@ -12,7 +12,6 @@
     "deploy": "gh-pages -d build"
   },
   "dependencies": {
-    "@dagrejs/dagre": "^1.1.4",
     "@mantine/charts": "^7.12.0",
     "@mantine/core": "^7.12.1",
     "@mantine/form": "^7.12.1",

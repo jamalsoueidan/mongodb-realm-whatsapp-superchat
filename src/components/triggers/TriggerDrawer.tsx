@@ -2,12 +2,11 @@ import { Drawer, ScrollArea } from "@mantine/core";
 import "reactflow/dist/style.css";
 import { Route, Switch, useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
-import { TriggerDrawerControl } from "./TriggerDrawerControl";
 import { TriggerDrawerNode } from "./TriggerDrawerNode";
 
 export const TriggerDrawer = () => {
   const isMobile = useMobile();
-  const [isMatch] = useRoute("/controls/:id?");
+  const [isMatch] = useRoute("/:id");
 
   return (
     <Drawer.Root
@@ -20,11 +19,8 @@ export const TriggerDrawer = () => {
       <Drawer.Content>
         <Drawer.Body p="0">
           <Switch>
-            <Route path="/controls/:id">
+            <Route path="/:id">
               <TriggerDrawerNode />
-            </Route>
-            <Route>
-              <TriggerDrawerControl />
             </Route>
           </Switch>
         </Drawer.Body>

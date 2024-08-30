@@ -39,7 +39,7 @@ export const nodeTypes: Record<NodeTypes, ComponentType<NodeProps>> = {
 
 const LayoutFlow = () => {
   const [, setLocation] = useLocation();
-  const [isMatch] = useRoute("/trigger/controls/:id");
+  const [isMatch] = useRoute("/:id");
   const isMobile = useMobile();
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -47,13 +47,13 @@ const LayoutFlow = () => {
 
   const onNodeClick = (_: unknown, node: Node<unknown>) => {
     if (!isMobile) {
-      setLocation(`/trigger/controls/${node.id}`);
+      setLocation(`/${node.id}`);
     }
   };
 
   const onPaneClick = () => {
     if (!isMobile) {
-      setLocation(`/trigger/controls/`);
+      setLocation(`/`);
     }
   };
 
@@ -108,7 +108,7 @@ export const TriggerPage = () => {
   return (
     <Router base="/trigger">
       <ReactFlowProvider>
-        <Route path="/:controls?/:id?">
+        <Route path="/:id?">
           <LayoutFlow />
         </Route>
         <TriggerDrawer />
