@@ -1,6 +1,7 @@
 import { Box, Button, rem, Stack, Text } from "@mantine/core";
-import { Handle, NodeProps, Position } from "reactflow";
+import { Edge, Handle, Node, NodeProps, Position } from "reactflow";
 import { CustomHandle } from "../handlers/CustomHandle";
+import { NodeTypes } from "../NodeTypes";
 import { NodeWrapper } from "./NodeWrapper";
 
 export type InteractiveButtons = {
@@ -27,6 +28,75 @@ export type InteractiveButtons = {
       }>;
     };
   };
+};
+
+export const InteractiveButtonsDefault: InteractiveButtons = {
+  type: "interactive",
+  interactive: {
+    type: "button",
+    header: {
+      type: "text",
+      text: "Title",
+    },
+    body: {
+      text: "Body",
+    },
+    footer: {
+      text: "Footer",
+    },
+    action: {
+      buttons: [
+        {
+          type: "reply",
+          reply: {
+            id: "1",
+            title: "Button",
+          },
+        },
+      ],
+    },
+  },
+};
+
+export const createInteractiveButtonNode = (replace: Node) => {
+  const { id, position } = replace;
+
+  const nodes: Node[] = [];
+  const edges: Edge[] = [];
+
+  const newComponent: InteractiveButtons = JSON.parse(
+    JSON.stringify(InteractiveButtonsDefault)
+  );
+
+  newComponent.interactive.action.buttons =
+    newComponent.interactive.action.buttons.map((button) => {
+      button.reply.id = new Realm.BSON.ObjectId().toString();
+      const selectNode: Node = {
+        id: button.reply.id,
+        position: { x: 0, y: 0 },
+        type: NodeTypes.PlusNode,
+        data: { name: "" },
+      };
+
+      nodes.push(selectNode);
+      edges.push({
+        id: `${id}-${selectNode.id}`,
+        source: id,
+        sourceHandle: selectNode.id,
+        target: selectNode.id,
+      });
+
+      return button;
+    });
+
+  nodes.push({
+    id,
+    data: newComponent,
+    position,
+    type: NodeTypes.InteractiveButtons,
+  });
+
+  return { nodes, edges };
 };
 
 export const InteractiveButtonsNode = (
@@ -57,7 +127,7 @@ export const InteractiveButtonsNode = (
           return (
             <Box pos="relative" key={button.reply.id} px="sm">
               <Button variant="outline" key={button.reply.id} w="100%">
-                {button.reply.id}
+                {button.reply.title}
               </Button>
               <CustomHandle
                 type="source"

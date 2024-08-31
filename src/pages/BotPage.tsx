@@ -6,6 +6,7 @@ import ReactFlow, {
   Controls,
   Edge,
   MiniMap,
+  Panel,
   ReactFlowProvider,
   useEdgesState,
   useNodesState,
@@ -15,10 +16,10 @@ import { Divider, Flex, Title } from "@mantine/core";
 import "reactflow/dist/style.css";
 import { Route, Router, useLocation, useRoute } from "wouter";
 import { initialEdges, initialNodes } from "../components/bot/defaultValues";
-import { NodeAutoLayout } from "../components/bot/NodeAutoLayout";
 import { nodeTypes } from "../components/bot/NodeTypes";
 import { NodeTypeSelectorModal } from "../components/bot/NodeTypeSelectorModal";
 import { TriggerDrawer } from "../components/bot/TriggerDrawer";
+import { useNodeAutoLayout } from "../components/bot/useNodeAutoLayout";
 import { useMobile } from "../hooks/useMobile";
 
 const Layout = () => {
@@ -27,7 +28,7 @@ const Layout = () => {
   const isMobile = useMobile();
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-
+  const { triggerLayout } = useNodeAutoLayout();
   /*const onNodeClick = (_: unknown, node: Node<unknown>) => {
     if (!isMobile) {
       //onMobile we add a button to edit nodes
@@ -69,7 +70,9 @@ const Layout = () => {
         nodeTypes={nodeTypes}
         fitView
       >
-        <NodeAutoLayout />
+        <Panel position="top-right">
+          <button onClick={() => triggerLayout(true)}>Autolayout</button>
+        </Panel>
         <MiniMap />
         <Controls />
         <Background />

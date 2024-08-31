@@ -1,5 +1,6 @@
 import { rem, Stack, Text, Title } from "@mantine/core";
-import { Handle, NodeProps, Position } from "reactflow";
+import { Edge, Handle, Node, NodeProps, Position } from "reactflow";
+import { NodeTypes } from "../NodeTypes";
 import { NodeWrapper } from "./NodeWrapper";
 
 export type InterctiveFlow = {
@@ -31,6 +32,72 @@ export type InterctiveFlow = {
       };
     };
   };
+};
+
+export const InteractiveFlowDefault: InterctiveFlow = {
+  type: "interactive",
+  interactive: {
+    type: "flow",
+    header: {
+      type: "text",
+      text: "values.header",
+    },
+    body: {
+      text: "values.body",
+    },
+    footer: {
+      text: "values.footer",
+    },
+    action: {
+      name: "flow",
+      parameters: {
+        flow_message_version: "3",
+        flow_token: "unused",
+        flow_id: "x", //must choose
+        mode: "draft",
+        flow_cta: "click me button",
+        flow_action: "navigate",
+        flow_action_payload: {
+          screen: "INITIAL",
+        },
+      },
+    },
+  },
+};
+
+export const createInteractiveFlowNode = (replace: Node) => {
+  const { id, position } = replace;
+
+  const nodes: Node[] = [];
+  const edges: Edge[] = [];
+
+  const newComponent: InterctiveFlow = JSON.parse(
+    JSON.stringify(InteractiveFlowDefault)
+  );
+
+  const selectNode: Node = {
+    id: new Realm.BSON.ObjectId().toString(),
+    position: { x: 0, y: 0 },
+    type: NodeTypes.PlusNode,
+    data: { name: "" },
+  };
+
+  nodes.push(selectNode);
+  edges.push({
+    id: `${id}-${selectNode.id}`,
+    source: id,
+    sourceHandle: selectNode.id,
+    target: selectNode.id,
+  });
+
+  nodes.push({
+    id,
+    data: newComponent,
+    position,
+    type: NodeTypes.InteractiveFlow,
+  });
+
+  return { nodes, edges };
 };
 
 export const InteractiveFlowNode = (props: NodeProps<InterctiveFlow>) => {

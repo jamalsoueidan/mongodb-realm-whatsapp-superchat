@@ -1,8 +1,10 @@
-import { Button } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import { Edge, Node, useReactFlow } from "reactflow";
 import "reactflow/dist/style.css";
 import { Redirect, useLocation, useRoute } from "wouter";
 import { CustomModal } from "../CustomModal";
+import { createInteractiveButtonNode } from "./nodes/InteractiveButtonsNode";
+import { createInteractiveFlowNode } from "./nodes/InteractiveFlowNode";
 import { createInteractiveListNode } from "./nodes/InteractiveListNode";
 import { createMessageNode } from "./nodes/MessageNode";
 
@@ -22,6 +24,8 @@ export const NodeTypeSelectorModal = () => {
     setEdges((prev: Array<Edge<unknown>>) => {
       return [...prev, ...edges];
     });
+
+    setLocation("/");
   };
 
   return (
@@ -30,15 +34,28 @@ export const NodeTypeSelectorModal = () => {
       onClose={() => setLocation("/")}
       title="Add trigger"
     >
-      <Button
-        onClick={() => addOnclick(createInteractiveListNode(currentNode))}
-      >
-        Interactive List
-      </Button>
+      <Stack>
+        <Button
+          onClick={() => addOnclick(createInteractiveListNode(currentNode))}
+        >
+          Interactive List
+        </Button>
 
-      <Button onClick={() => addOnclick(createMessageNode(currentNode))}>
-        Message
-      </Button>
+        <Button
+          onClick={() => addOnclick(createInteractiveFlowNode(currentNode))}
+        >
+          Interactive Flow
+        </Button>
+
+        <Button
+          onClick={() => addOnclick(createInteractiveButtonNode(currentNode))}
+        >
+          Interactive Buttons
+        </Button>
+        <Button onClick={() => addOnclick(createMessageNode(currentNode))}>
+          Message
+        </Button>
+      </Stack>
     </CustomModal>
   );
 };

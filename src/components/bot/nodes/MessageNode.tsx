@@ -1,7 +1,6 @@
 import { rem, Stack, Text } from "@mantine/core";
-import { Edge, Node, NodeProps, Position } from "reactflow";
+import { Edge, Handle, Node, NodeProps, Position } from "reactflow";
 
-import { CustomHandle } from "../handlers/CustomHandle";
 import { NodeTypes } from "../NodeTypes";
 import { NodeWrapper } from "./NodeWrapper";
 
@@ -53,16 +52,21 @@ export const createMessageNode = (replace: Node) => {
 };
 
 export const MessageNode = (props: NodeProps<Message>) => {
-  const { data, sourcePosition, id } = props;
+  const { data, id } = props;
   return (
     <NodeWrapper {...props}>
-      <Stack gap={rem(2)} mb="xl">
+      <Stack gap={rem(2)} px="sm" pos="relative">
         <Text c="dimmed" fz="sm">
           {data.text.body}
         </Text>
-        <CustomHandle
+        <Handle
+          type="target"
+          position={props.targetPosition || Position.Left}
+          id={props.id}
+        />
+        <Handle
           type="source"
-          position={sourcePosition || Position.Right}
+          position={props.sourcePosition || Position.Right}
           id={id}
         />
       </Stack>

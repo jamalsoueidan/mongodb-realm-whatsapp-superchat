@@ -9,12 +9,12 @@ export const initialNodes: Node<NodesDataTypes, NodeTypes>[] = [
     type: NodeTypes.StartNode,
     data: {},
   },
-  /*{
+  {
     id: "2",
     position: { x: 0, y: 0 },
     type: NodeTypes.PlusNode,
     data: {},
-  },*/
+  } /*
   {
     id: "2",
     position: { x: 0, y: 0 },
@@ -130,7 +130,7 @@ export const initialNodes: Node<NodesDataTypes, NodeTypes>[] = [
         },
       },
     },
-  },
+  },*/,
 ];
 
 export const initialEdges: Edge[] = [
@@ -139,12 +139,12 @@ export const initialEdges: Edge[] = [
     source: "1",
     target: "2",
     animated: true,
-  },
+  } /*,
   {
     id: "2-3",
     source: "2",
     sourceHandle: "priority_express",
     target: "4",
     animated: true,
-  },
+  },*/,
 ];

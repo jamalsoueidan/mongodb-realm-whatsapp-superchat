@@ -54,8 +54,8 @@ const getLayoutedElements = (nodes: Node[], edges: Array<Edge>) => {
   return { nodes: newNodes, edges };
 };
 
-export const NodeAutoLayout = () => {
-  const [opened, setOpened] = useState(true);
+export const useNodeAutoLayout = () => {
+  const [layoutPending, triggerLayout] = useState(true);
   const { setNodes, getNodes, setEdges, getEdges, fitView } = useReactFlow();
   const nodes = getNodes();
   const edges = getEdges();
@@ -64,26 +64,26 @@ export const NodeAutoLayout = () => {
 
   useEffect(() => {
     if (previousNodes?.length !== nodes.length) {
-      setOpened(true);
+      triggerLayout(true);
     }
   }, [nodes, previousNodes]);
 
   useEffect(() => {
-    if (opened) {
+    if (layoutPending) {
       if (nodes[0]?.width) {
         const { nodes: layoutedNodes, edges: layoutedEdges } =
           getLayoutedElements(nodes, edges);
 
         setNodes(layoutedNodes);
         setEdges(layoutedEdges);
-        setOpened(false);
+        triggerLayout(false);
 
         window.requestAnimationFrame(() => {
           fitView();
         });
       }
     }
-  }, [nodes, edges, setNodes, setEdges, opened, fitView]);
+  }, [nodes, edges, setNodes, setEdges, layoutPending, fitView]);
 
-  return null;
+  return { layoutPending, triggerLayout };
 };
