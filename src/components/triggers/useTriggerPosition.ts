@@ -1,8 +1,9 @@
-// component as child of ReactFlowProvider so we have access to state
+import { usePrevious } from "@mantine/hooks";
 import dagre from "dagre";
 import { useEffect, useState } from "react";
 import { Edge, Node, Position, useReactFlow } from "reactflow";
 
+// https://ncoughlin.com/posts/react-flow-dagre-custom-nodes
 type RankDir = "TB" | "BT" | "LR" | "RL";
 const options: { rankdir: RankDir } = { rankdir: "LR" };
 const positionMap: Record<
@@ -14,10 +15,11 @@ const positionMap: Record<
   LR: { targetPosition: Position.Left, sourcePosition: Position.Right },
   RL: { targetPosition: Position.Right, sourcePosition: Position.Left },
 };
-const dagreGraph = new dagre.graphlib.Graph();
-dagreGraph.setDefaultEdgeLabel(() => ({}));
 
 const getLayoutedElements = (nodes: Node[], edges: Array<Edge>) => {
+  const dagreGraph = new dagre.graphlib.Graph();
+  dagreGraph.setDefaultEdgeLabel(() => ({}));
+
   dagreGraph.setGraph(options);
 
   nodes.forEach((node) => {
@@ -58,18 +60,29 @@ export const useTriggerPosition = () => {
   const nodes = getNodes();
   const edges = getEdges();
 
+  const previousNodes = usePrevious(nodes);
+
   useEffect(() => {
-    if (opened && nodes[0]?.width) {
-      const { nodes: layoutedNodes, edges: layoutedEdges } =
-        getLayoutedElements(nodes, edges);
+    if (previousNodes?.length !== nodes.length) {
+      console.log(nodes);
+      setOpened(true);
+    }
+  }, [nodes, previousNodes]);
 
-      setNodes(layoutedNodes);
-      setEdges(layoutedEdges);
-      setOpened(false);
+  useEffect(() => {
+    if (opened) {
+      if (nodes[0]?.width) {
+        const { nodes: layoutedNodes, edges: layoutedEdges } =
+          getLayoutedElements(nodes, edges);
 
-      window.requestAnimationFrame(() => {
-        fitView();
-      });
+        setNodes(layoutedNodes);
+        setEdges(layoutedEdges);
+        setOpened(false);
+
+        window.requestAnimationFrame(() => {
+          fitView();
+        });
+      }
     }
   }, [nodes, edges, setNodes, setEdges, opened, fitView]);
 };

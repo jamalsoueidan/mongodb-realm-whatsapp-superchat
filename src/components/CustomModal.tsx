@@ -15,7 +15,7 @@ export function CustomModal({
       <Modal.Overlay />
       <Modal.Content>
         <Modal.Header>
-          {props.title ? <Modal.Title>Modal title</Modal.Title> : null}
+          {props.title ? <Modal.Title>{props.title}</Modal.Title> : null}
           {back ? (
             <ActionIcon
               component={Link}

@@ -2,28 +2,31 @@ import { Edge, Node } from "reactflow";
 import { InteractiveButtons } from "./InteractiveButtons";
 import { InterctiveFlow } from "./InteractiveFlow";
 import { InteractiveList } from "./InteractiveList";
-import { SelectTrigger } from "./SelectTrigger";
+import { PlusNode } from "./PlusNode";
+import { SelectNode } from "./SelectNode";
 
 export enum NodeTypes {
   InteractiveList = "interactive-list",
   InteractiveFlow = "interactive-flow",
   InteractiveButtons = "interactive-buttons",
-  SelectTrigger = "select-trigger",
+  SelectNode = "select-node",
+  PlusNode = "connect-node",
 }
 
 export type NodesDataTypes =
   | InteractiveButtons
   | InteractiveList
   | InterctiveFlow
-  | SelectTrigger;
+  | SelectNode
+  | PlusNode;
 
 export const initialNodes: Node<NodesDataTypes, NodeTypes>[] = [
-  /*{
-    id: "4",
-    position: { x: 23, y: 23 },
-    type: NodeTypes.SelectTrigger,
-    data: { name: "test" },
-  },*/
+  {
+    id: "1",
+    position: { x: 0, y: 0 },
+    type: NodeTypes.SelectNode,
+    data: {},
+  } /*
   {
     id: "1",
     position: { x: 0, y: 0 },
@@ -143,22 +146,14 @@ export const initialNodes: Node<NodesDataTypes, NodeTypes>[] = [
         },
       },
     },
-  },
+  },*/,
 ];
 
 export const initialEdges: Edge[] = [
   {
     id: "edaw",
     source: "1",
-    sourceHandle: "priority_express",
     target: "2",
-    animated: true,
-  },
-  {
-    id: "e1dawdaw-2",
-    source: "1",
-    sourceHandle: "priority_mail",
-    target: "3",
     animated: true,
   },
 ];

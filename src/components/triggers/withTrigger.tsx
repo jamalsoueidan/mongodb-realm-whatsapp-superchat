@@ -1,7 +1,7 @@
 import { ActionIcon, Box, rem } from "@mantine/core";
 import { IconEdit } from "@tabler/icons-react";
 import { Handle, NodeProps, Position } from "reactflow";
-import { useLocation, useParams } from "wouter";
+import { Link, useLocation, useParams } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
 
 export function withTrigger<T extends NodeProps>(
@@ -24,13 +24,15 @@ export function withTrigger<T extends NodeProps>(
             ? { outline: "2px solid var(--mantine-color-blue-6)" }
             : {}),
         }}
+        component={Link}
+        to={props.id}
         miw="200px"
         maw="300px"
         {...props}
       >
         <Handle
           type="target"
-          position={props.targetPosition || Position.Left}
+          position={props.targetPosition || Position.Top}
           id={props.id}
           style={{ width: rem(10), height: rem(10) }}
         />
