@@ -1,34 +1,22 @@
 import { Edge, Node } from "reactflow";
-import { InteractiveButtons } from "./InteractiveButtons";
-import { InterctiveFlow } from "./InteractiveFlow";
-import { InteractiveList } from "./InteractiveList";
-import { PlusNode } from "./PlusNode";
-import { SelectNode } from "./SelectNode";
-
-export enum NodeTypes {
-  InteractiveList = "interactive-list",
-  InteractiveFlow = "interactive-flow",
-  InteractiveButtons = "interactive-buttons",
-  SelectNode = "select-node",
-  PlusNode = "connect-node",
-}
-
-export type NodesDataTypes =
-  | InteractiveButtons
-  | InteractiveList
-  | InterctiveFlow
-  | SelectNode
-  | PlusNode;
+import { NodesDataTypes } from "./NodeDataTypes";
+import { NodeTypes } from "./NodeTypes";
 
 export const initialNodes: Node<NodesDataTypes, NodeTypes>[] = [
   {
     id: "1",
     position: { x: 0, y: 0 },
-    type: NodeTypes.SelectNode,
+    type: NodeTypes.StartNode,
     data: {},
-  } /*
+  },
+  /*{
+    id: "2",
+    position: { x: 0, y: 0 },
+    type: NodeTypes.PlusNode,
+    data: {},
+  },*/
   {
-    id: "1",
+    id: "2",
     position: { x: 0, y: 0 },
     type: NodeTypes.InteractiveList,
     data: {
@@ -55,10 +43,6 @@ export const initialNodes: Node<NodesDataTypes, NodeTypes>[] = [
                   id: "priority_express",
                   title: "Priority Mail Express",
                 },
-                {
-                  id: "priority_mail",
-                  title: "Priority Mail",
-                },
               ],
             },
           ],
@@ -67,7 +51,7 @@ export const initialNodes: Node<NodesDataTypes, NodeTypes>[] = [
     },
   },
   {
-    id: "2",
+    id: "3",
     position: { x: 0, y: 0 },
     type: NodeTypes.InteractiveFlow,
     data: {
@@ -102,7 +86,7 @@ export const initialNodes: Node<NodesDataTypes, NodeTypes>[] = [
     },
   },
   {
-    id: "3",
+    id: "4",
     position: { x: 0, y: 0 },
     type: NodeTypes.InteractiveButtons,
     data: {
@@ -124,36 +108,43 @@ export const initialNodes: Node<NodesDataTypes, NodeTypes>[] = [
             {
               type: "reply",
               reply: {
-                id: "<BUTTfseID>",
-                title: "<BUTTON_LABEL_TEXT>",
+                id: "1",
+                title: "Test",
               },
             },
             {
               type: "reply",
               reply: {
-                id: "<BUTasd",
-                title: "<BUTTON_LABEL_TEXT>",
+                id: "2",
+                title: "Test1",
               },
             },
             {
               type: "reply",
               reply: {
-                id: "<BUfseN_ID>",
-                title: "<BUTTON_LABEL_TEXT>",
+                id: "3",
+                title: "Test2",
               },
             },
           ],
         },
       },
     },
-  },*/,
+  },
 ];
 
 export const initialEdges: Edge[] = [
   {
-    id: "edaw",
+    id: "1-2",
     source: "1",
     target: "2",
+    animated: true,
+  },
+  {
+    id: "2-3",
+    source: "2",
+    sourceHandle: "priority_express",
+    target: "4",
     animated: true,
   },
 ];

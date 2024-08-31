@@ -54,7 +54,7 @@ const getLayoutedElements = (nodes: Node[], edges: Array<Edge>) => {
   return { nodes: newNodes, edges };
 };
 
-export const useTriggerPosition = () => {
+export const NodeAutoLayout = () => {
   const [opened, setOpened] = useState(true);
   const { setNodes, getNodes, setEdges, getEdges, fitView } = useReactFlow();
   const nodes = getNodes();
@@ -64,7 +64,6 @@ export const useTriggerPosition = () => {
 
   useEffect(() => {
     if (previousNodes?.length !== nodes.length) {
-      console.log(nodes);
       setOpened(true);
     }
   }, [nodes, previousNodes]);
@@ -85,4 +84,6 @@ export const useTriggerPosition = () => {
       }
     }
   }, [nodes, edges, setNodes, setEdges, opened, fitView]);
+
+  return null;
 };

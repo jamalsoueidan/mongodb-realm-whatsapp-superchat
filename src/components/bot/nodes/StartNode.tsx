@@ -1,12 +1,12 @@
 import { Button } from "@mantine/core";
-import { NodeProps } from "reactflow";
+import { Handle, NodeProps, Position } from "reactflow";
 import { Link } from "wouter";
 
-export type SelectNode = {
+export type StartNode = {
   name?: string;
 };
 
-export const SelectNode = ({ id }: NodeProps<unknown>) => {
+export const StartNode = ({ id, sourcePosition }: NodeProps<unknown>) => {
   return (
     <>
       <Button
@@ -17,8 +17,13 @@ export const SelectNode = ({ id }: NodeProps<unknown>) => {
         component={Link}
         to={`/replace/${id}`}
       >
-        Select trigger
+        Start trigger
       </Button>
+      <Handle
+        position={sourcePosition || Position.Right}
+        id={id}
+        type="source"
+      />
     </>
   );
 };

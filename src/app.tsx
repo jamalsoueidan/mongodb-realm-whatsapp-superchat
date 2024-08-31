@@ -6,6 +6,7 @@ import { AppProvider, RealmProvider, UserProvider } from "@realm/react";
 import { useEffect } from "react";
 import { FacebookProvider } from "react-facebook";
 import { Router, useLocation, useRoute } from "wouter";
+import "./app.css";
 import { BottomNavigation } from "./components/BottomNavigation";
 import { LeftNavigation } from "./components/LeftNavigation";
 import { LoginFacebook } from "./components/Login";
@@ -43,10 +44,10 @@ import {
   UserConversationSchema,
   UserSchema,
 } from "./models/data";
+import { BotPage } from "./pages/BotPage";
 import { ConversationPage } from "./pages/ConversationPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import { TeamPage } from "./pages/TeamPage";
-import { TriggerPage } from "./pages/TriggerPage";
 
 function App() {
   const isMobile = useMobile();
@@ -56,7 +57,7 @@ function App() {
 
   useEffect(() => {
     if (isMatch) {
-      setLocation("/conversation");
+      setLocation("/bot");
     }
   }, [isMatch, setLocation]);
 
@@ -66,7 +67,7 @@ function App() {
       <ConversationPage />
       <ReportsPage />
       <TeamPage />
-      <TriggerPage />
+      <BotPage />
       {!isMobile ? null : <BottomNavigation />}
     </Flex>
   );

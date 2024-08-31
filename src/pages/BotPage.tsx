@@ -1,4 +1,4 @@
-import { ComponentType, useCallback } from "react";
+import { useCallback } from "react";
 import ReactFlow, {
   addEdge,
   Background,
@@ -6,7 +6,6 @@ import ReactFlow, {
   Controls,
   Edge,
   MiniMap,
-  NodeProps,
   ReactFlowProvider,
   useEdgesState,
   useNodesState,
@@ -14,37 +13,20 @@ import ReactFlow, {
 
 import { Divider, Flex, Title } from "@mantine/core";
 import "reactflow/dist/style.css";
-import { Router, useLocation, useRoute } from "wouter";
-import {
-  initialEdges,
-  initialNodes,
-  NodeTypes,
-} from "../components/triggers/defaultValues";
-import { InteractiveButtons } from "../components/triggers/InteractiveButtons";
-import { InteractiveFlow } from "../components/triggers/InteractiveFlow";
-import { InteractiveList } from "../components/triggers/InteractiveList";
-import { PlusNode } from "../components/triggers/PlusNode";
-import { SelectNode } from "../components/triggers/SelectNode";
-import { TriggerDrawer } from "../components/triggers/TriggerDrawer";
-import { TriggerModal } from "../components/triggers/TriggerModal";
-import { useTriggerPosition } from "../components/triggers/useTriggerPosition";
+import { Route, Router, useLocation, useRoute } from "wouter";
+import { initialEdges, initialNodes } from "../components/bot/defaultValues";
+import { NodeAutoLayout } from "../components/bot/NodeAutoLayout";
+import { nodeTypes } from "../components/bot/NodeTypes";
+import { NodeTypeSelectorModal } from "../components/bot/NodeTypeSelectorModal";
+import { TriggerDrawer } from "../components/bot/TriggerDrawer";
 import { useMobile } from "../hooks/useMobile";
 
-export const nodeTypes: Record<NodeTypes, ComponentType<NodeProps>> = {
-  [NodeTypes.InteractiveList]: InteractiveList,
-  [NodeTypes.InteractiveFlow]: InteractiveFlow,
-  [NodeTypes.InteractiveButtons]: InteractiveButtons,
-  [NodeTypes.SelectNode]: SelectNode,
-  [NodeTypes.PlusNode]: PlusNode,
-};
-
-const LayoutFlow = () => {
+const Layout = () => {
   const [, setLocation] = useLocation();
   const [isMatch] = useRoute("/:id");
   const isMobile = useMobile();
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  useTriggerPosition();
 
   /*const onNodeClick = (_: unknown, node: Node<unknown>) => {
     if (!isMobile) {
@@ -87,6 +69,7 @@ const LayoutFlow = () => {
         nodeTypes={nodeTypes}
         fitView
       >
+        <NodeAutoLayout />
         <MiniMap />
         <Controls />
         <Background />
@@ -95,13 +78,15 @@ const LayoutFlow = () => {
   );
 };
 
-export const TriggerPage = () => {
+export const BotPage = () => {
   return (
-    <Router base="/trigger">
+    <Router base="/bot">
       <ReactFlowProvider>
-        <LayoutFlow />
+        <Route path="/:action?/:id?">
+          <Layout />
+        </Route>
         <TriggerDrawer />
-        <TriggerModal />
+        <NodeTypeSelectorModal />
       </ReactFlowProvider>
     </Router>
   );

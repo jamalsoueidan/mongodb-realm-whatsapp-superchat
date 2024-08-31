@@ -67,15 +67,15 @@ export const LeftNavigation = () => {
           </ActionIcon>
         </Tooltip>
 
-        <Tooltip label="Team">
+        <Tooltip label="Bot">
           <ActionIcon
             variant="transparent"
             color="#555"
-            aria-label="Trigger"
+            aria-label="Bot"
             radius="xl"
             size="lg"
             component={Link}
-            to="/trigger"
+            to="/bot"
           >
             <IconAlarm style={{ width: "70%", height: "70%" }} stroke={1.5} />
           </ActionIcon>

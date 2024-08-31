@@ -18,13 +18,13 @@ export const PlusNode = ({ id, targetPosition }: NodeProps<unknown>) => {
         component={Link}
         to={`/replace/${id}`}
       >
-        <Handle
-          position={targetPosition || Position.Left}
-          id={id}
-          type="target"
-        />
         <IconPlus />
       </Button>
+      <Handle
+        position={targetPosition || Position.Left}
+        id={id}
+        type="target"
+      />
     </>
   );
 };
