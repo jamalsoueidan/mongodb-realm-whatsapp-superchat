@@ -73,7 +73,7 @@ const Layout = () => {
         <Panel position="top-right">
           <button onClick={() => triggerLayout(true)}>Autolayout</button>
         </Panel>
-        <MiniMap />
+        {!isMobile ? <MiniMap /> : null}
         <Controls />
         <Background />
       </ReactFlow>

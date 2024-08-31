@@ -117,7 +117,7 @@ export const InteractiveListNode = (props: NodeProps<InteractiveList>) => {
         <Text c="dimmed" fz="sm">
           {interactive.footer.text}
         </Text>
-        <Button variant="outline" leftSection={<IconMenu2 />} mt="xs">
+        <Button variant="outline" leftSection={<IconMenu2 />}>
           {interactive.action.button}
         </Button>
         <Handle

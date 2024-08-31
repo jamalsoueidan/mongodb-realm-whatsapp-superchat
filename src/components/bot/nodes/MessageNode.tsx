@@ -55,7 +55,7 @@ export const MessageNode = (props: NodeProps<Message>) => {
   const { data, id } = props;
   return (
     <NodeWrapper {...props}>
-      <Stack gap={rem(2)} px="sm" pos="relative">
+      <Stack gap={rem(2)} p="xs" pos="relative">
         <Text c="dimmed" fz="sm">
           {data.text.body}
         </Text>

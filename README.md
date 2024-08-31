@@ -19,6 +19,10 @@ This project is a WhatsApp-based chat application that allows users to interact 
 - **Team Page & Role Management**: Users can view a list of team members, and admins have the ability to change user roles, ensuring proper access control and management within the team.
 - **Contacts**: Users can access and search through contacts, making it easy to re-engage with past customers and send new messages.
 - **Internal Messaging with Mentions**: Users can send internal messages to team members within the chat using mentions (@), enabling streamlined communication and collaboration directly in the chat interface.
+- **Automated Interactive Workflows**: Users can create and manage complex interactive workflows using a visual interface, allowing for automated sequences based on user responses. This includes managing flows like interactive lists and buttons, which can trigger subsequent actions.
+- **Visual Flow**: A Visual Flow interface for building and managing the sequences of automated responses, making it easier to create and modify workflows without needing to code.
+- **Custom Node Components**: Users can choose from various node types (e.g., interactive lists, buttons, or triggers) within the visual flow builder, with each node defining a specific type of interaction.
+- **Auto Layout for Flow Nodes**: Automatically organizes and arranges nodes in the visual flow builder to ensure a clean and understandable layout, improving the user experience when managing complex workflows.
 
 ## Tech Stack
 
