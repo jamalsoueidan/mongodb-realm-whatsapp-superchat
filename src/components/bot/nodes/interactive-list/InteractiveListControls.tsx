@@ -1,37 +1,115 @@
-import { Button, Code, Stack, Text, TextInput } from "@mantine/core";
+import { ActionIcon, Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useState } from "react";
+import { IconTrash } from "@tabler/icons-react";
+import React from "react";
 import { NodeProps } from "reactflow";
 import { InteractiveList } from "./InteractiveListType";
+import { useInteractiveList } from "./useInteractiveList";
 
 export function InteractiveListControls(props: NodeProps<InteractiveList>) {
+  const { update } = useInteractiveList(props.id);
+
   const form = useForm({
-    mode: "controlled",
     initialValues: props.data.interactive,
   });
 
-  const [submittedValues, setSubmittedValues] = useState<
-    typeof form.values | null
-  >(null);
+  const sections = form
+    .getValues()
+    .action.sections.map((section, sectionIndex) => {
+      const rows = section.rows.map((row, rowIndex) => (
+        <Group key={row.id} gap="xs">
+          <TextInput
+            withAsterisk
+            label="Row title"
+            flex="1"
+            {...form.getInputProps(
+              `action.sections.${sectionIndex}.rows.${rowIndex}.title`
+            )}
+          />
+
+          <ActionIcon
+            color="red"
+            mt="lg"
+            onClick={() =>
+              form.removeListItem(
+                `action.sections.${sectionIndex}.rows`,
+                rowIndex
+              )
+            }
+          >
+            <IconTrash size="1rem" />
+          </ActionIcon>
+        </Group>
+      ));
+
+      return (
+        <React.Fragment key={sectionIndex}>
+          <Group gap="xs">
+            <TextInput
+              withAsterisk
+              label="Section title"
+              flex="1"
+              {...form.getInputProps(`action.sections.${sectionIndex}.title`)}
+            />
+
+            <ActionIcon
+              color="red"
+              mt="lg"
+              onClick={() =>
+                form.removeListItem("action.sections", sectionIndex)
+              }
+            >
+              <IconTrash size="1rem" />
+            </ActionIcon>
+          </Group>
+          <Stack gap="xs" px="md">
+            {rows}
+          </Stack>
+          <Group justify="center">
+            <Button
+              onClick={() =>
+                form.insertListItem(`action.sections.${sectionIndex}.rows`, {
+                  id: new Realm.BSON.ObjectId().toString(),
+                  title: "",
+                })
+              }
+            >
+              Add row
+            </Button>
+          </Group>
+        </React.Fragment>
+      );
+    });
 
   return (
-    <form onSubmit={form.onSubmit(setSubmittedValues)}>
-      <Stack>
-        <TextInput {...form.getInputProps("header.text")} label="Header" />
-        <TextInput {...form.getInputProps("body.text")} label="Body" />
-        <TextInput {...form.getInputProps("footer.text")} label="Footer" />
-        <Button type="submit" mt="md">
-          Submit
+    <Stack>
+      <TextInput {...form.getInputProps("header.text")} label="Header" />
+      <TextInput {...form.getInputProps("body.text")} label="Body" />
+      <TextInput {...form.getInputProps("footer.text")} label="Footer" />
+
+      {sections}
+      <Group justify="center">
+        <Button
+          onClick={() =>
+            form.insertListItem("action.sections", {
+              title: "",
+              rows: [],
+            })
+          }
+        >
+          Add section
         </Button>
-      </Stack>
+      </Group>
 
-      <Text mt="md">Form values:</Text>
-      <Code block>{JSON.stringify(form.values, null, 2)}</Code>
-
-      <Text mt="md">Submitted values:</Text>
-      <Code block>
-        {submittedValues ? JSON.stringify(submittedValues, null, 2) : "–"}
-      </Code>
-    </form>
+      <Button
+        type="submit"
+        mt="md"
+        onClick={() =>
+          update({ interactive: form.values, type: props.data.type })
+        }
+      >
+        Submit
+      </Button>
+    </Stack>
   );
 }

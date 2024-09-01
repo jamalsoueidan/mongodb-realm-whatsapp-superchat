@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card, Divider, Drawer, Flex, ScrollArea, Title } from "@mantine/core";
-import { ComponentType, useEffect } from "react";
+import { ComponentType } from "react";
 import { NodeProps, useReactFlow } from "reactflow";
 import "reactflow/dist/style.css";
 import { Redirect, useRoute } from "wouter";
@@ -22,14 +22,9 @@ export const DrawerNodeControl = () => {
   const isMobile = useMobile();
   const [isMatch, params] = useRoute<{ id: string }>("/controls/:id");
 
-  const { getNode, fitView } = useReactFlow();
+  const { getNode } = useReactFlow();
 
   const node = getNode(params?.id || "");
-
-  useEffect(() => {
-    fitView();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   if (!node) {
     return <Redirect to="/" />;
