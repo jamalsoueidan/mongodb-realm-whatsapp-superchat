@@ -16,25 +16,20 @@ import { Divider, Flex, Title } from "@mantine/core";
 import "reactflow/dist/style.css";
 import { Route, Router, useLocation, useRoute } from "wouter";
 import { initialEdges, initialNodes } from "../components/bot/defaultValues";
+import { ModalNodePicker } from "../components/bot/ModalNodePicker";
 import { nodeTypes } from "../components/bot/NodeTypes";
-import { NodeTypeSelectorModal } from "../components/bot/NodeTypeSelectorModal";
-import { TriggerDrawer } from "../components/bot/TriggerDrawer";
+
+import { DrawerNodeControl } from "../components/bot/DrawerNodeControl";
 import { useNodeAutoLayout } from "../components/bot/useNodeAutoLayout";
 import { useMobile } from "../hooks/useMobile";
 
 const Layout = () => {
   const [, setLocation] = useLocation();
-  const [isMatch] = useRoute("/:id");
+  const [isMatch] = useRoute("/controls/:id");
   const isMobile = useMobile();
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const { triggerLayout } = useNodeAutoLayout();
-  /*const onNodeClick = (_: unknown, node: Node<unknown>) => {
-    if (!isMobile) {
-      //onMobile we add a button to edit nodes
-      setLocation(`/${node.id}`);
-    }
-  };*/
 
   const onPaneClick = () => {
     if (!isMobile) {
@@ -56,7 +51,7 @@ const Layout = () => {
       h="100%"
     >
       <Flex p="md" h="60px" justify="space-between" align="center" gap="xs">
-        <Title order={3}>Trigger</Title>
+        <Title order={3}>Bot</Title>
       </Flex>
       <Divider />
       <ReactFlow
@@ -88,8 +83,8 @@ export const BotPage = () => {
         <Route path="/:action?/:id?">
           <Layout />
         </Route>
-        <TriggerDrawer />
-        <NodeTypeSelectorModal />
+        <DrawerNodeControl />
+        <ModalNodePicker />
       </ReactFlowProvider>
     </Router>
   );

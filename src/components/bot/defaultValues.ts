@@ -1,18 +1,18 @@
 import { Edge, Node } from "reactflow";
 import { NodesDataTypes } from "./NodeDataTypes";
-import { NodeTypes } from "./NodeTypes";
+import { NodeEnumTypes } from "./NodeEnumTypes";
 
-export const initialNodes: Node<NodesDataTypes, NodeTypes>[] = [
+export const initialNodes: Node<NodesDataTypes, NodeEnumTypes>[] = [
   {
     id: "1",
     position: { x: 0, y: 0 },
-    type: NodeTypes.StartNode,
+    type: NodeEnumTypes.StartNode,
     data: {},
   },
   {
     id: "2",
     position: { x: 0, y: 0 },
-    type: NodeTypes.PlusNode,
+    type: NodeEnumTypes.PlusNode,
     data: {},
   } /*
   {

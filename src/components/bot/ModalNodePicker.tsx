@@ -3,12 +3,12 @@ import { Edge, Node, useReactFlow } from "reactflow";
 import "reactflow/dist/style.css";
 import { Redirect, useLocation, useRoute } from "wouter";
 import { CustomModal } from "../CustomModal";
-import { createInteractiveButtonNode } from "./nodes/InteractiveButtonsNode";
-import { createInteractiveFlowNode } from "./nodes/InteractiveFlowNode";
-import { createInteractiveListNode } from "./nodes/InteractiveListNode";
-import { createMessageNode } from "./nodes/MessageNode";
+import { createInteractiveButtonNode } from "./nodes/interactive-buttons/InteractiveButtonsAction";
+import { createInteractiveFlowNode } from "./nodes/interactive-flow/InteractiveFlowAction";
+import { createInteractiveListNode } from "./nodes/interactive-list/InteractiveListActions";
+import { createMessageNode } from "./nodes/message/MessageAction";
 
-export const NodeTypeSelectorModal = () => {
+export const ModalNodePicker = () => {
   const [, setLocation] = useLocation();
   const [isMatch, params] = useRoute<{ id: string }>("/replace/:id");
   const { setNodes, setEdges, getNode } = useReactFlow();

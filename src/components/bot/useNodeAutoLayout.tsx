@@ -79,7 +79,7 @@ export const useNodeAutoLayout = () => {
         triggerLayout(false);
 
         window.requestAnimationFrame(() => {
-          fitView();
+          fitView({ maxZoom: 1.5 });
         });
       }
     }

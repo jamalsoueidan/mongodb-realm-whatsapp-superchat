@@ -1,7 +1,9 @@
-import { InterctiveFlow } from "./nodes/InteractiveFlowNode";
-import { Message } from "./nodes/MessageNode";
-import { PlusNode } from "./nodes/PlusNode";
-import { StartNode } from "./nodes/StartNode";
+import { InteractiveButtons } from "./nodes/interactive-buttons/InteractiveButtonsAction";
+import { InterctiveFlow } from "./nodes/interactive-flow/InteractiveFlowAction";
+import { InteractiveList } from "./nodes/interactive-list/InteractiveListType";
+import { Message } from "./nodes/message/MessageAction";
+import { PlusNode } from "./nodes/plus/PlusNode";
+import { StartNode } from "./nodes/start/StartNode";
 
 export type NodesDataTypes =
   | InteractiveButtons

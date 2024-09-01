@@ -1,26 +1,20 @@
 import { ComponentType } from "react";
 import { NodeProps } from "reactflow";
-import { InteractiveButtonsNode } from "./nodes/InteractiveButtonsNode";
-import { InteractiveFlowNode } from "./nodes/InteractiveFlowNode";
-import { InteractiveListNode } from "./nodes/InteractiveListNode";
-import { MessageNode } from "./nodes/MessageNode";
-import { PlusNode } from "./nodes/PlusNode";
-import { StartNode } from "./nodes/StartNode";
 
-export enum NodeTypes {
-  InteractiveList = "interactive-list",
-  InteractiveFlow = "interactive-flow",
-  InteractiveButtons = "interactive-buttons",
-  StartNode = "start-node",
-  PlusNode = "connect-node",
-  Message = "message",
-}
+import { NodeEnumTypes } from "./NodeEnumTypes";
 
-export const nodeTypes: Record<NodeTypes, ComponentType<NodeProps>> = {
-  [NodeTypes.InteractiveList]: InteractiveListNode,
-  [NodeTypes.InteractiveFlow]: InteractiveFlowNode,
-  [NodeTypes.InteractiveButtons]: InteractiveButtonsNode,
-  [NodeTypes.Message]: MessageNode,
-  [NodeTypes.StartNode]: StartNode,
-  [NodeTypes.PlusNode]: PlusNode,
+import { InteractiveButtonsNode } from "./nodes/interactive-buttons/InteractiveButtonsNode";
+import { InteractiveFlowNode } from "./nodes/interactive-flow/InteractiveFlowNode";
+import { InteractiveListNode } from "./nodes/interactive-list/InteractiveListNode";
+import { MessageNode } from "./nodes/message/MessageNode";
+import { PlusNode } from "./nodes/plus/PlusNode";
+import { StartNode } from "./nodes/start/StartNode";
+
+export const nodeTypes: Record<NodeEnumTypes, ComponentType<NodeProps>> = {
+  [NodeEnumTypes.InteractiveList]: InteractiveListNode,
+  [NodeEnumTypes.InteractiveFlow]: InteractiveFlowNode,
+  [NodeEnumTypes.InteractiveButtons]: InteractiveButtonsNode,
+  [NodeEnumTypes.Message]: MessageNode,
+  [NodeEnumTypes.StartNode]: StartNode,
+  [NodeEnumTypes.PlusNode]: PlusNode,
 };

@@ -1,7 +1,5 @@
-import { rem, Stack, Text, Title } from "@mantine/core";
-import { Edge, Handle, Node, NodeProps, Position } from "reactflow";
-import { NodeTypes } from "../NodeTypes";
-import { NodeWrapper } from "./NodeWrapper";
+import { Edge, Node } from "reactflow";
+import { NodeEnumTypes } from "../../NodeEnumTypes";
 
 export type InterctiveFlow = {
   type: string;
@@ -78,7 +76,7 @@ export const createInteractiveFlowNode = (replace: Node) => {
   const selectNode: Node = {
     id: new Realm.BSON.ObjectId().toString(),
     position: { x: 0, y: 0 },
-    type: NodeTypes.PlusNode,
+    type: NodeEnumTypes.PlusNode,
     data: { name: "" },
   };
 
@@ -94,35 +92,8 @@ export const createInteractiveFlowNode = (replace: Node) => {
     id,
     data: newComponent,
     position,
-    type: NodeTypes.InteractiveFlow,
+    type: NodeEnumTypes.InteractiveFlow,
   });
 
   return { nodes, edges };
-};
-
-export const InteractiveFlowNode = (props: NodeProps<InterctiveFlow>) => {
-  const {
-    data: { interactive },
-  } = props;
-  return (
-    <NodeWrapper {...props}>
-      <Stack gap={rem(2)} pos="relative" p="sm">
-        <Title order={4}>{interactive.header.text}</Title>
-        <Text fz="md">{interactive.body.text}</Text>
-        <Text c="dimmed" fz="sm">
-          {interactive.footer.text}
-        </Text>
-        <Handle
-          type="target"
-          position={props.targetPosition || Position.Left}
-          id={props.id}
-        />
-        <Handle
-          type="source"
-          position={props.sourcePosition || Position.Right}
-          id={props.id}
-        />
-      </Stack>
-    </NodeWrapper>
-  );
 };
