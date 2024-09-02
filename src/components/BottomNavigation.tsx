@@ -1,5 +1,5 @@
 import { Flex } from "@mantine/core";
-import { IconAlarm, IconInbox, IconUsers } from "@tabler/icons-react";
+import { IconBinaryTree2, IconInbox, IconUsers } from "@tabler/icons-react";
 import { BottomNavigationLink } from "./BottomNavigationLink";
 
 export function BottomNavigation() {
@@ -16,7 +16,11 @@ export function BottomNavigation() {
     >
       <BottomNavigationLink to="/conversation" label="Chat" icon={IconInbox} />
       <BottomNavigationLink to="/team" label="Team" icon={IconUsers} />
-      <BottomNavigationLink to="/trigger" label="Trigger" icon={IconAlarm} />
+      <BottomNavigationLink
+        to="/trigger"
+        label="Trigger"
+        icon={IconBinaryTree2}
+      />
       <BottomNavigationLink to="/tools" label="Blah" icon={IconUsers} />
     </Flex>
   );

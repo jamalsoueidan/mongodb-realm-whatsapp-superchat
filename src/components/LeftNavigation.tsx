@@ -4,7 +4,7 @@ import { Link } from "wouter";
 import { ActionIcon, Avatar, Flex, Stack, Tooltip } from "@mantine/core";
 import { useRealm } from "@realm/react";
 import {
-  IconAlarm,
+  IconBinaryTree2,
   IconGraph,
   IconInbox,
   IconUsers,
@@ -77,7 +77,10 @@ export const LeftNavigation = () => {
             component={Link}
             to="/bot"
           >
-            <IconAlarm style={{ width: "70%", height: "70%" }} stroke={1.5} />
+            <IconBinaryTree2
+              style={{ width: "70%", height: "70%" }}
+              stroke={1.5}
+            />
           </ActionIcon>
         </Tooltip>
       </Stack>
