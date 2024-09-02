@@ -70,6 +70,7 @@ export const NodeAutoLayout = () => {
   const nodesInitialized = useNodesInitialized({
     includeHiddenNodes: false,
   });
+  //Todo: when clicking node, zoom on it, and show it instead of the whole flow.
 
   const { getNodes, setNodes, getEdges, setEdges, fitView } = useReactFlow();
 

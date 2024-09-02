@@ -11,12 +11,12 @@ export function InteractiveButtonsControls(
   const { updateNodeData } = useReactFlow();
 
   const form = useForm({
-    initialValues: props.data.interactive,
+    initialValues: props.data,
   });
 
   const buttons = form
     .getValues()
-    .action.buttons.map((button, sectionIndex) => {
+    .whatsapp.interactive.action.buttons.map((button, sectionIndex) => {
       return (
         <React.Fragment key={button.reply.id}>
           <Group gap="xs">
@@ -25,7 +25,7 @@ export function InteractiveButtonsControls(
               label="Button"
               flex="1"
               {...form.getInputProps(
-                `action.buttons.${sectionIndex}.reply.title`
+                `.whatsapp.interactive.action.buttons.${sectionIndex}.reply.title`
               )}
             />
 
@@ -33,7 +33,10 @@ export function InteractiveButtonsControls(
               color="red"
               mt="lg"
               onClick={() =>
-                form.removeListItem("action.buttons", sectionIndex)
+                form.removeListItem(
+                  ".whatsapp.interactive.action.buttons",
+                  sectionIndex
+                )
               }
             >
               <IconTrash size="1rem" />
@@ -45,17 +48,26 @@ export function InteractiveButtonsControls(
 
   return (
     <Stack>
-      <TextInput {...form.getInputProps("header.text")} label="Header" />
-      <TextInput {...form.getInputProps("body.text")} label="Body" />
-      <TextInput {...form.getInputProps("footer.text")} label="Footer" />
+      <TextInput
+        {...form.getInputProps(".whatsapp.interactive.header.text")}
+        label="Header"
+      />
+      <TextInput
+        {...form.getInputProps(".whatsapp.interactive.body.text")}
+        label="Body"
+      />
+      <TextInput
+        {...form.getInputProps(".whatsapp.interactive.footer.text")}
+        label="Footer"
+      />
 
       {buttons}
 
-      {form.getValues().action.buttons.length < 3 ? (
+      {form.getValues().whatsapp.interactive.action.buttons.length < 3 ? (
         <Group justify="center">
           <Button
             onClick={() =>
-              form.insertListItem(`action.buttons`, {
+              form.insertListItem(`.whatsapp.interactive.action.buttons`, {
                 type: "",
                 reply: {
                   id: new Realm.BSON.ObjectId().toString(),
@@ -75,12 +87,7 @@ export function InteractiveButtonsControls(
         <Button
           type="submit"
           color="green"
-          onClick={() =>
-            updateNodeData(props.id, {
-              interactive: form.values,
-              type: props.data.type,
-            })
-          }
+          onClick={() => updateNodeData(props.id, form.values)}
         >
           Save
         </Button>

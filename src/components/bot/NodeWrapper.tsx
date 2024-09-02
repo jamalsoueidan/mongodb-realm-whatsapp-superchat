@@ -7,7 +7,7 @@ export function NodeWrapper({
   children,
   ...props
 }: NodeProps & { children: React.ReactNode }) {
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const params = useParams();
 
   return (
@@ -34,7 +34,7 @@ export function NodeWrapper({
         <ActionIcon
           variant="transparent"
           color="black"
-          onClick={() => setLocation(`/controls/${props.id}`)}
+          onClick={() => setLocation(`${location}/controls/${props.id}`)}
         >
           <IconMenu2 />
         </ActionIcon>

@@ -10,7 +10,9 @@ export type InteractiveListNode = Node<InteractiveList, "interactive-list">;
 
 export const InteractiveListNode = (props: NodeProps<InteractiveListNode>) => {
   const {
-    data: { interactive },
+    data: {
+      whatsapp: { interactive },
+    },
     sourcePosition,
   } = props;
 
@@ -22,7 +24,7 @@ export const InteractiveListNode = (props: NodeProps<InteractiveListNode>) => {
         <Text c="dimmed" fz="sm">
           {interactive.footer.text}
         </Text>
-        <Button variant="outline" leftSection={<IconMenu2 />} color="gray.6">
+        <Button variant="outline" leftSection={<IconMenu2 />} disabled>
           {interactive.action.button}
         </Button>
       </Stack>
@@ -43,6 +45,7 @@ export const InteractiveListNode = (props: NodeProps<InteractiveListNode>) => {
                       size="compact-sm"
                       c="blue"
                       color="gray.4"
+                      disabled
                       fullWidth
                     >
                       {row.title}
@@ -51,6 +54,7 @@ export const InteractiveListNode = (props: NodeProps<InteractiveListNode>) => {
                       type="source"
                       position={sourcePosition || Position.Right}
                       id={row.id}
+                      multiHandlers={true}
                     />
                   </Box>
                 );

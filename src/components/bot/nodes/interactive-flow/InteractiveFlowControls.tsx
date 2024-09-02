@@ -7,27 +7,23 @@ export function InteractiveFlowControls(props: NodeProps<InteractiveFlowNode>) {
   const { updateNodeData } = useReactFlow();
 
   const form = useForm({
-    initialValues: props.data.interactive,
+    initialValues: props.data,
   });
 
   return (
     <Stack>
-      <TextInput {...form.getInputProps("header.text")} label="Header" />
-      <TextInput {...form.getInputProps("body.text")} label="Body" />
-      <TextInput {...form.getInputProps("footer.text")} label="Footer" />
-
-      <Group justify="center">
-        <Button
-          onClick={() =>
-            form.insertListItem("action.sections", {
-              title: "",
-              rows: [],
-            })
-          }
-        >
-          Add section
-        </Button>
-      </Group>
+      <TextInput
+        {...form.getInputProps("whatsapp.interactive.header.text")}
+        label="Header"
+      />
+      <TextInput
+        {...form.getInputProps("whatsapp.interactive.body.text")}
+        label="Body"
+      />
+      <TextInput
+        {...form.getInputProps("whatsapp.interactive.footer.text")}
+        label="Footer"
+      />
 
       <Group justify="center">
         <Button variant="subtle" onClick={() => form.reset()}>
@@ -36,12 +32,7 @@ export function InteractiveFlowControls(props: NodeProps<InteractiveFlowNode>) {
         <Button
           type="submit"
           color="green"
-          onClick={() =>
-            updateNodeData(props.id, {
-              interactive: form.values,
-              type: props.data.type,
-            })
-          }
+          onClick={() => updateNodeData(props.id, form.values)}
         >
           Save
         </Button>

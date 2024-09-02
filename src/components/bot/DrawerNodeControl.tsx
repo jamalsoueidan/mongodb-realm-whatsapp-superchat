@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card, Divider, Drawer, Flex, ScrollArea, Title } from "@mantine/core";
 import { useReactFlow } from "@xyflow/react";
-import { Redirect, useRoute } from "wouter";
+import { useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
 
 import { InteractiveButtonsControls } from "./nodes/interactive-buttons/InteractiveButtonsControls";
@@ -16,14 +16,18 @@ const controlTypes: Record<string, any> = {
 
 export const DrawerNodeControl = () => {
   const isMobile = useMobile();
-  const [isMatch, params] = useRoute<{ id: string }>("/controls/:id");
+  const [isMatch, params] = useRoute<{
+    flowId: string;
+    id: string;
+    section: "replace" | "controls";
+  }>(":flowId/:section/:id");
 
   const { getNode } = useReactFlow();
 
   const node = getNode(params?.id || "");
 
-  if (!node) {
-    return <Redirect to="/" />;
+  if (!node || params?.section !== "controls") {
+    return null;
   }
 
   const Component = controlTypes[node.type || ""];
@@ -44,7 +48,11 @@ export const DrawerNodeControl = () => {
           <Divider />
 
           <Card>
-            <Component {...(node as any)} />
+            {Component ? (
+              <Component {...(node as any)} />
+            ) : (
+              <Title order={5}>No controls for this node</Title>
+            )}
           </Card>
         </Drawer.Body>
       </Drawer.Content>

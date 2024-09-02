@@ -5,10 +5,12 @@ import { CustomNodeTypes } from "../../CustomNodeTypes";
 import { Message } from "./MessageType";
 
 export const MessageDefault: Message = {
-  type: "text",
-  text: {
-    preview_url: true,
-    body: "asd",
+  whatsapp: {
+    type: "text",
+    text: {
+      preview_url: true,
+      body: "asd",
+    },
   },
 };
 

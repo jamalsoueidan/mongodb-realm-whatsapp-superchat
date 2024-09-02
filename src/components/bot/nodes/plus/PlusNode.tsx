@@ -1,13 +1,13 @@
 import { Button } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
-import { Node, NodeProps, Position } from "@xyflow/react";
-import { Link } from "wouter";
-import { CustomHandle } from "../../handlers/CustomHandler";
+import { Handle, Node, NodeProps, Position } from "@xyflow/react";
+import { Link, useLocation } from "wouter";
 import { Plus } from "./PlusType";
 
 export type PlusNode = Node<Plus, "plus">;
 
 export const PlusNode = ({ id, targetPosition }: NodeProps<PlusNode>) => {
+  const [location] = useLocation();
   return (
     <>
       <Button
@@ -16,11 +16,11 @@ export const PlusNode = ({ id, targetPosition }: NodeProps<PlusNode>) => {
         radius="md"
         pos="relative"
         component={Link}
-        to={`/replace/${id}`}
+        to={`${location}/replace/${id}`}
       >
         <IconPlus />
       </Button>
-      <CustomHandle
+      <Handle
         position={targetPosition || Position.Left}
         id={id}
         type="target"

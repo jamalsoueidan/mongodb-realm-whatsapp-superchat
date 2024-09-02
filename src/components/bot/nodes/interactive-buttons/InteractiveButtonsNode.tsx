@@ -14,7 +14,9 @@ export const InteractiveButtonsNode = (
   props: NodeProps<InteractiveButtonsNode>
 ) => {
   const {
-    data: { interactive },
+    data: {
+      whatsapp: { interactive },
+    },
   } = props;
 
   return (
@@ -37,6 +39,7 @@ export const InteractiveButtonsNode = (
                 type="source"
                 position={props.sourcePosition || Position.Right}
                 id={button.reply.id}
+                multiHandlers={true}
               />
             </Box>
           );

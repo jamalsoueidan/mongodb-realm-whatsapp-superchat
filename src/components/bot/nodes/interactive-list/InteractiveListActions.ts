@@ -4,39 +4,40 @@ import { CustomNodeTypes } from "../../CustomNodeTypes";
 import { InteractiveList } from "./InteractiveListType";
 
 export const InteractiveListDefault: InteractiveList = {
-  type: "interactive",
-  interactive: {
-    type: "list",
-    header: {
-      type: "text",
-      text: "Header",
-    },
-    body: {
-      text: "Body",
-    },
-    footer: {
-      text: "Footer",
-    },
-    action: {
-      button: "Action Button",
-      sections: [
-        {
-          title: "Title",
-          rows: [
-            {
-              id: "1",
-              title: "Action Menu",
-            },
-          ],
-        },
-      ],
+  whatsapp: {
+    type: "interactive",
+    interactive: {
+      type: "list",
+      header: {
+        type: "text",
+        text: "Header",
+      },
+      body: {
+        text: "Body",
+      },
+      footer: {
+        text: "Footer",
+      },
+      action: {
+        button: "Action Button",
+        sections: [
+          {
+            title: "Title",
+            rows: [
+              {
+                id: "1",
+                title: "Action Menu",
+              },
+            ],
+          },
+        ],
+      },
     },
   },
 };
 
 export const createInteractiveListNode = (replace: Node) => {
-  const { id, position } = replace;
-
+  const { id } = replace;
   const nodes: CustomNodeTypes[] = [];
   const edges: Edge[] = [];
 
@@ -44,7 +45,7 @@ export const createInteractiveListNode = (replace: Node) => {
     JSON.stringify(InteractiveListDefault)
   );
 
-  newComponent.interactive.action.sections.forEach((section) => {
+  newComponent.whatsapp.interactive.action.sections.forEach((section) => {
     section.rows = section.rows.map((row) => {
       row.id = new Realm.BSON.ObjectId().toString();
       const selectNode: CustomNodeTypes = {
@@ -68,9 +69,9 @@ export const createInteractiveListNode = (replace: Node) => {
   });
 
   nodes.push({
+    ...replace,
     id,
     data: newComponent,
-    position,
     type: "interactive-list",
   });
 

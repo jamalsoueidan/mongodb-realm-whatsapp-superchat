@@ -9,7 +9,9 @@ export type InteractiveFlowNode = Node<InteractiveFlow, "interactive-flow">;
 
 export const InteractiveFlowNode = (props: NodeProps<InteractiveFlowNode>) => {
   const {
-    data: { interactive },
+    data: {
+      whatsapp: { interactive },
+    },
   } = props;
   return (
     <NodeWrapper {...props}>
@@ -23,6 +25,7 @@ export const InteractiveFlowNode = (props: NodeProps<InteractiveFlowNode>) => {
           type="source"
           position={props.sourcePosition || Position.Right}
           id={props.id}
+          multiHandlers={false}
         />
       </Stack>
     </NodeWrapper>

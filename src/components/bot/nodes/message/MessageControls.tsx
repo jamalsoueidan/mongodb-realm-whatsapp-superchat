@@ -12,7 +12,7 @@ export function MessageControls(props: NodeProps<MessageNode>) {
 
   return (
     <Stack>
-      <Textarea {...form.getInputProps("text.body")} label="Header" />
+      <Textarea {...form.getInputProps("whatsapp.text.body")} label="Header" />
 
       <Group justify="center">
         <Button variant="subtle" onClick={() => form.reset()}>

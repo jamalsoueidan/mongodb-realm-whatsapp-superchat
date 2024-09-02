@@ -1,7 +1,7 @@
 import { Button, Stack } from "@mantine/core";
 import { Edge, Node, useReactFlow } from "@xyflow/react";
 
-import { Redirect, useLocation, useRoute } from "wouter";
+import { useLocation, useRoute } from "wouter";
 import { CustomModal } from "../CustomModal";
 import { createInteractiveButtonNode } from "./nodes/interactive-buttons/InteractiveButtonsAction";
 import { createInteractiveFlowNode } from "./nodes/interactive-flow/InteractiveFlowAction";
@@ -10,11 +10,15 @@ import { createMessageNode } from "./nodes/message/MessageAction";
 
 export const ModalNodePicker = () => {
   const [, setLocation] = useLocation();
-  const [isMatch, params] = useRoute<{ id: string }>("/replace/:id");
+  const [isMatch, params] = useRoute<{
+    flowId: string;
+    id: string;
+    section: "replace" | "controls";
+  }>(":flowId/:section/:id");
   const { setNodes, setEdges, getNode } = useReactFlow();
 
   const currentNode = getNode(params?.id || "");
-  if (!currentNode) return <Redirect to="/" />;
+  if (!currentNode || params?.section !== "replace") return null;
 
   const addOnclick = ({ nodes, edges }: { nodes: Node[]; edges: Edge[] }) => {
     setNodes((prev: Array<Node>) => {
@@ -25,13 +29,13 @@ export const ModalNodePicker = () => {
       return [...prev, ...edges];
     });
 
-    setLocation("/");
+    setLocation(`/${params.flowId}`);
   };
 
   return (
     <CustomModal
       opened={isMatch}
-      onClose={() => setLocation("/")}
+      onClose={() => setLocation(`/${params.flowId}`)}
       title="Add trigger"
     >
       <Stack>

@@ -4,35 +4,37 @@ import { CustomNodeTypes } from "../../CustomNodeTypes";
 import { InteractiveButtons } from "./InteractiveButtonsType";
 
 export const InteractiveButtonsDefault: InteractiveButtons = {
-  type: "interactive",
-  interactive: {
-    type: "button",
-    header: {
-      type: "text",
-      text: "Title",
-    },
-    body: {
-      text: "Body",
-    },
-    footer: {
-      text: "Footer",
-    },
-    action: {
-      buttons: [
-        {
-          type: "reply",
-          reply: {
-            id: "1",
-            title: "Button",
+  whatsapp: {
+    type: "interactive",
+    interactive: {
+      type: "button",
+      header: {
+        type: "text",
+        text: "Title",
+      },
+      body: {
+        text: "Body",
+      },
+      footer: {
+        text: "Footer",
+      },
+      action: {
+        buttons: [
+          {
+            type: "reply",
+            reply: {
+              id: "1",
+              title: "Button",
+            },
           },
-        },
-      ],
+        ],
+      },
     },
   },
 };
 
 export const createInteractiveButtonNode = (replace: Node) => {
-  const { id, position } = replace;
+  const { id } = replace;
 
   const nodes: CustomNodeTypes[] = [];
   const edges: Edge[] = [];
@@ -41,8 +43,8 @@ export const createInteractiveButtonNode = (replace: Node) => {
     JSON.stringify(InteractiveButtonsDefault)
   );
 
-  newComponent.interactive.action.buttons =
-    newComponent.interactive.action.buttons.map((button) => {
+  newComponent.whatsapp.interactive.action.buttons =
+    newComponent.whatsapp.interactive.action.buttons.map((button) => {
       button.reply.id = new Realm.BSON.ObjectId().toString();
       const selectNode: CustomNodeTypes = {
         id: button.reply.id,
@@ -65,9 +67,9 @@ export const createInteractiveButtonNode = (replace: Node) => {
     });
 
   nodes.push({
+    ...replace,
     id,
     data: newComponent,
-    position,
     type: "interactive-buttons",
   });
 

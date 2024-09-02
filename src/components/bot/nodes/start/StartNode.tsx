@@ -23,6 +23,7 @@ export const StartNode = ({ id, sourcePosition }: NodeProps<StartNode>) => {
         position={sourcePosition || Position.Right}
         id={id}
         type="source"
+        multiHandlers={false}
       />
     </>
   );

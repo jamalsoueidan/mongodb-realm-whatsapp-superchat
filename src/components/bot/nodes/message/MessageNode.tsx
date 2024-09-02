@@ -17,13 +17,14 @@ export const MessageNode = (props: NodeProps<MessageNode>) => {
           fz="sm"
           style={{ whiteSpace: "pre-line" }}
           dangerouslySetInnerHTML={{
-            __html: data.text.body.replace(/\n\n/g, "<br />"),
+            __html: data.whatsapp.text.body.replace(/\n\n/g, "<br />"),
           }}
         />
         <CustomHandle
           type="source"
           position={props.sourcePosition || Position.Right}
           id={id}
+          multiHandlers={false}
         />
       </Stack>
     </NodeWrapper>

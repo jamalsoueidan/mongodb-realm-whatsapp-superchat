@@ -10,12 +10,12 @@ export function InteractiveListControls(props: NodeProps<InteractiveListNode>) {
   const { updateNodeData } = useReactFlow();
 
   const form = useForm({
-    initialValues: props.data.interactive,
+    initialValues: props.data,
   });
 
   const sections = form
     .getValues()
-    .action.sections.map((section, sectionIndex) => {
+    .whatsapp.interactive.action.sections.map((section, sectionIndex) => {
       const rows = section.rows.map((row, rowIndex) => (
         <Group key={row.id} gap="xs">
           <TextInput
@@ -23,7 +23,7 @@ export function InteractiveListControls(props: NodeProps<InteractiveListNode>) {
             label="Row title"
             flex="1"
             {...form.getInputProps(
-              `action.sections.${sectionIndex}.rows.${rowIndex}.title`
+              `whatsapp.interactive.action.sections.${sectionIndex}.rows.${rowIndex}.title`
             )}
           />
 
@@ -32,7 +32,7 @@ export function InteractiveListControls(props: NodeProps<InteractiveListNode>) {
             mt="lg"
             onClick={() =>
               form.removeListItem(
-                `action.sections.${sectionIndex}.rows`,
+                `whatsapp.interactive.action.sections.${sectionIndex}.rows`,
                 rowIndex
               )
             }
@@ -49,14 +49,19 @@ export function InteractiveListControls(props: NodeProps<InteractiveListNode>) {
               withAsterisk
               label="Section title"
               flex="1"
-              {...form.getInputProps(`action.sections.${sectionIndex}.title`)}
+              {...form.getInputProps(
+                `whatsapp.interactive.action.sections.${sectionIndex}.title`
+              )}
             />
 
             <ActionIcon
               color="red"
               mt="lg"
               onClick={() =>
-                form.removeListItem("action.sections", sectionIndex)
+                form.removeListItem(
+                  "whatsapp.interactive.action.sections",
+                  sectionIndex
+                )
               }
             >
               <IconTrash size="1rem" />
@@ -68,10 +73,13 @@ export function InteractiveListControls(props: NodeProps<InteractiveListNode>) {
           <Group justify="center">
             <Button
               onClick={() =>
-                form.insertListItem(`action.sections.${sectionIndex}.rows`, {
-                  id: new Realm.BSON.ObjectId().toString(),
-                  title: "",
-                })
+                form.insertListItem(
+                  `whatsapp.interactive.action.sections.${sectionIndex}.rows`,
+                  {
+                    id: new Realm.BSON.ObjectId().toString(),
+                    title: "",
+                  }
+                )
               }
             >
               Add row
@@ -83,15 +91,24 @@ export function InteractiveListControls(props: NodeProps<InteractiveListNode>) {
 
   return (
     <Stack>
-      <TextInput {...form.getInputProps("header.text")} label="Header" />
-      <TextInput {...form.getInputProps("body.text")} label="Body" />
-      <TextInput {...form.getInputProps("footer.text")} label="Footer" />
+      <TextInput
+        {...form.getInputProps("whatsapp.interactive.header.text")}
+        label="Header"
+      />
+      <TextInput
+        {...form.getInputProps("whatsapp.interactive.body.text")}
+        label="Body"
+      />
+      <TextInput
+        {...form.getInputProps("whatsapp.interactive.footer.text")}
+        label="Footer"
+      />
 
       {sections}
       <Group justify="center">
         <Button
           onClick={() =>
-            form.insertListItem("action.sections", {
+            form.insertListItem("whatsapp.interactive.action.sections", {
               title: "",
               rows: [],
             })
@@ -108,12 +125,7 @@ export function InteractiveListControls(props: NodeProps<InteractiveListNode>) {
         <Button
           type="submit"
           color="green"
-          onClick={() =>
-            updateNodeData(props.id, {
-              interactive: form.values,
-              type: props.data.type,
-            })
-          }
+          onClick={() => updateNodeData(props.id, form.values)}
         >
           Save
         </Button>

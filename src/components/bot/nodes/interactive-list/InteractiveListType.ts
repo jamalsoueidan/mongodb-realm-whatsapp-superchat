@@ -1,26 +1,28 @@
 export type InteractiveList = {
-  type: string;
-  interactive: {
+  whatsapp: {
     type: string;
-    header: {
+    interactive: {
       type: string;
-      text: string;
-    };
-    body: {
-      text: string;
-    };
-    footer: {
-      text: string;
-    };
-    action: {
-      button: string;
-      sections: Array<{
-        title: string;
-        rows: Array<{
-          id: string;
+      header: {
+        type: string;
+        text: string;
+      };
+      body: {
+        text: string;
+      };
+      footer: {
+        text: string;
+      };
+      action: {
+        button: string;
+        sections: Array<{
           title: string;
+          rows: Array<{
+            id: string;
+            title: string;
+          }>;
         }>;
-      }>;
+      };
     };
   };
 };

@@ -1,4 +1,4 @@
-import { Divider, Flex, Title } from "@mantine/core";
+import { Button, Divider, Flex, Title } from "@mantine/core";
 import {
   addEdge,
   Background,
@@ -9,6 +9,7 @@ import {
   MiniMap,
   NodeTypes,
   OnConnectStartParams,
+  Panel,
   ReactFlow,
   useEdgesState,
   useNodesState,
@@ -41,9 +42,13 @@ export const nodeTypes: NodeTypes = {
 
 export const Flow = () => {
   const [, setLocation] = useLocation();
-  const [isMatch] = useRoute("/controls/:id");
-  const connectingNodeId = useRef<OnConnectStartParams | null>(null);
   const isMobile = useMobile();
+  const [isMatch, params] = useRoute<{
+    flowId: string;
+    id: string;
+    section: "replace" | "controls";
+  }>(":flowId/:section/:id");
+  const connectingNodeId = useRef<OnConnectStartParams | null>(null);
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
@@ -107,28 +112,33 @@ export const Flow = () => {
     [screenToFlowPosition, setEdges, setNodes]
   );
 
-  const onEdgesDelete = (edges: Edge[]) => {
-    edges.forEach((edge) => {
+  const onEdgesDelete = (deletedEdges: Edge[]) => {
+    deletedEdges.forEach((edge) => {
       const node = nodes.find(
         (node) => node.id === edge.target && node.type === "plus"
       );
-      if (node) {
-        deleteElements({ nodes: [node] });
+
+      if (node && node.type) {
+        const totalEdges = edges.filter((e) => e.target === node.id).length;
+        if (totalEdges === 1) {
+          deleteElements({ nodes: [node] });
+        }
       }
     });
   };
 
+  console.log(params);
   const onPaneClick = () => {
-    if (!isMobile) {
+    if (!isMobile && params?.section) {
       //onMobile we have a close button
-      setLocation(`/`);
+      setLocation(`/${params?.flowId}`);
     }
   };
 
   const onConnect = useCallback(
     (params: Connection) => {
       connectingNodeId.current = null;
-      console.log(params);
+
       setEdges((edge: Array<Edge>) =>
         addEdge(
           {
@@ -151,7 +161,11 @@ export const Flow = () => {
   return (
     <Flex
       direction="column"
-      w={isMatch && !isMobile ? "calc(70% - 70px)" : "100%"}
+      w={
+        isMatch && !isMobile && params.section === "controls"
+          ? "calc(70% - 70px)"
+          : "100%"
+      }
       h="100%"
     >
       <Flex p="md" h="60px" justify="space-between" align="center" gap="xs">
@@ -174,6 +188,11 @@ export const Flow = () => {
         fitView
       >
         <NodeAutoLayout />
+        <Panel position="top-center">
+          <Button onClick={() => console.log(JSON.stringify(nodes))}>
+            print
+          </Button>
+        </Panel>
         {!isMobile ? <MiniMap /> : null}
         <Controls />
         <Background />
