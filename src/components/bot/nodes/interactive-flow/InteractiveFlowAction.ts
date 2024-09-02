@@ -1,38 +1,8 @@
-import { Edge, Node } from "reactflow";
-import { NodeEnumTypes } from "../../NodeEnumTypes";
+import { Edge, Node } from "@xyflow/react";
+import { CustomNodeTypes } from "../../CustomNodeTypes";
+import { InteractiveFlow } from "./InteractiveFlowType";
 
-export type InterctiveFlow = {
-  type: string;
-  interactive: {
-    type: string;
-    header: {
-      type: string;
-      text: string;
-    };
-    body: {
-      text: string;
-    };
-    footer: {
-      text: string;
-    };
-    action: {
-      name: string;
-      parameters: {
-        flow_message_version: string;
-        flow_token: string;
-        flow_id: string;
-        mode: string;
-        flow_cta: string;
-        flow_action: string;
-        flow_action_payload: {
-          screen: string;
-        };
-      };
-    };
-  };
-};
-
-export const InteractiveFlowDefault: InterctiveFlow = {
+export const InteractiveFlowDefault: InteractiveFlow = {
   type: "interactive",
   interactive: {
     type: "flow",
@@ -66,17 +36,17 @@ export const InteractiveFlowDefault: InterctiveFlow = {
 export const createInteractiveFlowNode = (replace: Node) => {
   const { id, position } = replace;
 
-  const nodes: Node[] = [];
+  const nodes: CustomNodeTypes[] = [];
   const edges: Edge[] = [];
 
-  const newComponent: InterctiveFlow = JSON.parse(
+  const newComponent: InteractiveFlow = JSON.parse(
     JSON.stringify(InteractiveFlowDefault)
   );
 
-  const selectNode: Node = {
+  const selectNode: CustomNodeTypes = {
     id: new Realm.BSON.ObjectId().toString(),
     position: { x: 0, y: 0 },
-    type: NodeEnumTypes.PlusNode,
+    type: "plus",
     data: { name: "" },
   };
 
@@ -86,13 +56,15 @@ export const createInteractiveFlowNode = (replace: Node) => {
     source: id,
     sourceHandle: selectNode.id,
     target: selectNode.id,
+    type: "delete-edge",
+    animated: true,
   });
 
   nodes.push({
     id,
     data: newComponent,
     position,
-    type: NodeEnumTypes.InteractiveFlow,
+    type: "interactive-flow",
   });
 
   return { nodes, edges };

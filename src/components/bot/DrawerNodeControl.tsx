@@ -1,21 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card, Divider, Drawer, Flex, ScrollArea, Title } from "@mantine/core";
-import { ComponentType } from "react";
-import { NodeProps, useReactFlow } from "reactflow";
-import "reactflow/dist/style.css";
+import { useReactFlow } from "@xyflow/react";
 import { Redirect, useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
 
-import { NodeEnumTypes } from "./NodeEnumTypes";
 import { InteractiveListControls } from "./nodes/interactive-list/InteractiveListControls";
 
-const controlTypes: Record<NodeEnumTypes, ComponentType<NodeProps>> = {
-  [NodeEnumTypes.InteractiveList]: InteractiveListControls,
-  [NodeEnumTypes.InteractiveFlow]: InteractiveListControls,
-  [NodeEnumTypes.InteractiveButtons]: InteractiveListControls,
-  [NodeEnumTypes.Message]: InteractiveListControls,
-  [NodeEnumTypes.StartNode]: InteractiveListControls,
-  [NodeEnumTypes.PlusNode]: InteractiveListControls,
+const controlTypes: Record<string, any> = {
+  "interactive-list": InteractiveListControls,
 };
 
 export const DrawerNodeControl = () => {
@@ -30,7 +22,7 @@ export const DrawerNodeControl = () => {
     return <Redirect to="/" />;
   }
 
-  const Component = controlTypes[NodeEnumTypes.InteractiveList];
+  const Component = controlTypes[node.type || ""];
 
   return (
     <Drawer.Root

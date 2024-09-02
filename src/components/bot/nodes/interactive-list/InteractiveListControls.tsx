@@ -1,13 +1,12 @@
 import { ActionIcon, Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconTrash } from "@tabler/icons-react";
+import { NodeProps, useReactFlow } from "@xyflow/react";
 import React from "react";
-import { NodeProps } from "reactflow";
-import { InteractiveList } from "./InteractiveListType";
-import { useInteractiveList } from "./useInteractiveList";
+import { InteractiveListNode } from "./InteractiveListNode";
 
-export function InteractiveListControls(props: NodeProps<InteractiveList>) {
-  const { update } = useInteractiveList(props.id);
+export function InteractiveListControls(props: NodeProps<InteractiveListNode>) {
+  const { updateNodeData } = useReactFlow();
 
   const form = useForm({
     initialValues: props.data.interactive,
@@ -105,7 +104,10 @@ export function InteractiveListControls(props: NodeProps<InteractiveList>) {
         type="submit"
         mt="md"
         onClick={() =>
-          update({ interactive: form.values, type: props.data.type })
+          updateNodeData(props.id, {
+            interactive: form.values,
+            type: props.data.type,
+          })
         }
       >
         Submit

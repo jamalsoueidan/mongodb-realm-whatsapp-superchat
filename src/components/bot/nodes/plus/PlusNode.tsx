@@ -1,13 +1,12 @@
 import { Button } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
-import { Handle, NodeProps, Position } from "reactflow";
+import { Handle, Node, NodeProps, Position } from "@xyflow/react";
 import { Link } from "wouter";
+import { Plus } from "./PlusType";
 
-export type PlusNode = {
-  name?: string;
-};
+export type PlusNode = Node<Plus, "plus">;
 
-export const PlusNode = ({ id, targetPosition }: NodeProps<unknown>) => {
+export const PlusNode = ({ id, targetPosition }: NodeProps<PlusNode>) => {
   return (
     <>
       <Button

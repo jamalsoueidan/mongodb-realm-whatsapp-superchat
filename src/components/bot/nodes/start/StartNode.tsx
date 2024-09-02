@@ -1,12 +1,11 @@
 import { Button } from "@mantine/core";
-import { Handle, NodeProps, Position } from "reactflow";
+import { Handle, Node, NodeProps, Position } from "@xyflow/react";
 import { Link } from "wouter";
+import { Start } from "./StartType";
 
-export type StartNode = {
-  name?: string;
-};
+export type StartNode = Node<Start, "start">;
 
-export const StartNode = ({ id, sourcePosition }: NodeProps<unknown>) => {
+export const StartNode = ({ id, sourcePosition }: NodeProps<StartNode>) => {
   return (
     <>
       <Button

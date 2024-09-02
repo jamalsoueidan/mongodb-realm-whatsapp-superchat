@@ -1,11 +1,13 @@
 import { Box, Button, Divider, rem, Stack, Text } from "@mantine/core";
 import { IconMenu2 } from "@tabler/icons-react";
-import { Handle, NodeProps, Position } from "reactflow";
+import { Handle, Node, NodeProps, Position } from "@xyflow/react";
 
 import { NodeWrapper } from "../../NodeWrapper";
 import { InteractiveList } from "./InteractiveListType";
 
-export const InteractiveListNode = (props: NodeProps<InteractiveList>) => {
+export type InteractiveListNode = Node<InteractiveList, "interactive-list">;
+
+export const InteractiveListNode = (props: NodeProps<InteractiveListNode>) => {
   const {
     data: { interactive },
     sourcePosition,

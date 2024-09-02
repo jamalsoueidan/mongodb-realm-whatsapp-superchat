@@ -1,10 +1,12 @@
 import { rem, Stack, Text, Title } from "@mantine/core";
-import { Handle, NodeProps, Position } from "reactflow";
+import { Handle, Node, NodeProps, Position } from "@xyflow/react";
 
 import { NodeWrapper } from "../../NodeWrapper";
-import { InterctiveFlow } from "./InteractiveFlowAction";
+import { InteractiveFlow } from "./InteractiveFlowType";
 
-export const InteractiveFlowNode = (props: NodeProps<InterctiveFlow>) => {
+export type InteractiveFlowNode = Node<InteractiveFlow, "interactive-flow">;
+
+export const InteractiveFlowNode = (props: NodeProps<InteractiveFlowNode>) => {
   const {
     data: { interactive },
   } = props;

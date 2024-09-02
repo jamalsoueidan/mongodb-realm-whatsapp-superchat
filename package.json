@@ -28,6 +28,7 @@
     "@tiptap/starter-kit": "^2.6.6",
     "@tiptap/suggestion": "^2.6.6",
     "@vitejs/plugin-react": "^4.0.3",
+    "@xyflow/react": "^12.2.0",
     "axios": "^1.7.3",
     "dagre": "^0.8.5",
     "dayjs": "^1.11.12",

@@ -1,31 +1,7 @@
-import { Edge, Node } from "reactflow";
-import { NodeEnumTypes } from "../../NodeEnumTypes";
+import { Edge, Node } from "@xyflow/react";
 
-export type InteractiveButtons = {
-  type: string;
-  interactive: {
-    type: "button";
-    header: {
-      type: "text"; //can be image, and other type
-      text: string;
-    };
-    body: {
-      text: string;
-    };
-    footer: {
-      text: string;
-    };
-    action: {
-      buttons: Array<{
-        type: "reply";
-        reply: {
-          id: string;
-          title: string;
-        };
-      }>;
-    };
-  };
-};
+import { CustomNodeTypes } from "../../CustomNodeTypes";
+import { InteractiveButtons } from "./InteractiveButtonsType";
 
 export const InteractiveButtonsDefault: InteractiveButtons = {
   type: "interactive",
@@ -58,7 +34,7 @@ export const InteractiveButtonsDefault: InteractiveButtons = {
 export const createInteractiveButtonNode = (replace: Node) => {
   const { id, position } = replace;
 
-  const nodes: Node[] = [];
+  const nodes: CustomNodeTypes[] = [];
   const edges: Edge[] = [];
 
   const newComponent: InteractiveButtons = JSON.parse(
@@ -68,10 +44,10 @@ export const createInteractiveButtonNode = (replace: Node) => {
   newComponent.interactive.action.buttons =
     newComponent.interactive.action.buttons.map((button) => {
       button.reply.id = new Realm.BSON.ObjectId().toString();
-      const selectNode: Node = {
+      const selectNode: CustomNodeTypes = {
         id: button.reply.id,
         position: { x: 0, y: 0 },
-        type: NodeEnumTypes.PlusNode,
+        type: "plus",
         data: { name: "" },
       };
 
@@ -81,6 +57,8 @@ export const createInteractiveButtonNode = (replace: Node) => {
         source: id,
         sourceHandle: selectNode.id,
         target: selectNode.id,
+        type: "delete-edge",
+        animated: true,
       });
 
       return button;
@@ -90,7 +68,7 @@ export const createInteractiveButtonNode = (replace: Node) => {
     id,
     data: newComponent,
     position,
-    type: NodeEnumTypes.InteractiveButtons,
+    type: "interactive-buttons",
   });
 
   return { nodes, edges };

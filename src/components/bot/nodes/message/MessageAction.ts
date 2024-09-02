@@ -1,13 +1,7 @@
-import { Edge, Node } from "reactflow";
-import { NodeEnumTypes } from "../../NodeEnumTypes";
+import { Edge, Node } from "@xyflow/react";
 
-export type Message = {
-  type: "text";
-  text: {
-    preview_url: boolean;
-    body: string;
-  };
-};
+import { CustomNodeTypes } from "../../CustomNodeTypes";
+import { Message } from "./MessageType";
 
 export const MessageDefault: Message = {
   type: "text",
@@ -20,15 +14,15 @@ export const MessageDefault: Message = {
 export const createMessageNode = (replace: Node) => {
   const { id, position } = replace;
 
-  const nodes: Node[] = [];
+  const nodes: CustomNodeTypes[] = [];
   const edges: Edge[] = [];
 
   const newComponent: Message = JSON.parse(JSON.stringify(MessageDefault));
 
-  const selectNode: Node = {
+  const selectNode: CustomNodeTypes = {
     id: new Realm.BSON.ObjectId().toString(),
     position: { x: 0, y: 0 },
-    type: NodeEnumTypes.PlusNode,
+    type: "plus",
     data: { name: "" },
   };
   nodes.push(selectNode);
@@ -36,13 +30,15 @@ export const createMessageNode = (replace: Node) => {
     id: `${id}-${selectNode.id}`,
     source: id,
     target: selectNode.id,
+    type: "delete-edge",
+    animated: true,
   });
 
   nodes.push({
     id,
     data: newComponent,
     position,
-    type: NodeEnumTypes.Message,
+    type: "message",
   });
 
   return { nodes, edges };

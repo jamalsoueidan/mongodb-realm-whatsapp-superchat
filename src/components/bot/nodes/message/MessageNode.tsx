@@ -1,10 +1,12 @@
 import { rem, Stack, Text } from "@mantine/core";
-import { Handle, NodeProps, Position } from "reactflow";
+import { Handle, Node, NodeProps, Position } from "@xyflow/react";
 
 import { NodeWrapper } from "../../NodeWrapper";
-import { Message } from "./MessageAction";
+import { Message } from "./MessageType";
 
-export const MessageNode = (props: NodeProps<Message>) => {
+export type MessageNode = Node<Message, "message">;
+
+export const MessageNode = (props: NodeProps<MessageNode>) => {
   const { data, id } = props;
   return (
     <NodeWrapper {...props}>

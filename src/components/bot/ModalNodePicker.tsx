@@ -1,6 +1,5 @@
 import { Button, Stack } from "@mantine/core";
-import { Edge, Node, useReactFlow } from "reactflow";
-import "reactflow/dist/style.css";
+import { Edge, Node, useReactFlow } from "@xyflow/react";
 import { Redirect, useLocation, useRoute } from "wouter";
 import { CustomModal } from "../CustomModal";
 import { createInteractiveButtonNode } from "./nodes/interactive-buttons/InteractiveButtonsAction";

@@ -1,12 +1,12 @@
 import { ActionIcon, Box, Divider, Group, Title } from "@mantine/core";
 import { IconMenu2 } from "@tabler/icons-react";
-import { Handle, NodeProps, Position } from "reactflow";
+import { Handle, NodeProps, Position } from "@xyflow/react";
 import { useLocation, useParams } from "wouter";
 
 export function NodeWrapper({
   children,
   ...props
-}: NodeProps<unknown> & { children: React.ReactNode }) {
+}: NodeProps & { children: React.ReactNode }) {
   const [, setLocation] = useLocation();
   const params = useParams();
 
@@ -32,7 +32,7 @@ export function NodeWrapper({
         align="center"
         pos="relative"
       >
-        <Title order={4}>{capitalizeFirstLetter(props.type)}</Title>
+        <Title order={4}>{capitalizeFirstLetter(props.type!)}</Title>
         <ActionIcon
           variant="transparent"
           color="black"

@@ -1,11 +1,16 @@
 import { Box, Button, rem, Stack, Text } from "@mantine/core";
-import { Handle, NodeProps, Position } from "reactflow";
+import { Handle, Node, NodeProps, Position } from "@xyflow/react";
 
 import { NodeWrapper } from "../../NodeWrapper";
-import { InteractiveButtons } from "./InteractiveButtonsAction";
+import { InteractiveButtons } from "./InteractiveButtonsType";
+
+export type InteractiveButtonsNode = Node<
+  InteractiveButtons,
+  "interactive-buttons"
+>;
 
 export const InteractiveButtonsNode = (
-  props: NodeProps<InteractiveButtons>
+  props: NodeProps<InteractiveButtonsNode>
 ) => {
   const {
     data: { interactive },

@@ -1,6 +1,6 @@
-import { Edge, Node } from "reactflow";
-
-import { NodeEnumTypes } from "../../NodeEnumTypes";
+import { Edge, Node } from "@xyflow/react";
+import Realm from "realm";
+import { CustomNodeTypes } from "../../CustomNodeTypes";
 import { InteractiveList } from "./InteractiveListType";
 
 export const InteractiveListDefault: InteractiveList = {
@@ -34,10 +34,10 @@ export const InteractiveListDefault: InteractiveList = {
   },
 };
 
-export const createInteractiveListNode = (replace: Node<unknown>) => {
+export const createInteractiveListNode = (replace: Node) => {
   const { id, position } = replace;
 
-  const nodes: Node[] = [];
+  const nodes: CustomNodeTypes[] = [];
   const edges: Edge[] = [];
 
   const newComponent: InteractiveList = JSON.parse(
@@ -47,10 +47,10 @@ export const createInteractiveListNode = (replace: Node<unknown>) => {
   newComponent.interactive.action.sections.forEach((section) => {
     section.rows = section.rows.map((row) => {
       row.id = new Realm.BSON.ObjectId().toString();
-      const selectNode: Node = {
+      const selectNode: CustomNodeTypes = {
         id: row.id,
         position: { x: 0, y: 0 },
-        type: NodeEnumTypes.PlusNode,
+        type: "plus",
         data: { name: "" },
       };
       nodes.push(selectNode);
@@ -59,6 +59,8 @@ export const createInteractiveListNode = (replace: Node<unknown>) => {
         source: id,
         sourceHandle: selectNode.id,
         target: selectNode.id,
+        type: "delete-edge",
+        animated: true,
       });
 
       return row;
@@ -69,7 +71,7 @@ export const createInteractiveListNode = (replace: Node<unknown>) => {
     id,
     data: newComponent,
     position,
-    type: NodeEnumTypes.InteractiveList,
+    type: "interactive-list",
   });
 
   return { nodes, edges };

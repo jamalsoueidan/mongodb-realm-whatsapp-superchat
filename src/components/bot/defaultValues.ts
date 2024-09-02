@@ -1,18 +1,17 @@
-import { Edge, Node } from "reactflow";
-import { NodesDataTypes } from "./NodeDataTypes";
-import { NodeEnumTypes } from "./NodeEnumTypes";
+import { Edge } from "@xyflow/react";
+import { CustomNodeTypes } from "./CustomNodeTypes";
 
-export const initialNodes: Node<NodesDataTypes, NodeEnumTypes>[] = [
+export const initialNodes: CustomNodeTypes[] = [
   {
     id: "1",
     position: { x: 0, y: 0 },
-    type: NodeEnumTypes.StartNode,
+    type: "start",
     data: {},
   },
   {
     id: "2",
     position: { x: 0, y: 0 },
-    type: NodeEnumTypes.PlusNode,
+    type: "plus",
     data: {},
   } /*
   {
@@ -138,7 +137,6 @@ export const initialEdges: Edge[] = [
     id: "1-2",
     source: "1",
     target: "2",
-    animated: true,
   } /*,
   {
     id: "2-3",
