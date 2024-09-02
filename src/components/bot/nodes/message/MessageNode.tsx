@@ -1,6 +1,7 @@
 import { rem, Stack, Text } from "@mantine/core";
-import { Handle, Node, NodeProps, Position } from "@xyflow/react";
+import { Node, NodeProps, Position } from "@xyflow/react";
 
+import { CustomHandle } from "../../handlers/CustomHandler";
 import { NodeWrapper } from "../../NodeWrapper";
 import { Message } from "./MessageType";
 
@@ -11,10 +12,15 @@ export const MessageNode = (props: NodeProps<MessageNode>) => {
   return (
     <NodeWrapper {...props}>
       <Stack gap={rem(2)} p="xs" pos="relative">
-        <Text c="dimmed" fz="sm">
-          {data.text.body}
-        </Text>
-        <Handle
+        <Text
+          c="dimmed"
+          fz="sm"
+          style={{ whiteSpace: "pre-line" }}
+          dangerouslySetInnerHTML={{
+            __html: data.text.body.replace(/\n\n/g, "<br />"),
+          }}
+        />
+        <CustomHandle
           type="source"
           position={props.sourcePosition || Position.Right}
           id={id}

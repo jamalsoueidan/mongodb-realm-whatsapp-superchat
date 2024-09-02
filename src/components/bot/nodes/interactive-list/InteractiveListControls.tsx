@@ -3,6 +3,7 @@ import { useForm } from "@mantine/form";
 import { IconTrash } from "@tabler/icons-react";
 import { NodeProps, useReactFlow } from "@xyflow/react";
 import React from "react";
+import Realm from "realm";
 import { InteractiveListNode } from "./InteractiveListNode";
 
 export function InteractiveListControls(props: NodeProps<InteractiveListNode>) {
@@ -100,18 +101,23 @@ export function InteractiveListControls(props: NodeProps<InteractiveListNode>) {
         </Button>
       </Group>
 
-      <Button
-        type="submit"
-        mt="md"
-        onClick={() =>
-          updateNodeData(props.id, {
-            interactive: form.values,
-            type: props.data.type,
-          })
-        }
-      >
-        Submit
-      </Button>
+      <Group justify="center">
+        <Button variant="subtle" onClick={() => form.reset()}>
+          Reset
+        </Button>
+        <Button
+          type="submit"
+          color="green"
+          onClick={() =>
+            updateNodeData(props.id, {
+              interactive: form.values,
+              type: props.data.type,
+            })
+          }
+        >
+          Save
+        </Button>
+      </Group>
     </Stack>
   );
 }

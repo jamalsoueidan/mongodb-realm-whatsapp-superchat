@@ -4,11 +4,13 @@ import { useReactFlow } from "@xyflow/react";
 import { Redirect, useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
 
+import { InteractiveButtonsControls } from "./nodes/interactive-buttons/InteractiveButtonsControls";
 import { InteractiveListControls } from "./nodes/interactive-list/InteractiveListControls";
 import { MessageControls } from "./nodes/message/MessageControls";
 
 const controlTypes: Record<string, any> = {
   "interactive-list": InteractiveListControls,
+  "interactive-buttons": InteractiveButtonsControls,
   message: MessageControls,
 };
 

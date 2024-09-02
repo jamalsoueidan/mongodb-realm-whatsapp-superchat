@@ -1,6 +1,7 @@
 import { Box, Button, rem, Stack, Text } from "@mantine/core";
-import { Handle, Node, NodeProps, Position } from "@xyflow/react";
+import { Node, NodeProps, Position } from "@xyflow/react";
 
+import { CustomHandle } from "../../handlers/CustomHandler";
 import { NodeWrapper } from "../../NodeWrapper";
 import { InteractiveButtons } from "./InteractiveButtonsType";
 
@@ -32,7 +33,7 @@ export const InteractiveButtonsNode = (
               <Button variant="outline" key={button.reply.id} w="100%">
                 {button.reply.title}
               </Button>
-              <Handle
+              <CustomHandle
                 type="source"
                 position={props.sourcePosition || Position.Right}
                 id={button.reply.id}

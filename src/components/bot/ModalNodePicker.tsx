@@ -1,5 +1,6 @@
 import { Button, Stack } from "@mantine/core";
 import { Edge, Node, useReactFlow } from "@xyflow/react";
+
 import { Redirect, useLocation, useRoute } from "wouter";
 import { CustomModal } from "../CustomModal";
 import { createInteractiveButtonNode } from "./nodes/interactive-buttons/InteractiveButtonsAction";
@@ -16,11 +17,11 @@ export const ModalNodePicker = () => {
   if (!currentNode) return <Redirect to="/" />;
 
   const addOnclick = ({ nodes, edges }: { nodes: Node[]; edges: Edge[] }) => {
-    setNodes((prev: Array<Node<unknown>>) => {
+    setNodes((prev: Array<Node>) => {
       return [...prev.filter((node) => node.id !== currentNode.id), ...nodes];
     });
 
-    setEdges((prev: Array<Edge<unknown>>) => {
+    setEdges((prev: Array<Edge>) => {
       return [...prev, ...edges];
     });
 

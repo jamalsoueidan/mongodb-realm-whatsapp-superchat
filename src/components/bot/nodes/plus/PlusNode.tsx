@@ -1,7 +1,8 @@
 import { Button } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
-import { Handle, Node, NodeProps, Position } from "@xyflow/react";
+import { Node, NodeProps, Position } from "@xyflow/react";
 import { Link } from "wouter";
+import { CustomHandle } from "../../handlers/CustomHandler";
 import { Plus } from "./PlusType";
 
 export type PlusNode = Node<Plus, "plus">;
@@ -19,7 +20,7 @@ export const PlusNode = ({ id, targetPosition }: NodeProps<PlusNode>) => {
       >
         <IconPlus />
       </Button>
-      <Handle
+      <CustomHandle
         position={targetPosition || Position.Left}
         id={id}
         type="target"

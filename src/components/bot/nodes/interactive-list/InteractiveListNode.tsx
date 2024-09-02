@@ -1,7 +1,8 @@
 import { Box, Button, Divider, rem, Stack, Text } from "@mantine/core";
 import { IconMenu2 } from "@tabler/icons-react";
-import { Handle, Node, NodeProps, Position } from "@xyflow/react";
+import { Node, NodeProps, Position } from "@xyflow/react";
 
+import { CustomHandle } from "../../handlers/CustomHandler";
 import { NodeWrapper } from "../../NodeWrapper";
 import { InteractiveList } from "./InteractiveListType";
 
@@ -46,7 +47,7 @@ export const InteractiveListNode = (props: NodeProps<InteractiveListNode>) => {
                     >
                       {row.title}
                     </Button>
-                    <Handle
+                    <CustomHandle
                       type="source"
                       position={sourcePosition || Position.Right}
                       id={row.id}

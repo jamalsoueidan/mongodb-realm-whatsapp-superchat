@@ -1,6 +1,7 @@
 import { rem, Stack, Text, Title } from "@mantine/core";
-import { Handle, Node, NodeProps, Position } from "@xyflow/react";
+import { Node, NodeProps, Position } from "@xyflow/react";
 
+import { CustomHandle } from "../../handlers/CustomHandler";
 import { NodeWrapper } from "../../NodeWrapper";
 import { InteractiveFlow } from "./InteractiveFlowType";
 
@@ -18,7 +19,7 @@ export const InteractiveFlowNode = (props: NodeProps<InteractiveFlowNode>) => {
         <Text c="dimmed" fz="sm">
           {interactive.footer.text}
         </Text>
-        <Handle
+        <CustomHandle
           type="source"
           position={props.sourcePosition || Position.Right}
           id={props.id}

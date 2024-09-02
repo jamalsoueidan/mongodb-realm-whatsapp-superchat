@@ -19,7 +19,7 @@ export function DeleteEdge({
   style = {},
   markerEnd,
 }: EdgeProps) {
-  const { setEdges } = useReactFlow();
+  const { deleteElements } = useReactFlow();
   const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
     sourceY,
@@ -30,7 +30,7 @@ export function DeleteEdge({
   });
 
   const onEdgeClick = () => {
-    setEdges((edges) => edges.filter((edge) => edge.id !== id));
+    deleteElements({ edges: [{ id }] });
   };
 
   return (

@@ -19,9 +19,9 @@ import { useCallback, useRef } from "react";
 import Realm from "realm";
 import { useLocation, useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
+import { CustomEdgeTypes } from "./CustomEdgeTypes";
 import { CustomNodeTypes } from "./CustomNodeTypes";
 import { initialEdges, initialNodes } from "./defaultValues";
-import { EdgeTypes } from "./EdgeTypes";
 import { NodeAutoLayout } from "./NodeAutoLayout";
 import { InteractiveButtonsNode } from "./nodes/interactive-buttons/InteractiveButtonsNode";
 import { InteractiveFlowNode } from "./nodes/interactive-flow/InteractiveFlowNode";
@@ -42,17 +42,16 @@ export const nodeTypes: NodeTypes = {
 export const Flow = () => {
   const [, setLocation] = useLocation();
   const [isMatch] = useRoute("/controls/:id");
-  const connectingNodeId = useRef<string | null>(null);
+  const connectingNodeId = useRef<OnConnectStartParams | null>(null);
   const isMobile = useMobile();
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  const { screenToFlowPosition, setNodes } = useReactFlow();
+  const { screenToFlowPosition, setNodes, deleteElements } = useReactFlow();
 
   const onConnectStart = useCallback(
-    (_: unknown, { nodeId, handleId, handleType }: OnConnectStartParams) => {
-      console.log(nodeId, handleId, handleType);
-      connectingNodeId.current = nodeId;
+    (_: unknown, nodeAndHandle: OnConnectStartParams) => {
+      connectingNodeId.current = nodeAndHandle;
     },
     []
   );
@@ -81,7 +80,6 @@ export const Flow = () => {
           id,
           position: screenToFlowPosition(position),
           data: { name: `Node ${id}` },
-          origin: [0.5, 0.0],
           type: "plus",
         };
 
@@ -89,7 +87,8 @@ export const Flow = () => {
         setEdges((eds) =>
           eds.concat({
             id,
-            source: connectingNodeId.current || "",
+            source: connectingNodeId.current?.nodeId || "",
+            sourceHandle: connectingNodeId.current?.handleId || "",
             target: id,
             markerEnd: {
               type: MarkerType.ArrowClosed,
@@ -107,6 +106,17 @@ export const Flow = () => {
     },
     [screenToFlowPosition, setEdges, setNodes]
   );
+
+  const onEdgesDelete = (edges: Edge[]) => {
+    edges.forEach((edge) => {
+      const node = nodes.find(
+        (node) => node.id === edge.target && node.type === "plus"
+      );
+      if (node) {
+        deleteElements({ nodes: [node] });
+      }
+    });
+  };
 
   const onPaneClick = () => {
     if (!isMobile) {
@@ -153,13 +163,14 @@ export const Flow = () => {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onEdgesDelete={onEdgesDelete}
         onConnect={onConnect}
         onConnectStart={onConnectStart}
         onConnectEnd={onConnectEnd}
         elementsSelectable={true}
         onPaneClick={onPaneClick}
         nodeTypes={nodeTypes}
-        edgeTypes={EdgeTypes}
+        edgeTypes={CustomEdgeTypes}
         fitView
       >
         <NodeAutoLayout />

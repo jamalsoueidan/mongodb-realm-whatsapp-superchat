@@ -1,5 +1,5 @@
 import { DeleteEdge } from "./edges/DeleteEdge";
 
-export const EdgeTypes = {
+export const CustomEdgeTypes = {
   "delete-edge": DeleteEdge,
 };

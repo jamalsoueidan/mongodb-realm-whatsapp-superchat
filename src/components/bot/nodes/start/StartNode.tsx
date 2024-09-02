@@ -1,6 +1,7 @@
 import { Button } from "@mantine/core";
-import { Handle, Node, NodeProps, Position } from "@xyflow/react";
+import { Node, NodeProps, Position } from "@xyflow/react";
 import { Link } from "wouter";
+import { CustomHandle } from "../../handlers/CustomHandler";
 import { Start } from "./StartType";
 
 export type StartNode = Node<Start, "start">;
@@ -18,7 +19,7 @@ export const StartNode = ({ id, sourcePosition }: NodeProps<StartNode>) => {
       >
         Start trigger
       </Button>
-      <Handle
+      <CustomHandle
         position={sourcePosition || Position.Right}
         id={id}
         type="source"
