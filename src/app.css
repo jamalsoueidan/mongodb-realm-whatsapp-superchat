@@ -1,20 +1,20 @@
 .react-flow__handle-bottom {
-  bottom: -6px !important;
+  bottom: 0px !important;
 }
 
 .react-flow__handle-top {
-  top: -6px !important;
+  top: 0px !important;
 }
 
 .react-flow__handle-left {
-  left: -6px !important;
+  left: 0px !important;
 }
 
 .react-flow__handle-right {
-  right: -6px !important;
+  right: 0px !important;
 }
 
 .react-flow__handle {
-  width: 10px !important;
-  height: 10px !important;
+  width: 12px !important;
+  height: 12px !important;
 }

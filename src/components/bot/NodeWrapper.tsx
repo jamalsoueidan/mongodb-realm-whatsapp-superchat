@@ -14,7 +14,6 @@ export function NodeWrapper({
     <Box
       bg="white"
       style={{
-        position: "relative",
         border: "1px solid #ccc",
         borderRadius: "10px",
         ...(params.id === props.id
@@ -23,7 +22,6 @@ export function NodeWrapper({
       }}
       miw="200px"
       maw="300px"
-      {...props}
     >
       <Group
         gap="xs"

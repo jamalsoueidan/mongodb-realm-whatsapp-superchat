@@ -137,6 +137,8 @@ export const initialEdges: Edge[] = [
     id: "1-2",
     source: "1",
     target: "2",
+    type: "delete-edge",
+    animated: true,
   } /*,
   {
     id: "2-3",

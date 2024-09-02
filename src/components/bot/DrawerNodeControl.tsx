@@ -5,9 +5,11 @@ import { Redirect, useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
 
 import { InteractiveListControls } from "./nodes/interactive-list/InteractiveListControls";
+import { MessageControls } from "./nodes/message/MessageControls";
 
 const controlTypes: Record<string, any> = {
   "interactive-list": InteractiveListControls,
+  message: MessageControls,
 };
 
 export const DrawerNodeControl = () => {

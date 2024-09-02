@@ -7,7 +7,6 @@ import {
   getBezierPath,
   useReactFlow,
 } from "@xyflow/react";
-import "./DeleteEdge.css";
 
 export function DeleteEdge({
   id,
@@ -50,10 +49,10 @@ export function DeleteEdge({
           className="nodrag nopan"
         >
           <ActionIcon
-            variant="white"
+            variant="transparent"
             color="red"
             onClick={onEdgeClick}
-            radius="xl"
+            size="xl"
           >
             <IconX />
           </ActionIcon>
