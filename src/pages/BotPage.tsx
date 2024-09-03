@@ -1,22 +1,14 @@
-import { ReactFlowProvider } from "@xyflow/react";
-
 import { Route, Router, Switch } from "wouter";
-import { ModalNodePicker } from "../components/bot/ModalNodePicker";
 
 import { BotList } from "../components/bot/BotList";
-import { DrawerNodeControl } from "../components/bot/DrawerNodeControl";
-import { Flow } from "../components/bot/Flow";
+import { BotView } from "../components/bot/BotView";
 
 export const BotPage = () => {
   return (
     <Router base="/bot">
       <Switch>
-        <Route path=":flow_id/:section?/:id?">
-          <ReactFlowProvider>
-            <Flow />
-            <DrawerNodeControl />
-            <ModalNodePicker />
-          </ReactFlowProvider>
+        <Route path=":flowId/:section?/:id?">
+          <BotView />
         </Route>
 
         <Route>

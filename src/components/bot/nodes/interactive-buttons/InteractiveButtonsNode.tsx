@@ -39,7 +39,6 @@ export const InteractiveButtonsNode = (
                 type="source"
                 position={props.sourcePosition || Position.Right}
                 id={button.reply.id}
-                multiHandlers={true}
               />
             </Box>
           );

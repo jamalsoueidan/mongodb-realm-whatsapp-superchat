@@ -6,7 +6,7 @@ export const initialNodes: CustomNodeTypes[] = [
     id: "1",
     position: { x: 0, y: 0 },
     type: "start",
-    data: {},
+    data: { type: "on_received_message" },
   },
   {
     id: "2",

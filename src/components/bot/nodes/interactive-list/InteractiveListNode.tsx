@@ -54,7 +54,6 @@ export const InteractiveListNode = (props: NodeProps<InteractiveListNode>) => {
                       type="source"
                       position={sourcePosition || Position.Right}
                       id={row.id}
-                      multiHandlers={true}
                     />
                   </Box>
                 );

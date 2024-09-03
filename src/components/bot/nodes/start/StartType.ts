@@ -1,3 +1,3 @@
 export type Start = {
-  name?: string;
+  type: "on_received_message" | "unknown";
 };

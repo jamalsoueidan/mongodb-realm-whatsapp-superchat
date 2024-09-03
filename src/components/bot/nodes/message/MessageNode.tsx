@@ -24,7 +24,6 @@ export const MessageNode = (props: NodeProps<MessageNode>) => {
           type="source"
           position={props.sourcePosition || Position.Right}
           id={id}
-          multiHandlers={false}
         />
       </Stack>
     </NodeWrapper>

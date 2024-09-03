@@ -1,18 +1,28 @@
-import { ActionIcon, Box, Divider, Group, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Box,
+  BoxProps,
+  Divider,
+  Group,
+  Title,
+} from "@mantine/core";
 import { IconMenu2 } from "@tabler/icons-react";
 import { Handle, NodeProps, Position } from "@xyflow/react";
 import { useLocation, useParams } from "wouter";
 
 export function NodeWrapper({
   children,
+  bg,
+  withTarget = true,
   ...props
-}: NodeProps & { children: React.ReactNode }) {
+}: NodeProps &
+  Pick<BoxProps, "bg"> & { children: React.ReactNode; withTarget?: boolean }) {
   const [location, setLocation] = useLocation();
   const params = useParams();
 
   return (
     <Box
-      bg="white"
+      bg={bg || "white"}
       style={{
         border: "1px solid #ccc",
         borderRadius: "10px",
@@ -38,11 +48,13 @@ export function NodeWrapper({
         >
           <IconMenu2 />
         </ActionIcon>
-        <Handle
-          type="target"
-          position={props.targetPosition || Position.Top}
-          id={props.id}
-        />
+        {withTarget ? (
+          <Handle
+            type="target"
+            position={props.targetPosition || Position.Top}
+            id={props.id}
+          />
+        ) : null}
       </Group>
       <Divider />
       {children}

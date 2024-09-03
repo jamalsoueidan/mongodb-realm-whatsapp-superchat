@@ -7,11 +7,13 @@ import { useMobile } from "../../hooks/useMobile";
 import { InteractiveButtonsControls } from "./nodes/interactive-buttons/InteractiveButtonsControls";
 import { InteractiveListControls } from "./nodes/interactive-list/InteractiveListControls";
 import { MessageControls } from "./nodes/message/MessageControls";
+import { StartControls } from "./nodes/start/StartControls";
 
 const controlTypes: Record<string, any> = {
   "interactive-list": InteractiveListControls,
   "interactive-buttons": InteractiveButtonsControls,
   message: MessageControls,
+  start: StartControls,
 };
 
 export const DrawerNodeControl = () => {

@@ -25,7 +25,6 @@ export const InteractiveFlowNode = (props: NodeProps<InteractiveFlowNode>) => {
           type="source"
           position={props.sourcePosition || Position.Right}
           id={props.id}
-          multiHandlers={false}
         />
       </Stack>
     </NodeWrapper>

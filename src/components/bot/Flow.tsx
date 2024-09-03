@@ -1,4 +1,5 @@
-import { Button, Divider, Flex, Title } from "@mantine/core";
+import { ActionIcon, Divider, Flex, Title } from "@mantine/core";
+import { IconArrowLeft, IconPrinter } from "@tabler/icons-react";
 import {
   addEdge,
   Background,
@@ -7,6 +8,7 @@ import {
   Edge,
   MarkerType,
   MiniMap,
+  Node,
   NodeTypes,
   OnConnectStartParams,
   Panel,
@@ -20,9 +22,9 @@ import { useCallback, useRef } from "react";
 import Realm from "realm";
 import { useLocation, useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
+import { BotPanel } from "./BotPanel";
 import { CustomEdgeTypes } from "./CustomEdgeTypes";
 import { CustomNodeTypes } from "./CustomNodeTypes";
-import { initialEdges, initialNodes } from "./defaultValues";
 import { NodeAutoLayout } from "./NodeAutoLayout";
 import { InteractiveButtonsNode } from "./nodes/interactive-buttons/InteractiveButtonsNode";
 import { InteractiveFlowNode } from "./nodes/interactive-flow/InteractiveFlowNode";
@@ -40,7 +42,13 @@ export const nodeTypes: NodeTypes = {
   start: StartNode,
 };
 
-export const Flow = () => {
+export const Flow = ({
+  initialNodes,
+  initialEdges,
+}: {
+  initialNodes: Node[];
+  initialEdges: Edge[];
+}) => {
   const [, setLocation] = useLocation();
   const isMobile = useMobile();
   const [isMatch, params] = useRoute<{
@@ -48,6 +56,7 @@ export const Flow = () => {
     id: string;
     section: "replace" | "controls";
   }>(":flowId/:section/:id");
+
   const connectingNodeId = useRef<OnConnectStartParams | null>(null);
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -127,7 +136,6 @@ export const Flow = () => {
     });
   };
 
-  console.log(params);
   const onPaneClick = () => {
     if (!isMobile && params?.section) {
       //onMobile we have a close button
@@ -169,7 +177,17 @@ export const Flow = () => {
       h="100%"
     >
       <Flex p="md" h="60px" justify="space-between" align="center" gap="xs">
-        <Title order={3}>Bot</Title>
+        <Flex>
+          <ActionIcon
+            variant="transparent"
+            onClick={() => setLocation("/")}
+            color="black"
+          >
+            <IconArrowLeft />
+          </ActionIcon>
+          <Title order={3}>Bot</Title>
+        </Flex>
+        <BotPanel />
       </Flex>
       <Divider />
       <ReactFlow
@@ -189,9 +207,9 @@ export const Flow = () => {
       >
         <NodeAutoLayout />
         <Panel position="top-center">
-          <Button onClick={() => console.log(JSON.stringify(nodes))}>
-            print
-          </Button>
+          <ActionIcon onClick={() => console.log(JSON.stringify(nodes))}>
+            <IconPrinter />
+          </ActionIcon>
         </Panel>
         {!isMobile ? <MiniMap /> : null}
         <Controls />

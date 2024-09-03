@@ -1,30 +1,22 @@
-import { Button } from "@mantine/core";
+import { Box } from "@mantine/core";
 import { Node, NodeProps, Position } from "@xyflow/react";
-import { Link } from "wouter";
 import { CustomHandle } from "../../handlers/CustomHandler";
+import { NodeWrapper } from "../../NodeWrapper";
 import { Start } from "./StartType";
 
 export type StartNode = Node<Start, "start">;
 
-export const StartNode = ({ id, sourcePosition }: NodeProps<StartNode>) => {
+export const StartNode = (props: NodeProps<StartNode>) => {
   return (
-    <>
-      <Button
-        size="lg"
-        miw="200px"
-        radius="md"
-        pos="relative"
-        component={Link}
-        to={`/replace/${id}`}
-      >
-        Start trigger
-      </Button>
-      <CustomHandle
-        position={sourcePosition || Position.Right}
-        id={id}
-        type="source"
-        multiHandlers={false}
-      />
-    </>
+    <NodeWrapper bg="green.1" withTarget={false} {...props}>
+      <Box p="xs" pos="relative">
+        {props.data.type}
+        <CustomHandle
+          position={props.sourcePosition || Position.Right}
+          id={props.id}
+          type="source"
+        />
+      </Box>
+    </NodeWrapper>
   );
 };

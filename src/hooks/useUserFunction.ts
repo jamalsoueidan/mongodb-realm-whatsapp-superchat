@@ -6,13 +6,16 @@ type UserFunctionParams = Record<string, any>;
 
 export function useUserFunction<Data = any>(
   functionName: string,
-  params: UserFunctionParams,
+  params: UserFunctionParams = {},
   load: boolean = true
 ) {
   const user = useUser();
 
   const fetcher = (): Promise<any> => {
-    return user.functions[functionName](params);
+    return user.functions[functionName]({
+      ...params,
+      business_phone_number_id: "364826260050460",
+    });
   };
 
   const { data, error } = useSWR<Data>(
