@@ -1,6 +1,6 @@
 import { Button, Flex } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconDisc, IconX } from "@tabler/icons-react";
+import { IconDisc } from "@tabler/icons-react";
 import { useReactFlow } from "@xyflow/react";
 import { useParams } from "wouter";
 import { useBot } from "../../hooks/useBot";
@@ -25,9 +25,6 @@ export function BotPanel() {
 
   return (
     <Flex gap="xs">
-      <Button color="red" rightSection={<IconX />}>
-        Delete
-      </Button>
       <Button onClick={save} rightSection={<IconDisc />} loading={loading}>
         Save
       </Button>

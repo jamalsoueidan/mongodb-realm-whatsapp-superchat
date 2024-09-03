@@ -10,7 +10,11 @@ export function InteractiveListControls(props: NodeProps<InteractiveListNode>) {
   const { updateNodeData } = useReactFlow();
 
   const form = useForm({
+    mode: "controlled",
     initialValues: props.data,
+    onValuesChange: (values) => {
+      updateNodeData(props.id, values);
+    },
   });
 
   const sections = form
@@ -115,19 +119,6 @@ export function InteractiveListControls(props: NodeProps<InteractiveListNode>) {
           }
         >
           Add section
-        </Button>
-      </Group>
-
-      <Group justify="center">
-        <Button variant="subtle" onClick={() => form.reset()}>
-          Reset
-        </Button>
-        <Button
-          type="submit"
-          color="green"
-          onClick={() => updateNodeData(props.id, form.values)}
-        >
-          Save
         </Button>
       </Group>
     </Stack>

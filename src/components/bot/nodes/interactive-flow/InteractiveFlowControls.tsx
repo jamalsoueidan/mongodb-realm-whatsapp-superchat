@@ -1,4 +1,4 @@
-import { Button, Group, Stack, TextInput } from "@mantine/core";
+import { Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { NodeProps, useReactFlow } from "@xyflow/react";
 import { InteractiveFlowNode } from "./InteractiveFlowNode";
@@ -8,6 +8,9 @@ export function InteractiveFlowControls(props: NodeProps<InteractiveFlowNode>) {
 
   const form = useForm({
     initialValues: props.data,
+    onValuesChange: (values) => {
+      updateNodeData(props.id, values);
+    },
   });
 
   return (
@@ -24,19 +27,6 @@ export function InteractiveFlowControls(props: NodeProps<InteractiveFlowNode>) {
         {...form.getInputProps("whatsapp.interactive.footer.text")}
         label="Footer"
       />
-
-      <Group justify="center">
-        <Button variant="subtle" onClick={() => form.reset()}>
-          Reset
-        </Button>
-        <Button
-          type="submit"
-          color="green"
-          onClick={() => updateNodeData(props.id, form.values)}
-        >
-          Save
-        </Button>
-      </Group>
     </Stack>
   );
 }

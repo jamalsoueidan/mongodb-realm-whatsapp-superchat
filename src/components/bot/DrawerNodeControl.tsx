@@ -1,9 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Card, Divider, Drawer, Flex, ScrollArea, Title } from "@mantine/core";
+import {
+  ActionIcon,
+  Card,
+  Divider,
+  Drawer,
+  Flex,
+  ScrollArea,
+  Title,
+} from "@mantine/core";
 import { useReactFlow } from "@xyflow/react";
-import { useRoute } from "wouter";
+import { Link, useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
 
+import { IconX } from "@tabler/icons-react";
 import { InteractiveButtonsControls } from "./nodes/interactive-buttons/InteractiveButtonsControls";
 import { InteractiveListControls } from "./nodes/interactive-list/InteractiveListControls";
 import { MessageControls } from "./nodes/message/MessageControls";
@@ -44,8 +53,22 @@ export const DrawerNodeControl = () => {
     >
       <Drawer.Content>
         <Drawer.Body p="0">
-          <Flex h="60px" w="100%" align="center" px="sm">
+          <Flex
+            h="60px"
+            w="100%"
+            align="center"
+            justify="space-between"
+            px="sm"
+          >
             <Title order={3}>{node.type}</Title>
+            <ActionIcon
+              component={Link}
+              to={`/${params.flowId}`}
+              variant="transparent"
+              color="black"
+            >
+              <IconX />
+            </ActionIcon>
           </Flex>
           <Divider />
 

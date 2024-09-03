@@ -6,6 +6,9 @@ import {
   Connection,
   Controls,
   Edge,
+  getConnectedEdges,
+  getIncomers,
+  getOutgoers,
   MarkerType,
   MiniMap,
   Node,
@@ -18,7 +21,7 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import Realm from "realm";
 import { useLocation, useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
@@ -61,7 +64,8 @@ export const Flow = ({
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  const { screenToFlowPosition, setNodes, deleteElements } = useReactFlow();
+  const { screenToFlowPosition, setNodes, deleteElements, fitBounds, fitView } =
+    useReactFlow();
 
   const onConnectStart = useCallback(
     (_: unknown, nodeAndHandle: OnConnectStartParams) => {
@@ -136,12 +140,32 @@ export const Flow = ({
     });
   };
 
-  const onPaneClick = () => {
-    if (!isMobile && params?.section) {
-      //onMobile we have a close button
-      setLocation(`/${params?.flowId}`);
-    }
-  };
+  const onNodesDelete = useCallback(
+    (deleted: Node[]) => {
+      setEdges(
+        deleted.reduce((acc, node) => {
+          const incomers = getIncomers(node, nodes, edges);
+          const outgoers = getOutgoers(node, nodes, edges);
+          const connectedEdges = getConnectedEdges([node], edges);
+
+          const remainingEdges = acc.filter(
+            (edge) => !connectedEdges.includes(edge)
+          );
+
+          const createdEdges = incomers.flatMap(({ id: source }) =>
+            outgoers.map(({ id: target }) => ({
+              id: `${source}->${target}`,
+              source,
+              target,
+            }))
+          );
+
+          return [...remainingEdges, ...createdEdges];
+        }, edges)
+      );
+    },
+    [nodes, edges]
+  );
 
   const onConnect = useCallback(
     (params: Connection) => {
@@ -166,12 +190,38 @@ export const Flow = ({
     [setEdges]
   );
 
+  useEffect(() => {
+    if (params?.id) {
+      const node = nodes.find((n) => n.id === params.id);
+
+      setTimeout(() => {
+        if (node && node.measured?.width && node.measured?.height) {
+          const x = node.position.x;
+          const y = node.position.y;
+          const width = node.measured?.width;
+          const height = node.measured?.height;
+
+          fitBounds({
+            x,
+            y,
+            width,
+            height,
+          });
+        }
+      }, 50);
+    } else {
+      setTimeout(() => {
+        fitView();
+      }, 50);
+    }
+  }, [params, nodes]);
+
   return (
     <Flex
       direction="column"
       w={
         isMatch && !isMobile && params.section === "controls"
-          ? "calc(70% - 70px)"
+          ? "calc(70% - 70px)" //70px is for the left navigtation
           : "100%"
       }
       h="100%"
@@ -200,7 +250,7 @@ export const Flow = ({
         onConnectStart={onConnectStart}
         onConnectEnd={onConnectEnd}
         elementsSelectable={true}
-        onPaneClick={onPaneClick}
+        onNodesDelete={onNodesDelete}
         nodeTypes={nodeTypes}
         edgeTypes={CustomEdgeTypes}
         fitView

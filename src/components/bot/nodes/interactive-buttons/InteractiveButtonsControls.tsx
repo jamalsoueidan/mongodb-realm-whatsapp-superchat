@@ -12,6 +12,9 @@ export function InteractiveButtonsControls(
 
   const form = useForm({
     initialValues: props.data,
+    onValuesChange: (values) => {
+      updateNodeData(props.id, values);
+    },
   });
 
   const buttons = form
@@ -25,7 +28,7 @@ export function InteractiveButtonsControls(
               label="Button"
               flex="1"
               {...form.getInputProps(
-                `.whatsapp.interactive.action.buttons.${sectionIndex}.reply.title`
+                `whatsapp.interactive.action.buttons.${sectionIndex}.reply.title`
               )}
             />
 
@@ -34,7 +37,7 @@ export function InteractiveButtonsControls(
               mt="lg"
               onClick={() =>
                 form.removeListItem(
-                  ".whatsapp.interactive.action.buttons",
+                  "whatsapp.interactive.action.buttons",
                   sectionIndex
                 )
               }
@@ -49,15 +52,15 @@ export function InteractiveButtonsControls(
   return (
     <Stack>
       <TextInput
-        {...form.getInputProps(".whatsapp.interactive.header.text")}
+        {...form.getInputProps("whatsapp.interactive.header.text")}
         label="Header"
       />
       <TextInput
-        {...form.getInputProps(".whatsapp.interactive.body.text")}
+        {...form.getInputProps("whatsapp.interactive.body.text")}
         label="Body"
       />
       <TextInput
-        {...form.getInputProps(".whatsapp.interactive.footer.text")}
+        {...form.getInputProps("whatsapp.interactive.footer.text")}
         label="Footer"
       />
 
@@ -67,7 +70,7 @@ export function InteractiveButtonsControls(
         <Group justify="center">
           <Button
             onClick={() =>
-              form.insertListItem(`.whatsapp.interactive.action.buttons`, {
+              form.insertListItem(`whatsapp.interactive.action.buttons`, {
                 type: "",
                 reply: {
                   id: new Realm.BSON.ObjectId().toString(),
@@ -80,18 +83,6 @@ export function InteractiveButtonsControls(
           </Button>
         </Group>
       ) : null}
-      <Group justify="center">
-        <Button variant="subtle" onClick={() => form.reset()}>
-          Reset
-        </Button>
-        <Button
-          type="submit"
-          color="green"
-          onClick={() => updateNodeData(props.id, form.values)}
-        >
-          Save
-        </Button>
-      </Group>
     </Stack>
   );
 }

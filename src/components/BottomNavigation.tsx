@@ -16,11 +16,7 @@ export function BottomNavigation() {
     >
       <BottomNavigationLink to="/conversation" label="Chat" icon={IconInbox} />
       <BottomNavigationLink to="/team" label="Team" icon={IconUsers} />
-      <BottomNavigationLink
-        to="/trigger"
-        label="Trigger"
-        icon={IconBinaryTree2}
-      />
+      <BottomNavigationLink to="/bot" label="Bots" icon={IconBinaryTree2} />
       <BottomNavigationLink to="/tools" label="Blah" icon={IconUsers} />
     </Flex>
   );

@@ -8,7 +8,7 @@ export type StartNode = Node<Start, "start">;
 
 export const StartNode = (props: NodeProps<StartNode>) => {
   return (
-    <NodeWrapper bg="green.1" withTarget={false} {...props}>
+    <NodeWrapper withTarget={false} {...props}>
       <Box p="xs" pos="relative">
         {props.data.type}
         <CustomHandle
