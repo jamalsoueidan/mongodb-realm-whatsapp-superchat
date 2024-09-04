@@ -1,16 +1,15 @@
 import { SegmentedControl, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { NodeProps, useReactFlow } from "@xyflow/react";
+import { ControlWrapperComponent } from "../../ControlWrapperType";
 import { StartNode } from "./StartNode";
 
-export function StartControls(props: NodeProps<StartNode>) {
-  const { updateNodeData } = useReactFlow();
-
+export function StartControls({
+  onValuesChange,
+  node,
+}: ControlWrapperComponent<StartNode>) {
   const form = useForm({
-    initialValues: props.data,
-    onValuesChange: (values) => {
-      updateNodeData(props.id, values);
-    },
+    initialValues: node.data,
+    onValuesChange,
   });
 
   return (

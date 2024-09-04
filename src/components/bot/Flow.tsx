@@ -1,4 +1,5 @@
 import { ActionIcon, Divider, Flex, Title } from "@mantine/core";
+import { usePrevious } from "@mantine/hooks";
 import { IconArrowLeft, IconPrinter } from "@tabler/icons-react";
 import {
   addEdge,
@@ -190,29 +191,32 @@ export const Flow = ({
     [setEdges]
   );
 
+  const previous = usePrevious(params?.id);
   useEffect(() => {
-    if (params?.id) {
-      const node = nodes.find((n) => n.id === params.id);
+    if (previous !== params?.id) {
+      if (params?.id) {
+        const node = nodes.find((n) => n.id === params.id);
 
-      setTimeout(() => {
-        if (node && node.measured?.width && node.measured?.height) {
-          const x = node.position.x;
-          const y = node.position.y;
-          const width = node.measured?.width;
-          const height = node.measured?.height;
+        setTimeout(() => {
+          if (node && node.measured?.width && node.measured?.height) {
+            const x = node.position.x;
+            const y = node.position.y;
+            const width = node.measured?.width;
+            const height = node.measured?.height;
 
-          fitBounds({
-            x,
-            y,
-            width,
-            height,
-          });
-        }
-      }, 50);
-    } else {
-      setTimeout(() => {
-        fitView();
-      }, 50);
+            fitBounds({
+              x,
+              y,
+              width,
+              height,
+            });
+          }
+        }, 50);
+      } else {
+        setTimeout(() => {
+          fitView();
+        }, 50);
+      }
     }
   }, [params, nodes]);
 
@@ -257,7 +261,11 @@ export const Flow = ({
       >
         <NodeAutoLayout />
         <Panel position="top-center">
-          <ActionIcon onClick={() => console.log(JSON.stringify(nodes))}>
+          <ActionIcon
+            onClick={() =>
+              console.log(JSON.stringify(nodes), JSON.stringify(edges))
+            }
+          >
             <IconPrinter />
           </ActionIcon>
         </Panel>

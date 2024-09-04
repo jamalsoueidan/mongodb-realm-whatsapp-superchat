@@ -23,8 +23,8 @@ export const MessageWrapper = ({
       <Card
         bg={bg || backgroundColor}
         py="4px"
-        pl="6px"
-        pr={isRecipientDifferent ? "6px" : rem(54)}
+        px="6px"
+        miw={rem(55)}
         shadow="xs"
         radius="md"
         maw={{ base: "80%", md: "40%" }}

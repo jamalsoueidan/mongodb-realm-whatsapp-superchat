@@ -1,16 +1,15 @@
 import { Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { NodeProps, useReactFlow } from "@xyflow/react";
+import { ControlWrapperComponent } from "../../ControlWrapperType";
 import { InteractiveFlowNode } from "./InteractiveFlowNode";
 
-export function InteractiveFlowControls(props: NodeProps<InteractiveFlowNode>) {
-  const { updateNodeData } = useReactFlow();
-
+export function InteractiveFlowControls({
+  onValuesChange,
+  node,
+}: ControlWrapperComponent<InteractiveFlowNode>) {
   const form = useForm({
-    initialValues: props.data,
-    onValuesChange: (values) => {
-      updateNodeData(props.id, values);
-    },
+    initialValues: node.data,
+    onValuesChange,
   });
 
   return (

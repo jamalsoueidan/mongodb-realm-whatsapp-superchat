@@ -8,11 +8,12 @@ import {
   ScrollArea,
   Title,
 } from "@mantine/core";
-import { useReactFlow } from "@xyflow/react";
+import { NodeTypes, useReactFlow } from "@xyflow/react";
 import { Link, useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
 
 import { IconX } from "@tabler/icons-react";
+import { useCallback } from "react";
 import { InteractiveButtonsControls } from "./nodes/interactive-buttons/InteractiveButtonsControls";
 import { InteractiveListControls } from "./nodes/interactive-list/InteractiveListControls";
 import { MessageControls } from "./nodes/message/MessageControls";
@@ -25,7 +26,7 @@ const controlTypes: Record<string, any> = {
   start: StartControls,
 };
 
-export const DrawerNodeControl = () => {
+export const ControlWrapper = () => {
   const isMobile = useMobile();
   const [isMatch, params] = useRoute<{
     flowId: string;
@@ -33,9 +34,18 @@ export const DrawerNodeControl = () => {
     section: "replace" | "controls";
   }>(":flowId/:section/:id");
 
-  const { getNode } = useReactFlow();
+  const { getNode, updateNodeData } = useReactFlow();
 
   const node = getNode(params?.id || "");
+
+  const onValuesChange = useCallback(
+    (values: Partial<NodeTypes["data"]>) => {
+      if (params?.id) {
+        updateNodeData(params?.id, values);
+      }
+    },
+    [params, updateNodeData]
+  );
 
   if (!node || params?.section !== "controls") {
     return null;
@@ -70,11 +80,16 @@ export const DrawerNodeControl = () => {
               <IconX />
             </ActionIcon>
           </Flex>
+
           <Divider />
 
           <Card>
             {Component ? (
-              <Component {...(node as any)} />
+              <Component
+                node={node}
+                onValuesChange={onValuesChange}
+                key={node.id}
+              />
             ) : (
               <Title order={5}>No controls for this node</Title>
             )}

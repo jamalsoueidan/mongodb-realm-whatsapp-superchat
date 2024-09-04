@@ -1,20 +1,18 @@
 import { ActionIcon, Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconTrash } from "@tabler/icons-react";
-import { NodeProps, useReactFlow } from "@xyflow/react";
 import React from "react";
 import Realm from "realm";
+import { ControlWrapperComponent } from "../../ControlWrapperType";
 import { InteractiveListNode } from "./InteractiveListNode";
 
-export function InteractiveListControls(props: NodeProps<InteractiveListNode>) {
-  const { updateNodeData } = useReactFlow();
-
+export function InteractiveListControls({
+  onValuesChange,
+  node,
+}: ControlWrapperComponent<InteractiveListNode>) {
   const form = useForm({
-    mode: "controlled",
-    initialValues: props.data,
-    onValuesChange: (values) => {
-      updateNodeData(props.id, values);
-    },
+    initialValues: node.data,
+    onValuesChange,
   });
 
   const sections = form

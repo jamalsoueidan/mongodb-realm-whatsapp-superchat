@@ -69,7 +69,6 @@ export type Message_interactive = {
   body?: Message_interactive_body;
   footer?: Message_interactive_footer;
   header?: Message_interactive_header;
-  metadata?: Message_interactive_metadata;
   type?: string;
 };
 
@@ -81,7 +80,6 @@ export const Message_interactiveSchema = {
     body: "Message_interactive_body",
     footer: "Message_interactive_footer",
     header: "Message_interactive_header",
-    metadata: "Message_interactive_metadata",
     type: "string?",
   },
 };
@@ -89,6 +87,7 @@ export const Message_interactiveSchema = {
 export type Message_interactive_action = {
   name?: string;
   parameters?: Message_interactive_action_parameters;
+  buttons?: Realm.List<Message_interactive_action_buttons>;
 };
 
 export const Message_interactive_actionSchema = {
@@ -97,6 +96,35 @@ export const Message_interactive_actionSchema = {
   properties: {
     name: "string?",
     parameters: "Message_interactive_action_parameters",
+    buttons: "Message_interactive_action_buttons[]",
+  },
+};
+
+export type Message_interactive_action_buttons = {
+  type?: string;
+  reply?: Message_interactive_action_buttons_reply;
+};
+
+export const Message_interactive_action_buttonsSchema = {
+  name: "Message_interactive_action_buttons",
+  embedded: true,
+  properties: {
+    type: "string?",
+    reply: "Message_interactive_action_buttons_reply",
+  },
+};
+
+export type Message_interactive_action_buttons_reply = {
+  id?: string;
+  title?: string;
+};
+
+export const Message_interactive_action_buttons_replySchema = {
+  name: "Message_interactive_action_buttons_reply",
+  embedded: true,
+  properties: {
+    id: "string?",
+    title: "string?",
   },
 };
 
@@ -175,26 +203,12 @@ export const Message_interactive_headerSchema = {
   },
 };
 
-export type Message_interactive_metadata = {
-  id?: string;
-  name?: string;
-  status?: string;
-};
-
-export const Message_interactive_metadataSchema = {
-  name: "Message_interactive_metadata",
-  embedded: true,
-  properties: {
-    id: "string?",
-    name: "string?",
-    status: "string?",
-  },
-};
-
 export type Message_interactive_reply = {
   bookatable?: Message_interactive_reply_bookatable;
   feedback?: Message_interactive_reply_feedback;
   flow_name?: string;
+  type?: string;
+  button_reply?: Message_interactive_reply_button_reply;
 };
 
 export const Message_interactive_replySchema = {
@@ -204,6 +218,22 @@ export const Message_interactive_replySchema = {
     bookatable: "Message_interactive_reply_bookatable",
     feedback: "Message_interactive_reply_feedback",
     flow_name: "string?",
+    type: "string?",
+    button_reply: "Message_interactive_reply_button_reply",
+  },
+};
+
+export type Message_interactive_reply_button_reply = {
+  id?: string;
+  title?: string;
+};
+
+export const Message_interactive_reply_button_replySchema = {
+  name: "Message_interactive_reply_button_reply",
+  embedded: true,
+  properties: {
+    id: "string?",
+    title: "string?",
   },
 };
 

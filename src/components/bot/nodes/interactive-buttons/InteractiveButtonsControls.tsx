@@ -1,20 +1,17 @@
 import { ActionIcon, Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconTrash } from "@tabler/icons-react";
-import { NodeProps, useReactFlow } from "@xyflow/react";
 import React from "react";
+import { ControlWrapperComponent } from "../../ControlWrapperType";
 import { InteractiveButtonsNode } from "./InteractiveButtonsNode";
 
-export function InteractiveButtonsControls(
-  props: NodeProps<InteractiveButtonsNode>
-) {
-  const { updateNodeData } = useReactFlow();
-
+export function InteractiveButtonsControls({
+  onValuesChange,
+  node,
+}: ControlWrapperComponent<InteractiveButtonsNode>) {
   const form = useForm({
-    initialValues: props.data,
-    onValuesChange: (values) => {
-      updateNodeData(props.id, values);
-    },
+    initialValues: node.data,
+    onValuesChange,
   });
 
   const buttons = form
@@ -71,7 +68,7 @@ export function InteractiveButtonsControls(
           <Button
             onClick={() =>
               form.insertListItem(`whatsapp.interactive.action.buttons`, {
-                type: "",
+                type: "reply",
                 reply: {
                   id: new Realm.BSON.ObjectId().toString(),
                   title: "",

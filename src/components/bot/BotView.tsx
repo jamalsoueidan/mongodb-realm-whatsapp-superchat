@@ -3,7 +3,7 @@ import { ReactFlowProvider } from "@xyflow/react";
 import { useParams } from "wouter";
 import { Bot } from "../../hooks/useBot";
 import { useUserFunction } from "../../hooks/useUserFunction";
-import { DrawerNodeControl } from "./DrawerNodeControl";
+import { ControlWrapper } from "./ControlWrapper";
 import { Flow } from "./Flow";
 import { ModalNodePicker } from "./ModalNodePicker";
 
@@ -19,7 +19,7 @@ export const BotView = () => {
       {data ? (
         <Flow initialEdges={data.edges} initialNodes={data.nodes} />
       ) : null}
-      <DrawerNodeControl />
+      <ControlWrapper />
       <ModalNodePicker />
     </ReactFlowProvider>
   );

@@ -1,4 +1,4 @@
-import { Box, Card, Divider, Text } from "@mantine/core";
+import { Box, Button, Card, Divider, Flex, rem, Text } from "@mantine/core";
 import { MessageTime } from "./MessageTime";
 import { MessageWrapper, MessageWrapperProps } from "./MessageWrapper";
 
@@ -20,16 +20,33 @@ export const MessageInteractive = ({ msg }: MessageWrapperProps) => {
       <Card.Section>
         <Divider />
       </Card.Section>
-      <Box p="4px">
-        <Text
-          size="xs"
-          c={isReplied ? "dimmed" : "green"}
-          fw="bold"
-          ta="center"
-        >
-          {msg.interactive?.action?.parameters?.flow_cta}
-        </Text>
-      </Box>
+      {msg.interactive?.type === "button" ? (
+        <Flex pt={rem(4)} justify="stretch" gap="xs">
+          {msg.interactive.action?.buttons?.map((button, index) => (
+            <Button
+              color="green.6"
+              size="xs"
+              key={index}
+              miw={rem(60)}
+              flex={1}
+            >
+              {button.reply?.title || ""}
+            </Button>
+          ))}
+        </Flex>
+      ) : null}
+      {msg.interactive?.type === "flow" ? (
+        <Box p="4px">
+          <Text
+            size="xs"
+            c={isReplied ? "dimmed" : "green"}
+            fw="bold"
+            ta="center"
+          >
+            {msg.interactive?.action?.parameters?.flow_cta}
+          </Text>
+        </Box>
+      ) : null}
     </MessageWrapper>
   );
 };

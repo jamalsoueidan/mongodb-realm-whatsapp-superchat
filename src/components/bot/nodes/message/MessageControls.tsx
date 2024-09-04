@@ -1,16 +1,15 @@
 import { Stack, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { NodeProps, useReactFlow } from "@xyflow/react";
+import { ControlWrapperComponent } from "../../ControlWrapperType";
 import { MessageNode } from "./MessageNode";
 
-export function MessageControls(props: NodeProps<MessageNode>) {
-  const { updateNodeData } = useReactFlow();
-
+export function MessageControls({
+  onValuesChange,
+  node,
+}: ControlWrapperComponent<MessageNode>) {
   const form = useForm({
-    initialValues: props.data,
-    onValuesChange: (values) => {
-      updateNodeData(props.id, values);
-    },
+    initialValues: node.data,
+    onValuesChange,
   });
 
   return (
