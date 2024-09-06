@@ -4,11 +4,9 @@ import { ReactFlowProvider } from "@xyflow/react";
 import { useLocation, useParams, useSearch } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
 
-import { ControlDrawer } from "./ControlDrawer";
 import { Flow } from "./Flow";
 import { Live } from "./Live";
 import { LogDrawer } from "./LogDrawer";
-import { ModalNodePicker } from "./ModalNodePicker";
 
 export const BotView = () => {
   const [, setLocation] = useLocation();
@@ -46,17 +44,7 @@ export const BotView = () => {
         </Flex>
       </Flex>
       <Divider />
-      <ReactFlowProvider>
-        {live ? (
-          <Live />
-        ) : (
-          <>
-            <Flow />
-            <ControlDrawer />
-            <ModalNodePicker />
-          </>
-        )}
-      </ReactFlowProvider>
+      <ReactFlowProvider>{live ? <Live /> : <Flow />}</ReactFlowProvider>
       <LogDrawer />
     </Flex>
   );

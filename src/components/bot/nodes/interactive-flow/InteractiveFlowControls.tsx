@@ -1,6 +1,6 @@
 import { Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { ControlWrapperComponent } from "../../ControlWrapperType";
+import { ControlWrapperComponent } from "../../NodeControlWrapperType";
 import { InteractiveFlowNode } from "./InteractiveFlowNode";
 
 export function InteractiveFlowControls({

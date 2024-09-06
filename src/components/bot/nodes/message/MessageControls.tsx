@@ -1,6 +1,6 @@
 import { Stack, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { ControlWrapperComponent } from "../../ControlWrapperType";
+import { ControlWrapperComponent } from "../../NodeControlWrapperType";
 import { MessageNode } from "./MessageNode";
 
 export function MessageControls({

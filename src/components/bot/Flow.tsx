@@ -1,4 +1,4 @@
-import { usePrevious } from "@mantine/hooks";
+import { useDebouncedCallback, usePrevious } from "@mantine/hooks";
 import {
   addEdge,
   Background,
@@ -22,9 +22,11 @@ import { useCallback, useEffect, useRef } from "react";
 import { BSON } from "realm";
 import { useRoute } from "wouter";
 import { useBot } from "../../hooks/useBot";
-import { CustomEdgeTypes } from "./CustomEdgeTypes";
+import { flowEdgeTypes } from "./CustomEdgeTypes";
 import { CustomNodeTypes } from "./CustomNodeTypes";
 import { FlowPanel } from "./FlowPanel";
+import { ModalNodePicker } from "./ModalNodePicker";
+import { NodeControlDrawer } from "./NodeControlDrawer";
 import { InteractiveButtonsNode } from "./nodes/interactive-buttons/InteractiveButtonsNode";
 import { InteractiveFlowNode } from "./nodes/interactive-flow/InteractiveFlowNode";
 import { InteractiveListNode } from "./nodes/interactive-list/InteractiveListNode";
@@ -49,15 +51,26 @@ export const Flow = () => {
   }>(":flowId/:section?/:id?");
 
   const connectingNodeId = useRef<OnConnectStartParams | null>(null);
-  const [nodes, , onNodesChange] = useNodesState<Node>([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+  const { update } = useBot();
+
+  const saveData = useDebouncedCallback(
+    () =>
+      update({
+        _id: new BSON.ObjectId(params?.flowId),
+        nodes,
+        edges,
+        status: "draft",
+      }),
+    800
+  );
 
   const { load } = useBot();
 
   useEffect(() => {
     if (params?.flowId) {
       load({ _id: new BSON.ObjectId(params?.flowId) }).then((data) => {
-        console.log(data);
         if (data) {
           setNodes(data.nodes);
           setEdges(data.edges);
@@ -67,7 +80,11 @@ export const Flow = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { screenToFlowPosition, setNodes, deleteElements, fitBounds, fitView } =
+  useEffect(() => {
+    saveData();
+  }, [nodes, edges]);
+
+  const { screenToFlowPosition, deleteElements, fitBounds, fitView } =
     useReactFlow();
 
   const onConnectStart = useCallback(
@@ -235,12 +252,14 @@ export const Flow = () => {
       elementsSelectable={true}
       onNodesDelete={onNodesDelete}
       nodeTypes={nodeTypes}
-      edgeTypes={CustomEdgeTypes}
+      edgeTypes={flowEdgeTypes}
       fitView
     >
       <FlowPanel />
       <Controls />
       <Background />
+      <NodeControlDrawer />
+      <ModalNodePicker />
     </ReactFlow>
   );
 };

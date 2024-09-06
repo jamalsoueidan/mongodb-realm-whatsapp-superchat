@@ -94,7 +94,11 @@ export const BotList = () => {
                       </Progress.Root>
                     </Table.Td>
                     <Table.Td>
-                      <Anchor component={Link} to={`/${bot._id}/log`} fz="sm">
+                      <Anchor
+                        component={Link}
+                        to={`/${bot._id}/logs?toggle=logs`}
+                        fz="sm"
+                      >
                         View log
                       </Anchor>
                     </Table.Td>

@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Divider, Flex, Title } from "@mantine/core";
+import { ActionIcon, Divider, Flex, Title } from "@mantine/core";
 import { useRealm } from "@realm/react";
 import {
   Background,
@@ -16,7 +16,7 @@ import { BSON } from "realm";
 import { Link, useParams } from "wouter";
 import { useBotLog } from "../../hooks/useBotLog";
 import { CustomerBotSchema } from "../../models/data";
-import { CustomEdgeTypes } from "./CustomEdgeTypes";
+import { liveEdgeTypes } from "./CustomEdgeTypes";
 import { nodeTypes } from "./Flow";
 import { NodeAutoLayout } from "./NodeAutoLayout";
 
@@ -40,9 +40,13 @@ export const Live = () => {
         _id: new BSON.ObjectId(id),
         bot: new BSON.ObjectId(flowId),
       }).then((value) => {
-        console.log("reload");
         setNodes(value?.nodes as never);
-        setEdges(value?.edges as never);
+        setEdges(
+          value?.edges.map((edge) => ({
+            ...edge,
+            animated: false,
+          })) as never
+        );
       });
     }
   }, [load, setNodes, params, setEdges]);
@@ -72,15 +76,14 @@ export const Live = () => {
         >
           <IconX />
         </ActionIcon>
-        <Button onClick={reloadBot}>Reload</Button>
       </Flex>
       <Divider />
       <ReactFlow
         nodes={nodes}
         edges={edges}
-        elementsSelectable={true}
+        elementsSelectable={false}
         nodeTypes={nodeTypes}
-        edgeTypes={CustomEdgeTypes}
+        edgeTypes={liveEdgeTypes}
         fitView
       >
         <Panel position="top-right">

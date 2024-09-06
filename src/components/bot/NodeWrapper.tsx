@@ -10,6 +10,14 @@ import { IconVectorBezierCircle } from "@tabler/icons-react";
 import { Handle, NodeProps, Position } from "@xyflow/react";
 import { useLocation, useParams } from "wouter";
 
+export type InteractiveTrigger = {
+  trigger?: {
+    status?: "done" | "waiting";
+    created_at?: number;
+    updated_at?: number;
+  };
+};
+
 export function NodeWrapper({
   children,
   bg,
@@ -20,6 +28,8 @@ export function NodeWrapper({
   const [, setLocation] = useLocation();
   const params = useParams<{ flowId: string; id: string }>();
 
+  const data = props.data as InteractiveTrigger;
+
   return (
     <>
       <Box
@@ -29,6 +39,12 @@ export function NodeWrapper({
           borderRadius: "10px",
           ...(params.id === props.id
             ? { outline: "2px solid var(--mantine-color-blue-6)" }
+            : {}),
+          ...(data?.trigger?.status === "done"
+            ? { border: "3px solid var(--mantine-color-green-7)" }
+            : {}),
+          ...(data?.trigger?.status === "waiting"
+            ? { border: "3px solid var(--mantine-color-yellow-4)" }
             : {}),
         }}
         miw="200px"

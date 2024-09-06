@@ -1,6 +1,6 @@
 import { SegmentedControl, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { ControlWrapperComponent } from "../../ControlWrapperType";
+import { ControlWrapperComponent } from "../../NodeControlWrapperType";
 import { StartNode } from "./StartNode";
 
 export function StartControls({

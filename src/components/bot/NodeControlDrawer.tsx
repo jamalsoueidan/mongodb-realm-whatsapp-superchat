@@ -12,11 +12,8 @@ import { NodeTypes, useReactFlow } from "@xyflow/react";
 import { Link, useRoute } from "wouter";
 import { useMobile } from "../../hooks/useMobile";
 
-import { useDebouncedCallback } from "@mantine/hooks";
 import { IconX } from "@tabler/icons-react";
 import { useCallback } from "react";
-import { BSON } from "realm";
-import { useBot } from "../../hooks/useBot";
 import { InteractiveButtonsControls } from "./nodes/interactive-buttons/InteractiveButtonsControls";
 import { InteractiveListControls } from "./nodes/interactive-list/InteractiveListControls";
 import { MessageControls } from "./nodes/message/MessageControls";
@@ -29,26 +26,14 @@ const controlTypes: Record<string, any> = {
   start: StartControls,
 };
 
-export const ControlDrawer = () => {
+export const NodeControlDrawer = () => {
   const isMobile = useMobile();
   const [isMatch, params] = useRoute<{
     flowId: string;
     id: string;
   }>(":flowId/controls/:id");
 
-  const { getNode, updateNodeData, getNodes, getEdges } = useReactFlow();
-  const { update } = useBot();
-
-  const saveData = useDebouncedCallback(() => {
-    update({
-      _id: new BSON.ObjectId(params?.flowId),
-      nodes: getNodes(),
-      edges: getEdges(),
-      status: "draft",
-    }).then(() => {
-      console.log("save");
-    });
-  }, 800);
+  const { getNode, updateNodeData } = useReactFlow();
 
   const node = getNode(params?.id || "");
 
@@ -56,10 +41,9 @@ export const ControlDrawer = () => {
     (values: Partial<NodeTypes["data"]>) => {
       if (params?.id) {
         updateNodeData(params?.id, values);
-        saveData();
       }
     },
-    [params?.id, saveData, updateNodeData]
+    [params?.id, updateNodeData]
   );
 
   if (!node || !params?.id || !params.flowId) {

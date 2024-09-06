@@ -3,7 +3,7 @@ import { useForm } from "@mantine/form";
 import { IconTrash } from "@tabler/icons-react";
 import React from "react";
 import { BSON } from "realm";
-import { ControlWrapperComponent } from "../../ControlWrapperType";
+import { ControlWrapperComponent } from "../../NodeControlWrapperType";
 import { InteractiveButtonsNode } from "./InteractiveButtonsNode";
 
 export function InteractiveButtonsControls({
