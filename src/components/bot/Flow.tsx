@@ -20,7 +20,7 @@ import {
 import "@xyflow/react/dist/style.css";
 import { useCallback, useEffect, useRef } from "react";
 import { BSON } from "realm";
-import { useRoute } from "wouter";
+import { useLocation, useRoute } from "wouter";
 import { useBot } from "../../hooks/useBot";
 import { flowEdgeTypes } from "./CustomEdgeTypes";
 import { CustomNodeTypes } from "./CustomNodeTypes";
@@ -44,6 +44,7 @@ export const nodeTypes: NodeTypes = {
 };
 
 export const Flow = () => {
+  const [, setLocation] = useLocation();
   const [, params] = useRoute<{
     flowId: string;
     id: string;
@@ -68,6 +69,7 @@ export const Flow = () => {
 
   const { load } = useBot();
 
+  // LOAD NODES; EDGES
   useEffect(() => {
     if (params?.flowId) {
       load({ _id: new BSON.ObjectId(params?.flowId) }).then((data) => {

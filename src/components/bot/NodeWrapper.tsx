@@ -3,17 +3,26 @@ import {
   Box,
   BoxProps,
   Divider,
+  Flex,
   Group,
+  rem,
   Title,
 } from "@mantine/core";
-import { IconVectorBezierCircle } from "@tabler/icons-react";
-import { Handle, NodeProps, Position } from "@xyflow/react";
+import { IconEdit, IconTrash } from "@tabler/icons-react";
+import {
+  Handle,
+  NodeProps,
+  NodeToolbar,
+  Position,
+  useReactFlow,
+} from "@xyflow/react";
+import { useCallback } from "react";
 import { useLocation, useParams } from "wouter";
 
 export type InteractiveTrigger = {
   trigger?: {
-    status?: "done" | "waiting";
-    created_at?: number;
+    status: "done" | "waiting";
+    created_at: number;
     updated_at?: number;
   };
 };
@@ -26,10 +35,16 @@ export function NodeWrapper({
 }: NodeProps &
   Pick<BoxProps, "bg"> & { children: React.ReactNode; withTarget?: boolean }) {
   const [, setLocation] = useLocation();
+  const { deleteElements } = useReactFlow();
   const params = useParams<{ flowId: string; id: string }>();
 
   const data = props.data as InteractiveTrigger;
 
+  const deleteNode = useCallback(() => {
+    deleteElements({ nodes: [props] });
+  }, [deleteElements, props]);
+
+  console.log("test", props.selected, props.data);
   return (
     <>
       <Box
@@ -37,7 +52,7 @@ export function NodeWrapper({
         style={{
           border: "1px solid #ccc",
           borderRadius: "10px",
-          ...(params.id === props.id
+          ...(props.selected
             ? { outline: "2px solid var(--mantine-color-blue-6)" }
             : {}),
           ...(data?.trigger?.status === "done"
@@ -58,19 +73,26 @@ export function NodeWrapper({
           pos="relative"
         >
           <Title order={4}>{capitalizeFirstLetter(props.type!)}</Title>
-          <ActionIcon
-            variant="transparent"
-            color="black"
-            onClick={() =>
-              setLocation(`/${params.flowId}/controls/${props.id}`)
-            }
-          >
-            <IconVectorBezierCircle
-              color={
-                params.id === props.id ? "var(--mantine-color-blue-6)" : "black"
-              }
-            />
-          </ActionIcon>
+          <NodeToolbar position={Position.Bottom}>
+            <Flex gap={rem(5)}>
+              <ActionIcon size="md" onClick={deleteNode} color="red">
+                <IconTrash
+                  style={{ width: "80%", height: "80%" }}
+                  stroke="1.5"
+                />
+              </ActionIcon>
+              <ActionIcon
+                onClick={() =>
+                  setLocation(`/${params.flowId}/controls/${props.id}`)
+                }
+              >
+                <IconEdit
+                  style={{ width: "80%", height: "80%" }}
+                  stroke="1.5"
+                />
+              </ActionIcon>
+            </Flex>
+          </NodeToolbar>
           {withTarget ? (
             <Handle
               type="target"

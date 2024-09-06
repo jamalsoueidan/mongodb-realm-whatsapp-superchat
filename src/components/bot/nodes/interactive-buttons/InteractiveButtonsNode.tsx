@@ -15,6 +15,7 @@ export const InteractiveButtonsNode = (
 ) => {
   const {
     data: {
+      trigger,
       whatsapp: { interactive },
     },
   } = props;
@@ -32,7 +33,20 @@ export const InteractiveButtonsNode = (
         {interactive.action.buttons.map((button) => {
           return (
             <Box pos="relative" key={button.reply.id} px="sm">
-              <Button variant="outline" key={button.reply.id} w="100%">
+              <Button
+                variant={
+                  trigger?.done?.button_reply?.id === button.reply.id
+                    ? "filled"
+                    : "outline"
+                }
+                color={
+                  trigger?.done?.button_reply?.id === button.reply.id
+                    ? "green.6"
+                    : "gray.6"
+                }
+                key={button.reply.id}
+                w="100%"
+              >
                 {button.reply.title}
               </Button>
               <CustomHandle

@@ -40,11 +40,18 @@ export const Live = () => {
         _id: new BSON.ObjectId(id),
         bot: new BSON.ObjectId(flowId),
       }).then((value) => {
-        setNodes(value?.nodes as never);
+        setNodes(
+          value?.nodes
+            .filter((node) => node.type !== "plus")
+            .map((node) => ({
+              ...node,
+              selected: false, //remove some unnecessary properties
+            })) as never
+        );
         setEdges(
           value?.edges.map((edge) => ({
             ...edge,
-            animated: false,
+            animated: false, //remove some unnecessary properties
           })) as never
         );
       });

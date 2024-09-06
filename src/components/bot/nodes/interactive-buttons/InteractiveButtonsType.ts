@@ -1,6 +1,18 @@
 import { InteractiveTrigger } from "../../NodeWrapper";
 
-export type InteractiveButtons = InteractiveTrigger & {
+export type InteractiveButtons = {
+  trigger?: InteractiveTrigger["trigger"] & {
+    done?: {
+      button_reply: {
+        title: string;
+        id: string;
+      };
+      type: string;
+    };
+    waiting?: {
+      message: string;
+    };
+  };
   whatsapp: {
     type: string;
     interactive: {
