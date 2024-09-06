@@ -1,8 +1,8 @@
-import { Button } from "@mantine/core";
+import { ActionIcon, Tooltip } from "@mantine/core";
+import { IconAlignCenter } from "@tabler/icons-react";
 import {
   Edge,
   Node,
-  Panel,
   Position,
   useNodesInitialized,
   useReactFlow,
@@ -112,10 +112,10 @@ export const NodeAutoLayout = () => {
   ]);
 
   return (
-    <Panel>
-      <Button variant="outline" onClick={() => setLayout(true)}>
-        Layout
-      </Button>
-    </Panel>
+    <Tooltip label="Layout" position="left">
+      <ActionIcon size="lg" onClick={() => setLayout(true)}>
+        <IconAlignCenter />
+      </ActionIcon>
+    </Tooltip>
   );
 };

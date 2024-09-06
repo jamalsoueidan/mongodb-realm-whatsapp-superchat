@@ -1,6 +1,6 @@
 import { Edge, Node } from "@xyflow/react";
 
-import Realm from "realm";
+import { BSON } from "realm";
 import { CustomNodeTypes } from "../../CustomNodeTypes";
 import { Message } from "./MessageType";
 
@@ -23,7 +23,7 @@ export const createMessageNode = (replace: Node) => {
   const newComponent: Message = JSON.parse(JSON.stringify(MessageDefault));
 
   const selectNode: CustomNodeTypes = {
-    id: new Realm.BSON.ObjectId().toString(),
+    id: new BSON.ObjectId().toString(),
     position: { x: 0, y: 0 },
     type: "plus",
     data: { name: "" },

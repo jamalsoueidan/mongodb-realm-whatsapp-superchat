@@ -2,7 +2,7 @@ import { ActionIcon, Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconTrash } from "@tabler/icons-react";
 import React from "react";
-import Realm from "realm";
+import { BSON } from "realm";
 import { ControlWrapperComponent } from "../../ControlWrapperType";
 import { InteractiveListNode } from "./InteractiveListNode";
 
@@ -78,7 +78,7 @@ export function InteractiveListControls({
                 form.insertListItem(
                   `whatsapp.interactive.action.sections.${sectionIndex}.rows`,
                   {
-                    id: new Realm.BSON.ObjectId().toString(),
+                    id: new BSON.ObjectId().toString(),
                     title: "",
                   }
                 )

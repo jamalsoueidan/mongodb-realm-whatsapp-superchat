@@ -1,5 +1,6 @@
 import { Edge, Node } from "@xyflow/react";
 
+import { BSON } from "realm";
 import { CustomNodeTypes } from "../../CustomNodeTypes";
 import { InteractiveButtons } from "./InteractiveButtonsType";
 
@@ -45,7 +46,7 @@ export const createInteractiveButtonNode = (replace: Node) => {
 
   newComponent.whatsapp.interactive.action.buttons =
     newComponent.whatsapp.interactive.action.buttons.map((button) => {
-      button.reply.id = new Realm.BSON.ObjectId().toString();
+      button.reply.id = new BSON.ObjectId().toString();
       const selectNode: CustomNodeTypes = {
         id: button.reply.id,
         position: { x: 0, y: 0 },

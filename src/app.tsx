@@ -14,6 +14,7 @@ import { TopNavigation } from "./components/TopNavigation";
 import { useMobile } from "./hooks/useMobile";
 import {
   ConversationSchema,
+  CustomerBotSchema,
   Message_interactive_action_buttons_replySchema,
   Message_interactive_action_buttonsSchema,
   Message_interactive_action_parameters_flow_action_payloadSchema,
@@ -116,6 +117,7 @@ export default function Home() {
                   Message_interactive_reply_button_replySchema,
                   UserConversationSchema,
                   UserSchema,
+                  CustomerBotSchema,
                 ]}
                 sync={{
                   flexible: true,
@@ -127,6 +129,7 @@ export default function Home() {
                       mutableSubs.add(
                         realm.objects(UserConversationSchema.name)
                       );
+                      mutableSubs.add(realm.objects(CustomerBotSchema.name));
                     },
                   },
                 }}

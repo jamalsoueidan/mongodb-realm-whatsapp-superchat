@@ -1,5 +1,5 @@
 import { Edge, Node } from "@xyflow/react";
-import Realm from "realm";
+import { BSON } from "realm";
 import { CustomNodeTypes } from "../../CustomNodeTypes";
 import { InteractiveFlow } from "./InteractiveFlowType";
 
@@ -47,7 +47,7 @@ export const createInteractiveFlowNode = (replace: Node) => {
   );
 
   const selectNode: CustomNodeTypes = {
-    id: new Realm.BSON.ObjectId().toString(),
+    id: new BSON.ObjectId().toString(),
     position: { x: 0, y: 0 },
     type: "plus",
     data: { name: "" },

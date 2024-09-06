@@ -2,6 +2,7 @@ import { ActionIcon, Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconTrash } from "@tabler/icons-react";
 import React from "react";
+import { BSON } from "realm";
 import { ControlWrapperComponent } from "../../ControlWrapperType";
 import { InteractiveButtonsNode } from "./InteractiveButtonsNode";
 
@@ -70,7 +71,7 @@ export function InteractiveButtonsControls({
               form.insertListItem(`whatsapp.interactive.action.buttons`, {
                 type: "reply",
                 reply: {
-                  id: new Realm.BSON.ObjectId().toString(),
+                  id: new BSON.ObjectId().toString(),
                   title: "",
                 },
               })

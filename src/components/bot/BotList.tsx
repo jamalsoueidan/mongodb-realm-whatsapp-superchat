@@ -1,14 +1,15 @@
 import { Link, useLocation } from "wouter";
 
 import {
-  Avatar,
+  Anchor,
   Button,
-  Card,
   Divider,
   Flex,
   Group,
+  Progress,
   ScrollArea,
   Stack,
+  Table,
   Text,
   TextInput,
   Title,
@@ -50,28 +51,62 @@ export const BotList = () => {
       <Divider />
 
       <ScrollArea.Autosize type="scroll" mah="100%" w="100%" mx="auto">
-        {data?.map((bot) => {
-          const timestamp = dayjs(bot.updated_at * 1000);
-          return (
-            <React.Fragment key={bot._id.toString()}>
-              <Card p="xs" component={Link} to={`/${bot._id}`} radius="0">
-                <Group>
-                  <Avatar size="lg" />
-                  <Flex flex={1} justify="space-between" align="center">
-                    <Stack gap="0" flex={1}>
-                      <Text>{bot.title}</Text>
-                      <Text size="xs" c="dimmed">
-                        updated {timestamp.fromNow()}
-                      </Text>
-                    </Stack>
-                    <Text size="xs">Steps {bot.nodes.length}</Text>
-                  </Flex>
-                </Group>
-              </Card>
-              <Divider />
-            </React.Fragment>
-          );
-        })}
+        <Table.ScrollContainer minWidth={800}>
+          <Table verticalSpacing="xs">
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>Title</Table.Th>
+                <Table.Th>Last update</Table.Th>
+                <Table.Th>Total steps</Table.Th>
+                <Table.Th>Stats</Table.Th>
+                <Table.Th>Log</Table.Th>
+                <Table.Th>Status</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>
+              {data?.map((bot) => {
+                const timestamp = dayjs(bot.updated_at * 1000);
+                return (
+                  <Table.Tr key={bot._id.toString()}>
+                    <Table.Td>
+                      <Anchor component={Link} to={`/${bot._id}`}>
+                        {bot.title}
+                      </Anchor>
+                    </Table.Td>
+                    <Table.Td>
+                      <Text size="xs">updated {timestamp.fromNow()}</Text>
+                    </Table.Td>
+                    <Table.Td>
+                      <Text size="xs">{bot.nodes.length} steps</Text>
+                    </Table.Td>
+                    <Table.Td>
+                      <Group justify="space-between">
+                        <Text fz="xs" c="teal" fw={700}>
+                          {100}%
+                        </Text>
+                        <Text fz="xs" c="red" fw={700}>
+                          {100}%
+                        </Text>
+                      </Group>
+                      <Progress.Root>
+                        <Progress.Section value={100} color="teal" />
+                        <Progress.Section value={100} color="red" />
+                      </Progress.Root>
+                    </Table.Td>
+                    <Table.Td>
+                      <Anchor component={Link} to={`/${bot._id}/log`} fz="sm">
+                        View log
+                      </Anchor>
+                    </Table.Td>
+                    <Table.Td>
+                      <Text size="xs"> {bot.status}</Text>
+                    </Table.Td>
+                  </Table.Tr>
+                );
+              })}
+            </Table.Tbody>
+          </Table>
+        </Table.ScrollContainer>
       </ScrollArea.Autosize>
       <CustomModal opened={opened} onClose={close} title="Create new bot">
         <Stack>

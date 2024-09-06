@@ -1,5 +1,5 @@
 import { useRealm } from "@realm/react";
-import Realm from "realm";
+import { BSON } from "realm";
 import { User } from "../models/data";
 import { useRealmUser } from "./useRealmUser";
 
@@ -9,6 +9,6 @@ export const useLoggedInUser = () => {
   const user = useRealmUser();
   return realm.objectForPrimaryKey<User>(
     "User",
-    new Realm.BSON.ObjectId(user.customData._id)
+    new BSON.ObjectId(user.customData._id)
   );
 };

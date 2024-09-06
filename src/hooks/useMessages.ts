@@ -1,6 +1,6 @@
 import { useQuery } from "@realm/react";
 import { useState } from "react";
-import Realm from "realm";
+import { BSON } from "realm";
 import { Message, MessageSchema } from "../models/data";
 
 export function useMessages({
@@ -17,7 +17,7 @@ export function useMessages({
     (collection) =>
       collection.filtered(
         `conversation._id = $0 AND hidden == $1`,
-        new Realm.BSON.ObjectId(conversationId),
+        new BSON.ObjectId(conversationId),
         null
       ),
     [conversationId]
@@ -28,7 +28,7 @@ export function useMessages({
     (collection) => {
       return collection.filtered(
         `conversation._id = $0 AND hidden == $1 SORT(timestamp DESC) LIMIT(${limit}) SORT(timestamp ASC)`,
-        new Realm.BSON.ObjectId(conversationId),
+        new BSON.ObjectId(conversationId),
         null,
         limit
       );

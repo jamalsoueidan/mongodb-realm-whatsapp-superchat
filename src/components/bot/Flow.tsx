@@ -1,6 +1,4 @@
-import { ActionIcon, Divider, Flex, Title } from "@mantine/core";
 import { usePrevious } from "@mantine/hooks";
-import { IconArrowLeft, IconPrinter } from "@tabler/icons-react";
 import {
   addEdge,
   Background,
@@ -11,11 +9,9 @@ import {
   getIncomers,
   getOutgoers,
   MarkerType,
-  MiniMap,
   Node,
   NodeTypes,
   OnConnectStartParams,
-  Panel,
   ReactFlow,
   useEdgesState,
   useNodesState,
@@ -23,13 +19,12 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useCallback, useEffect, useRef } from "react";
-import Realm from "realm";
-import { useLocation, useRoute } from "wouter";
-import { useMobile } from "../../hooks/useMobile";
-import { BotPanel } from "./BotPanel";
+import { BSON } from "realm";
+import { useRoute } from "wouter";
+import { useBot } from "../../hooks/useBot";
 import { CustomEdgeTypes } from "./CustomEdgeTypes";
 import { CustomNodeTypes } from "./CustomNodeTypes";
-import { NodeAutoLayout } from "./NodeAutoLayout";
+import { FlowPanel } from "./FlowPanel";
 import { InteractiveButtonsNode } from "./nodes/interactive-buttons/InteractiveButtonsNode";
 import { InteractiveFlowNode } from "./nodes/interactive-flow/InteractiveFlowNode";
 import { InteractiveListNode } from "./nodes/interactive-list/InteractiveListNode";
@@ -46,24 +41,31 @@ export const nodeTypes: NodeTypes = {
   start: StartNode,
 };
 
-export const Flow = ({
-  initialNodes,
-  initialEdges,
-}: {
-  initialNodes: Node[];
-  initialEdges: Edge[];
-}) => {
-  const [, setLocation] = useLocation();
-  const isMobile = useMobile();
-  const [isMatch, params] = useRoute<{
+export const Flow = () => {
+  const [, params] = useRoute<{
     flowId: string;
     id: string;
-    section: "replace" | "controls";
-  }>(":flowId/:section/:id");
+    section: "replace" | "controls" | "logs";
+  }>(":flowId/:section?/:id?");
 
   const connectingNodeId = useRef<OnConnectStartParams | null>(null);
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, , onNodesChange] = useNodesState<Node>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+
+  const { load } = useBot();
+
+  useEffect(() => {
+    if (params?.flowId) {
+      load({ _id: new BSON.ObjectId(params?.flowId) }).then((data) => {
+        console.log(data);
+        if (data) {
+          setNodes(data.nodes);
+          setEdges(data.edges);
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { screenToFlowPosition, setNodes, deleteElements, fitBounds, fitView } =
     useReactFlow();
@@ -94,7 +96,7 @@ export const Flow = ({
           };
         }
 
-        const id = new Realm.BSON.ObjectId().toString();
+        const id = new BSON.ObjectId().toString();
         const newNode: CustomNodeTypes = {
           id,
           position: screenToFlowPosition(position),
@@ -221,58 +223,24 @@ export const Flow = ({
   }, [params, nodes]);
 
   return (
-    <Flex
-      direction="column"
-      w={
-        isMatch && !isMobile && params.section === "controls"
-          ? "calc(70% - 70px)" //70px is for the left navigtation
-          : "100%"
-      }
-      h="100%"
+    <ReactFlow
+      nodes={nodes}
+      edges={edges}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+      onEdgesDelete={onEdgesDelete}
+      onConnect={onConnect}
+      onConnectStart={onConnectStart}
+      onConnectEnd={onConnectEnd}
+      elementsSelectable={true}
+      onNodesDelete={onNodesDelete}
+      nodeTypes={nodeTypes}
+      edgeTypes={CustomEdgeTypes}
+      fitView
     >
-      <Flex p="md" h="60px" justify="space-between" align="center" gap="xs">
-        <Flex>
-          <ActionIcon
-            variant="transparent"
-            onClick={() => setLocation("/")}
-            color="black"
-          >
-            <IconArrowLeft />
-          </ActionIcon>
-          <Title order={3}>Bot</Title>
-        </Flex>
-        <BotPanel />
-      </Flex>
-      <Divider />
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onEdgesDelete={onEdgesDelete}
-        onConnect={onConnect}
-        onConnectStart={onConnectStart}
-        onConnectEnd={onConnectEnd}
-        elementsSelectable={true}
-        onNodesDelete={onNodesDelete}
-        nodeTypes={nodeTypes}
-        edgeTypes={CustomEdgeTypes}
-        fitView
-      >
-        <NodeAutoLayout />
-        <Panel position="top-center">
-          <ActionIcon
-            onClick={() =>
-              console.log(JSON.stringify(nodes), JSON.stringify(edges))
-            }
-          >
-            <IconPrinter />
-          </ActionIcon>
-        </Panel>
-        {!isMobile ? <MiniMap /> : null}
-        <Controls />
-        <Background />
-      </ReactFlow>
-    </Flex>
+      <FlowPanel />
+      <Controls />
+      <Background />
+    </ReactFlow>
   );
 };

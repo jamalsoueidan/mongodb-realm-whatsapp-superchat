@@ -1,9 +1,10 @@
 import { useUser } from "@realm/react";
 import { Edge, Node } from "@xyflow/react";
 import { useCallback } from "react";
+import { BSON } from "realm";
 
 export type Bot = {
-  _id: Realm.BSON.ObjectId;
+  _id: BSON.ObjectId;
   user: string;
   title: string;
   edges: Edge[];
@@ -16,6 +17,19 @@ export type Bot = {
 
 export const useBot = () => {
   const user = useUser();
+
+  const load = useCallback(
+    (props: Pick<Bot, "_id">) => {
+      return user.functions["func-bot-get"]({
+        _id: props._id.toString(),
+        business_phone_number_id: "364826260050460",
+      }).then((value: unknown) => {
+        const bot = value as Bot;
+        return bot;
+      });
+    },
+    [user.functions]
+  );
 
   const create = useCallback(
     (
@@ -53,5 +67,5 @@ export const useBot = () => {
     [user.functions]
   );
 
-  return { create, update };
+  return { create, update, load };
 };

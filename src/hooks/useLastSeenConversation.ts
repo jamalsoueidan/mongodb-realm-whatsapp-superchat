@@ -1,6 +1,6 @@
 import { useQuery, useRealm } from "@realm/react";
 import { useCallback } from "react";
-import Realm from "realm";
+import Realm, { BSON } from "realm";
 import { useParams } from "wouter";
 import { Conversation, UserConversation } from "../models/data";
 import { useLoggedInUser } from "./useLoggedInUser";
@@ -36,7 +36,7 @@ export function useLastSeenConversation(
       .objects<UserConversation>("UserConversation")
       .filtered("user == $0 && conversation == $1", user, conversation)[0];
 
-    const _id = existingUserConversation?._id || new Realm.BSON.ObjectId();
+    const _id = existingUserConversation?._id || new BSON.ObjectId();
 
     realm.write(() => {
       realm.create(

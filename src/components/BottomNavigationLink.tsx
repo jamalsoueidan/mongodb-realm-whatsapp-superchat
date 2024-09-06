@@ -11,7 +11,7 @@ export function BottomNavigationLink({
   label: string;
   icon: Icon;
 }) {
-  const [isActive] = useRoute(to);
+  const [isActive] = useRoute(`${to}/*?`);
   const Component = icon;
 
   return (

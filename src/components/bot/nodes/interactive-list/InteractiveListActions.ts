@@ -1,5 +1,5 @@
 import { Edge, Node } from "@xyflow/react";
-import Realm from "realm";
+import { BSON } from "realm";
 import { CustomNodeTypes } from "../../CustomNodeTypes";
 import { InteractiveList } from "./InteractiveListType";
 
@@ -47,7 +47,7 @@ export const createInteractiveListNode = (replace: Node) => {
 
   newComponent.whatsapp.interactive.action.sections.forEach((section) => {
     section.rows = section.rows.map((row) => {
-      row.id = new Realm.BSON.ObjectId().toString();
+      row.id = new BSON.ObjectId().toString();
       const selectNode: CustomNodeTypes = {
         id: row.id,
         position: { x: 0, y: 0 },

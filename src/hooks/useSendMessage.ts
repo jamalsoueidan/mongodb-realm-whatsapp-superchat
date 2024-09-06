@@ -1,6 +1,6 @@
 import { useRealm } from "@realm/react";
 import { useCallback } from "react";
-import Realm from "realm";
+import { BSON } from "realm";
 import { useParams } from "wouter";
 import { useGetConversation } from "./useGetConversation";
 import { useLoggedInUser } from "./useLoggedInUser";
@@ -16,7 +16,7 @@ export const useSendMessage = () => {
     (body: string) => {
       realm.write(() => {
         realm.create("Message", {
-          _id: new Realm.BSON.ObjectId(),
+          _id: new BSON.ObjectId(),
           message_id: "system",
           type: "internal_message",
           conversation,
@@ -38,7 +38,7 @@ export const useSendMessage = () => {
     (body: string) => {
       realm.write(() => {
         realm.create("Message", {
-          _id: new Realm.BSON.ObjectId(),
+          _id: new BSON.ObjectId(),
           message_id: "not_send_yet",
           type: "text",
           conversation,
@@ -61,7 +61,7 @@ export const useSendMessage = () => {
     (rest: object) => {
       realm.write(() => {
         realm.create("Message", {
-          _id: new Realm.BSON.ObjectId(),
+          _id: new BSON.ObjectId(),
           message_id: "not_send_yet",
           conversation,
           business_phone_number_id: "364826260050460",

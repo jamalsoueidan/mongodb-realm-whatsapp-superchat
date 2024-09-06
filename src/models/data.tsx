@@ -1,7 +1,29 @@
-import Realm from "realm";
+import Realm, { BSON } from "realm";
+
+export type CustomerBot = {
+  _id: BSON.ObjectId;
+  business_phone_number_id: string;
+  customer_phone_number: string;
+  bot: BSON.ObjectId;
+  created_at: number;
+  updated_at: number;
+};
+
+export const CustomerBotSchema = {
+  name: "CustomerBot",
+  properties: {
+    _id: "objectId",
+    business_phone_number_id: "string",
+    customer_phone_number: "string",
+    bot: "objectId",
+    created_at: "double",
+    updated_at: "double",
+  },
+  primaryKey: "_id",
+};
 
 export type Conversation = {
-  _id: Realm.BSON.ObjectId;
+  _id: BSON.ObjectId;
   business_phone_number_id: string;
   customer_phone_number: string;
   name?: string;
@@ -23,7 +45,7 @@ export const ConversationSchema = {
 };
 
 export type Message = {
-  _id: Realm.BSON.ObjectId;
+  _id: BSON.ObjectId;
   business_phone_number_id: string;
   conversation?: Conversation;
   interactive?: Message_interactive;
@@ -516,7 +538,7 @@ export const Message_textSchema = {
 };
 
 export type UserConversation = {
-  _id: Realm.BSON.ObjectId;
+  _id: BSON.ObjectId;
   user?: User;
   conversation?: Conversation;
   last_seen_at: number;
@@ -534,7 +556,7 @@ export const UserConversationSchema = {
 };
 
 export type User = {
-  _id: Realm.BSON.ObjectId;
+  _id: BSON.ObjectId;
   business_phone_number_ids: Realm.List<string>;
   email: string;
   is_admin: boolean;

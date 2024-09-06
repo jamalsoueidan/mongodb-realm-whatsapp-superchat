@@ -1,7 +1,7 @@
 import { Checkbox, MultiSelect, Stack } from "@mantine/core";
 import { useRealm } from "@realm/react";
 import { useCallback, useState } from "react";
-import Realm from "realm";
+import Realm, { BSON } from "realm";
 import { useParams } from "wouter";
 import { useGetConversation } from "../../../../hooks/useGetConversation";
 import { useLoggedInUser } from "../../../../hooks/useLoggedInUser";
@@ -42,7 +42,7 @@ export const AssignUsers = () => {
           const user = users.find((u) => u.user_id === userId);
           if (user) {
             realm.create("Message", {
-              _id: new Realm.BSON.ObjectId(),
+              _id: new BSON.ObjectId(),
               message_id: "system",
               conversation,
               business_phone_number_id: "364826260050460",

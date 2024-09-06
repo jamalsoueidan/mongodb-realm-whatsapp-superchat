@@ -1,16 +1,16 @@
 import { Edge } from "@xyflow/react";
-import Realm from "realm";
+import { BSON } from "realm";
 import { CustomNodeTypes } from "./CustomNodeTypes";
 
 export const initialNodes: CustomNodeTypes[] = [
   {
-    id: new Realm.BSON.ObjectId().toString(),
+    id: new BSON.ObjectId().toString(),
     position: { x: 0, y: 0 },
     type: "start",
     data: { type: "on_received_message" },
   },
   {
-    id: new Realm.BSON.ObjectId().toString(),
+    id: new BSON.ObjectId().toString(),
     position: { x: 0, y: 0 },
     type: "plus",
     data: {},
