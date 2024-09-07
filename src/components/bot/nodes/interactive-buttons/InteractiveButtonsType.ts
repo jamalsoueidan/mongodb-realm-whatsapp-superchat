@@ -3,6 +3,7 @@ import { InteractiveTrigger } from "../../NodeWrapper";
 export type InteractiveButtons = {
   trigger?: InteractiveTrigger["trigger"] & {
     done?: {
+      message: string;
       button_reply: {
         title: string;
         id: string;

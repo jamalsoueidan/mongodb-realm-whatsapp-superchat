@@ -25,7 +25,7 @@ export const InteractiveListDefault: InteractiveList = {
             title: "Title",
             rows: [
               {
-                id: "1",
+                id: new BSON.ObjectId().toString(),
                 title: "Action Menu",
               },
             ],

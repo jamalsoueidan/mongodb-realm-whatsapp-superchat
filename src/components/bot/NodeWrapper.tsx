@@ -24,6 +24,7 @@ export type InteractiveTrigger = {
     status: "done" | "waiting";
     created_at: number;
     updated_at?: number;
+    sourceHandle?: string; //incase node have multi selection, and the trigger is done, figure out which sourcehandle was selected
   };
 };
 
@@ -44,7 +45,6 @@ export function NodeWrapper({
     deleteElements({ nodes: [props] });
   }, [deleteElements, props]);
 
-  console.log("test", props.selected, props.data);
   return (
     <>
       <Box

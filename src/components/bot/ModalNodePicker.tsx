@@ -6,6 +6,7 @@ import { CustomModal } from "../CustomModal";
 import { createInteractiveButtonNode } from "./nodes/interactive-buttons/InteractiveButtonsAction";
 import { createInteractiveFlowNode } from "./nodes/interactive-flow/InteractiveFlowAction";
 import { createInteractiveListNode } from "./nodes/interactive-list/InteractiveListActions";
+import { createLocationNode } from "./nodes/location/LocationAction";
 import { createMessageNode } from "./nodes/message/MessageAction";
 
 export const ModalNodePicker = () => {
@@ -58,6 +59,9 @@ export const ModalNodePicker = () => {
         </Button>
         <Button onClick={() => addOnclick(createMessageNode(currentNode))}>
           Message
+        </Button>
+        <Button onClick={() => addOnclick(createLocationNode(currentNode))}>
+          Location
         </Button>
       </Stack>
     </CustomModal>

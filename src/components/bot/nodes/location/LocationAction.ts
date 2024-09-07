@@ -2,14 +2,16 @@ import { Edge, Node } from "@xyflow/react";
 
 import { BSON } from "realm";
 import { CustomNodeTypes } from "../../CustomNodeTypes";
-import { Message } from "./MessageType";
+import { Location } from "./LocationType";
 
-export const MessageDefault: Message = {
+export const LocationDefault: Location = {
   whatsapp: {
-    type: "text",
-    text: {
-      preview_url: true,
-      body: "Your message",
+    type: "location",
+    location: {
+      name: "Philz Coffee",
+      address: "101 Forest Ave, Palo Alto, CA 94301",
+      latitude: "37.44216251868683",
+      longitude: "-122.16153582049394",
     },
   },
   config: {
@@ -17,13 +19,13 @@ export const MessageDefault: Message = {
   },
 };
 
-export const createMessageNode = (replace: Node) => {
+export const createLocationNode = (replace: Node) => {
   const { id, position } = replace;
 
   const nodes: CustomNodeTypes[] = [];
   const edges: Edge[] = [];
 
-  const newComponent: Message = JSON.parse(JSON.stringify(MessageDefault));
+  const newComponent: Location = JSON.parse(JSON.stringify(LocationDefault));
 
   const selectNode: CustomNodeTypes = {
     id: new BSON.ObjectId().toString(),
@@ -44,7 +46,7 @@ export const createMessageNode = (replace: Node) => {
     id,
     data: newComponent,
     position,
-    type: "message",
+    type: "location",
   });
 
   return { nodes, edges };

@@ -1,4 +1,4 @@
-import { Stack, Textarea } from "@mantine/core";
+import { Stack, Switch, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { ControlWrapperComponent } from "../../NodeControlWrapperType";
 import { MessageNode } from "./MessageNode";
@@ -14,7 +14,11 @@ export function MessageControls({
 
   return (
     <Stack>
-      <Textarea {...form.getInputProps("whatsapp.text.body")} label="Header" />
+      <Textarea {...form.getInputProps("whatsapp.text.body")} label="Body" />
+      <Switch
+        label="Require response"
+        {...form.getInputProps("config.require_response", { type: "checkbox" })}
+      />
     </Stack>
   );
 }

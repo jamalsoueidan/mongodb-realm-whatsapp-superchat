@@ -10,20 +10,20 @@ export const InteractiveFlowDefault: InteractiveFlow = {
       type: "flow",
       header: {
         type: "text",
-        text: "values.header",
+        text: "Header",
       },
       body: {
-        text: "values.body",
+        text: "Body",
       },
       footer: {
-        text: "values.footer",
+        text: "Footer",
       },
       action: {
         name: "flow",
         parameters: {
           flow_message_version: "3",
           flow_token: "unused",
-          flow_id: "x", //must choose
+          flow_id: undefined, //must choose
           mode: "draft",
           flow_cta: "click me button",
           flow_action: "navigate",

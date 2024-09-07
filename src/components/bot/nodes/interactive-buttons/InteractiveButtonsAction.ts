@@ -24,7 +24,7 @@ export const InteractiveButtonsDefault: InteractiveButtons = {
           {
             type: "reply",
             reply: {
-              id: "1",
+              id: new BSON.ObjectId().toString(),
               title: "Button",
             },
           },

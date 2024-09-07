@@ -1,13 +1,20 @@
-import { rem, Stack, Text, Title } from "@mantine/core";
-import { Node, NodeProps, Position } from "@xyflow/react";
+import { Button, rem, Stack, Text, Title } from "@mantine/core";
+import {
+  Handle,
+  Node,
+  NodeProps,
+  Position,
+  useHandleConnections,
+} from "@xyflow/react";
 
-import { CustomHandle } from "../../handlers/CustomHandler";
 import { NodeWrapper } from "../../NodeWrapper";
 import { InteractiveFlow } from "./InteractiveFlowType";
 
 export type InteractiveFlowNode = Node<InteractiveFlow, "interactive-flow">;
 
 export const InteractiveFlowNode = (props: NodeProps<InteractiveFlowNode>) => {
+  const connections = useHandleConnections({ type: "source", id: props.id });
+
   const {
     data: {
       whatsapp: { interactive },
@@ -21,12 +28,22 @@ export const InteractiveFlowNode = (props: NodeProps<InteractiveFlowNode>) => {
         <Text c="dimmed" fz="sm">
           {interactive.footer.text}
         </Text>
-        <CustomHandle
+        <Handle
           type="source"
           position={props.sourcePosition || Position.Right}
           id={props.id}
+          isConnectable={connections.length === 0}
         />
-      </Stack>
+        {interactive.action.parameters.flow_id ? (
+          <Button variant="outline" color="gray.6" w="100%" mt="sm">
+            {interactive.action.parameters.flow_cta}
+          </Button>
+        ) : (
+          <Text c="red" fw="500" fz="sm" mt="sm">
+            Please choose a flow
+          </Text>
+        )}
+      </Stack>{" "}
     </NodeWrapper>
   );
 };

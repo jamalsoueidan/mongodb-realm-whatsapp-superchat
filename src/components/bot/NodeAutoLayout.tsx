@@ -13,14 +13,21 @@ import { useLayoutEffect, useState } from "react";
 // https://ncoughlin.com/posts/react-flow-dagre-custom-nodes
 type RankDir = "TB" | "BT" | "LR" | "RL";
 const options: { rankdir: RankDir } = { rankdir: "LR" };
-const positionMap: Record<
-  RankDir,
-  { targetPosition: Position; sourcePosition: Position }
-> = {
-  TB: { targetPosition: Position.Top, sourcePosition: Position.Bottom },
-  BT: { targetPosition: Position.Bottom, sourcePosition: Position.Top },
-  LR: { targetPosition: Position.Left, sourcePosition: Position.Right },
-  RL: { targetPosition: Position.Right, sourcePosition: Position.Left },
+
+const getHandleYPosition = (
+  handleId?: string | null,
+  nodeId?: string
+): number => {
+  const handleElement = document.querySelector(
+    `[data-handleid="${handleId || ""}"][data-nodeid="${nodeId}"]`
+  );
+
+  if (handleElement) {
+    const rect = handleElement.getBoundingClientRect();
+    return rect.y;
+  }
+
+  return Number.POSITIVE_INFINITY; // Return a large number if the handle is not found to push it at the end.
 };
 
 const getLayoutedElements = (nodes: Node[], edges: Array<Edge>) => {
@@ -30,11 +37,19 @@ const getLayoutedElements = (nodes: Node[], edges: Array<Edge>) => {
   dagreGraph.setGraph(options);
 
   nodes.forEach((node) => {
+    console.log(node.type, node.measured!.width, node.measured!.height);
     dagreGraph.setNode(node.id, {
       ...node,
-      width: node.measured!.width! + 100,
+      width: node.measured!.width! + 50,
       height: node.measured!.height! + 50,
     });
+  });
+
+  // FIX problem of overlapping nodes
+  edges.sort((edgeA, edgeB) => {
+    const handleYA = getHandleYPosition(edgeA.sourceHandle, edgeA.source);
+    const handleYB = getHandleYPosition(edgeB.sourceHandle, edgeB.source);
+    return handleYA - handleYB;
   });
 
   edges.forEach((edge) => {
@@ -43,9 +58,9 @@ const getLayoutedElements = (nodes: Node[], edges: Array<Edge>) => {
 
   dagre.layout(dagreGraph);
 
-  const positions = positionMap[options.rankdir] || {
-    targetPosition: Position.Top,
-    sourcePosition: Position.Bottom,
+  const positions = {
+    targetPosition: Position.Left,
+    sourcePosition: Position.Right,
   };
 
   const newNodes = nodes.map((node) => {

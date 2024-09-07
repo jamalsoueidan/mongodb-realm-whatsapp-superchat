@@ -5,9 +5,6 @@ import {
   Connection,
   Controls,
   Edge,
-  getConnectedEdges,
-  getIncomers,
-  getOutgoers,
   MarkerType,
   Node,
   NodeTypes,
@@ -20,7 +17,7 @@ import {
 import "@xyflow/react/dist/style.css";
 import { useCallback, useEffect, useRef } from "react";
 import { BSON } from "realm";
-import { useLocation, useRoute } from "wouter";
+import { useRoute } from "wouter";
 import { useBot } from "../../hooks/useBot";
 import { flowEdgeTypes } from "./CustomEdgeTypes";
 import { CustomNodeTypes } from "./CustomNodeTypes";
@@ -30,6 +27,7 @@ import { NodeControlDrawer } from "./NodeControlDrawer";
 import { InteractiveButtonsNode } from "./nodes/interactive-buttons/InteractiveButtonsNode";
 import { InteractiveFlowNode } from "./nodes/interactive-flow/InteractiveFlowNode";
 import { InteractiveListNode } from "./nodes/interactive-list/InteractiveListNode";
+import { LocationNode } from "./nodes/location/LocationNode";
 import { MessageNode } from "./nodes/message/MessageNode";
 import { PlusNode } from "./nodes/plus/PlusNode";
 import { StartNode } from "./nodes/start/StartNode";
@@ -38,13 +36,13 @@ export const nodeTypes: NodeTypes = {
   "interactive-buttons": InteractiveButtonsNode,
   "interactive-list": InteractiveListNode,
   "interactive-flow": InteractiveFlowNode,
+  location: LocationNode,
   message: MessageNode,
   plus: PlusNode,
   start: StartNode,
 };
 
 export const Flow = () => {
-  const [, setLocation] = useLocation();
   const [, params] = useRoute<{
     flowId: string;
     id: string;
@@ -153,7 +151,7 @@ export const Flow = () => {
         (node) => node.id === edge.target && node.type === "plus"
       );
 
-      if (node && node.type) {
+      if (node && node.type === "plus") {
         const totalEdges = edges.filter((e) => e.target === node.id).length;
         if (totalEdges === 1) {
           deleteElements({ nodes: [node] });
@@ -161,33 +159,6 @@ export const Flow = () => {
       }
     });
   };
-
-  const onNodesDelete = useCallback(
-    (deleted: Node[]) => {
-      setEdges(
-        deleted.reduce((acc, node) => {
-          const incomers = getIncomers(node, nodes, edges);
-          const outgoers = getOutgoers(node, nodes, edges);
-          const connectedEdges = getConnectedEdges([node], edges);
-
-          const remainingEdges = acc.filter(
-            (edge) => !connectedEdges.includes(edge)
-          );
-
-          const createdEdges = incomers.flatMap(({ id: source }) =>
-            outgoers.map(({ id: target }) => ({
-              id: `${source}->${target}`,
-              source,
-              target,
-            }))
-          );
-
-          return [...remainingEdges, ...createdEdges];
-        }, edges)
-      );
-    },
-    [nodes, edges]
-  );
 
   const onConnect = useCallback(
     (params: Connection) => {
@@ -252,7 +223,6 @@ export const Flow = () => {
       onConnectStart={onConnectStart}
       onConnectEnd={onConnectEnd}
       elementsSelectable={true}
-      onNodesDelete={onNodesDelete}
       nodeTypes={nodeTypes}
       edgeTypes={flowEdgeTypes}
       fitView

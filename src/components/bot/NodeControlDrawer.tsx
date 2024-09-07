@@ -15,13 +15,17 @@ import { useMobile } from "../../hooks/useMobile";
 import { IconX } from "@tabler/icons-react";
 import { useCallback } from "react";
 import { InteractiveButtonsControls } from "./nodes/interactive-buttons/InteractiveButtonsControls";
+import { InteractiveFlowControls } from "./nodes/interactive-flow/InteractiveFlowControls";
 import { InteractiveListControls } from "./nodes/interactive-list/InteractiveListControls";
+import { LocationControls } from "./nodes/location/LocationControls";
 import { MessageControls } from "./nodes/message/MessageControls";
 import { StartControls } from "./nodes/start/StartControls";
 
 const controlTypes: Record<string, any> = {
   "interactive-list": InteractiveListControls,
   "interactive-buttons": InteractiveButtonsControls,
+  "interactive-flow": InteractiveFlowControls,
+  location: LocationControls,
   message: MessageControls,
   start: StartControls,
 };

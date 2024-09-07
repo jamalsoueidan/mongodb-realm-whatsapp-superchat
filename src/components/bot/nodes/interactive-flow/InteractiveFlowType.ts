@@ -18,7 +18,7 @@ export type InteractiveFlow = {
         parameters: {
           flow_message_version: string;
           flow_token: string;
-          flow_id: string;
+          flow_id?: string;
           mode: string;
           flow_cta: string;
           flow_action: string;

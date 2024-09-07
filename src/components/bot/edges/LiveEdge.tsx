@@ -17,7 +17,9 @@ export function LiveEdge({
   targetY,
   sourcePosition,
   targetPosition,
+  sourceHandleId,
   target,
+  source,
   markerEnd,
 }: EdgeProps) {
   const { getNode } = useReactFlow();
@@ -30,18 +32,37 @@ export function LiveEdge({
     targetPosition,
   });
 
-  const data = getNode(target)?.data as InteractiveTrigger;
+  const sourceNode = getNode(source);
+  const sourceData = sourceNode?.data as InteractiveTrigger;
+
+  const targetNode = getNode(target);
+  const targetData = targetNode?.data as InteractiveTrigger;
+
+  const hasMultiplyHandlers = !!sourceData.trigger?.sourceHandle;
 
   const color = useMemo(() => {
-    const trigger = data.trigger;
+    if (hasMultiplyHandlers) {
+      if (sourceHandleId === sourceData.trigger?.sourceHandle) {
+        return "var(--mantine-color-green-7)";
+      } else {
+        return "transparent";
+      }
+    }
+    const trigger = targetData.trigger;
     if (trigger) {
       if (trigger.status === "done") {
         return "var(--mantine-color-green-7)";
       }
       return "var(--mantine-color-yellow-4)";
     }
-    return "#CCC";
-  }, [data]);
+
+    return "transparent";
+  }, [
+    hasMultiplyHandlers,
+    sourceData.trigger?.sourceHandle,
+    sourceHandleId,
+    targetData.trigger,
+  ]);
 
   return (
     <>
@@ -51,7 +72,7 @@ export function LiveEdge({
         style={{ strokeWidth: 3, stroke: color }}
       />
       <EdgeLabelRenderer>
-        {data.trigger && (
+        {targetData.trigger && (
           <div
             style={{
               position: "absolute",

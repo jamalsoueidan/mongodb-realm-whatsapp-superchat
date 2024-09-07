@@ -1,6 +1,6 @@
 import { ActionIcon, Button, Select, Stack, Tooltip } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconFiles, IconSend } from "@tabler/icons-react";
+import { IconFiles, IconPrinter, IconSend } from "@tabler/icons-react";
 import { Panel, useReactFlow } from "@xyflow/react";
 import { useCallback, useState } from "react";
 import { Link, useParams } from "wouter";
@@ -14,7 +14,7 @@ export function FlowPanel() {
     id: string;
     section: "replace" | "controls" | "logs";
   }>();
-  const { getNodes } = useReactFlow();
+  const { getNodes, getEdges } = useReactFlow();
   const [opened, { close, open }] = useDisclosure(false);
 
   const [value, setValue] = useState<string | null>("");
@@ -42,6 +42,14 @@ export function FlowPanel() {
         <Tooltip label="Send" position="left">
           <ActionIcon size="lg" onClick={open}>
             <IconSend />
+          </ActionIcon>
+        </Tooltip>
+        <Tooltip label="Print" position="left">
+          <ActionIcon
+            size="lg"
+            onClick={() => console.log(getNodes(), getEdges())}
+          >
+            <IconPrinter />
           </ActionIcon>
         </Tooltip>
         <NodeAutoLayout />
