@@ -22,6 +22,7 @@ export function BotEdit({
       update({
         _id: values._id,
         title: values.title,
+        status: values.status,
       });
       setData((prev) => ({ ...prev, ...values }));
     },
