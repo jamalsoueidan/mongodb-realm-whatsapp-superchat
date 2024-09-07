@@ -2,6 +2,7 @@ import { Link, useLocation } from "wouter";
 
 import {
   Anchor,
+  Badge,
   Button,
   Divider,
   Flex,
@@ -15,7 +16,6 @@ import {
   Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import dayjs from "dayjs";
 import React, { useCallback } from "react";
 import { Bot, useBot } from "../../hooks/useBot";
 import { useUserFunction } from "../../hooks/useUserFunction";
@@ -57,20 +57,18 @@ export const BotList = () => {
               <Table.Tr>
                 <Table.Th>Title</Table.Th>
                 <Table.Th>Stats</Table.Th>
-
-                <Table.Th>Status</Table.Th>
+                <Table.Th ta="right">Status</Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
               {data?.map((bot) => {
-                const timestamp = dayjs(bot.updated_at * 1000);
                 return (
                   <Table.Tr key={bot._id.toString()}>
                     <Table.Td>
                       <Anchor component={Link} to={`/${bot._id}`}>
                         {bot.title}
                       </Anchor>
-                      <Text size="xs">updated {timestamp.fromNow()}</Text>
+                      <Text size="xs">total {bot.nodes.length} steps</Text>
                     </Table.Td>
 
                     <Table.Td>
@@ -96,8 +94,15 @@ export const BotList = () => {
                     </Table.Td>
 
                     <Table.Td>
-                      <Text size="xs"> {bot.status}</Text>
-                      <Text size="xs">total {bot.nodes.length} steps</Text>
+                      <Group justify="right">
+                        <Badge
+                          color={
+                            bot?.status === "published" ? "green" : "yellow"
+                          }
+                        >
+                          {bot?.status}
+                        </Badge>
+                      </Group>
                     </Table.Td>
                   </Table.Tr>
                 );
