@@ -11,7 +11,4 @@ export type Location = {
       address: string;
     };
   };
-  config: {
-    require_response: boolean;
-  };
 };

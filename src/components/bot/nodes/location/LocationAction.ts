@@ -14,9 +14,6 @@ export const LocationDefault: Location = {
       longitude: "-122.16153582049394",
     },
   },
-  config: {
-    require_response: true,
-  },
 };
 
 export const createLocationNode = (replace: Node) => {

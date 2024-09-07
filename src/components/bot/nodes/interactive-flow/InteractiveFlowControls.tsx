@@ -1,4 +1,4 @@
-import { Select, Stack, Switch, TextInput } from "@mantine/core";
+import { Select, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useUserFunction } from "../../../../hooks/useUserFunction";
 import { Flow } from "../../../conversations/chat/attachments/flows/FlowItem";
@@ -48,10 +48,6 @@ export function InteractiveFlowControls({
           label: flow.name,
         }))}
         label="Button"
-      />
-      <Switch
-        label="Require response"
-        {...form.getInputProps("config.require_response", { type: "checkbox" })}
       />
     </Stack>
   );

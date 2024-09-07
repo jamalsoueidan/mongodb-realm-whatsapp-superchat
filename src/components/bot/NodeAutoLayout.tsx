@@ -37,7 +37,6 @@ const getLayoutedElements = (nodes: Node[], edges: Array<Edge>) => {
   dagreGraph.setGraph(options);
 
   nodes.forEach((node) => {
-    console.log(node.type, node.measured!.width, node.measured!.height);
     dagreGraph.setNode(node.id, {
       ...node,
       width: node.measured!.width! + 50,

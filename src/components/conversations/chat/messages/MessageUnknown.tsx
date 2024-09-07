@@ -6,7 +6,7 @@ export const MessageUnknown = ({ msg }: MessageWrapperProps) => {
   return (
     <MessageWrapper msg={msg}>
       <Text size="xs" c="gray.6">
-        unknown type
+        unknown {msg.type}
       </Text>
       <MessageTime msg={msg} />
     </MessageWrapper>

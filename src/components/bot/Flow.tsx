@@ -17,7 +17,7 @@ import {
 import "@xyflow/react/dist/style.css";
 import { useCallback, useEffect, useRef } from "react";
 import { BSON } from "realm";
-import { useRoute } from "wouter";
+import { useLocation, useRoute } from "wouter";
 import { useBot } from "../../hooks/useBot";
 import { flowEdgeTypes } from "./CustomEdgeTypes";
 import { CustomNodeTypes } from "./CustomNodeTypes";
@@ -43,6 +43,7 @@ export const nodeTypes: NodeTypes = {
 };
 
 export const Flow = () => {
+  const [, setLocation] = useLocation();
   const [, params] = useRoute<{
     flowId: string;
     id: string;
@@ -52,7 +53,7 @@ export const Flow = () => {
   const connectingNodeId = useRef<OnConnectStartParams | null>(null);
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
-  const { update } = useBot();
+  const { update, load } = useBot();
 
   const saveData = useDebouncedCallback(
     () =>
@@ -64,8 +65,6 @@ export const Flow = () => {
       }),
     800
   );
-
-  const { load } = useBot();
 
   // LOAD NODES; EDGES
   useEffect(() => {
@@ -158,6 +157,7 @@ export const Flow = () => {
         }
       }
     });
+    setLocation(`/${params?.flowId}`);
   };
 
   const onConnect = useCallback(

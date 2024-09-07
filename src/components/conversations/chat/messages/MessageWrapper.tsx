@@ -31,10 +31,16 @@ export const MessageWrapper = ({
       >
         {children}
       </Card>
-      {msg.user ? (
-        <Avatar color="cyan" radius="xl" size={rem(30)}>
-          {getInitials(msg.user.name)}
-        </Avatar>
+      {!isRecipientDifferent ? (
+        msg.user ? (
+          <Avatar color="cyan" radius="xl" size={rem(30)}>
+            {getInitials(msg.user.name)}
+          </Avatar>
+        ) : (
+          <Avatar color="grape" radius="xl" size={rem(30)}>
+            BOT
+          </Avatar>
+        )
       ) : null}
     </Flex>
   );

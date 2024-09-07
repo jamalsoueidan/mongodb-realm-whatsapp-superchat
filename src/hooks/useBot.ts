@@ -54,7 +54,7 @@ export const useBot = () => {
   );
 
   const update = useCallback(
-    (props: Pick<Bot, "_id" | "edges" | "nodes" | "status">) => {
+    (props: Pick<Bot, "_id"> & Partial<Omit<Bot, "_id">>) => {
       return user.functions["func-bot-update"]({
         ...props,
         _id: props._id.toString(), //we must converted it to string!

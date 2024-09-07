@@ -1,4 +1,12 @@
-import { ActionIcon, Button, Group, Stack, TextInput } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Card,
+  Divider,
+  Group,
+  Stack,
+  TextInput,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconTrash } from "@tabler/icons-react";
 import React from "react";
@@ -19,29 +27,41 @@ export function InteractiveListControls({
     .getValues()
     .whatsapp.interactive.action.sections.map((section, sectionIndex) => {
       const rows = section.rows.map((row, rowIndex) => (
-        <Group key={row.id} gap="xs">
+        <React.Fragment key={row.id}>
+          <Group gap="xs">
+            <TextInput
+              withAsterisk
+              label="Row title"
+              flex="1"
+              {...form.getInputProps(
+                `whatsapp.interactive.action.sections.${sectionIndex}.rows.${rowIndex}.title`
+              )}
+              maxLength={60}
+            />
+
+            <ActionIcon
+              color="red"
+              mt="lg"
+              onClick={() =>
+                form.removeListItem(
+                  `whatsapp.interactive.action.sections.${sectionIndex}.rows`,
+                  rowIndex
+                )
+              }
+            >
+              <IconTrash size="1rem" />
+            </ActionIcon>
+          </Group>
           <TextInput
             withAsterisk
-            label="Row title"
+            label="Row description"
             flex="1"
             {...form.getInputProps(
-              `whatsapp.interactive.action.sections.${sectionIndex}.rows.${rowIndex}.title`
+              `whatsapp.interactive.action.sections.${sectionIndex}.rows.${rowIndex}.description`
             )}
+            maxLength={72}
           />
-
-          <ActionIcon
-            color="red"
-            mt="lg"
-            onClick={() =>
-              form.removeListItem(
-                `whatsapp.interactive.action.sections.${sectionIndex}.rows`,
-                rowIndex
-              )
-            }
-          >
-            <IconTrash size="1rem" />
-          </ActionIcon>
-        </Group>
+        </React.Fragment>
       ));
 
       return (
@@ -54,6 +74,7 @@ export function InteractiveListControls({
               {...form.getInputProps(
                 `whatsapp.interactive.action.sections.${sectionIndex}.title`
               )}
+              maxLength={24}
             />
 
             <ActionIcon
@@ -74,6 +95,8 @@ export function InteractiveListControls({
           </Stack>
           <Group justify="center">
             <Button
+              variant="light"
+              size="xs"
               onClick={() =>
                 form.insertListItem(
                   `whatsapp.interactive.action.sections.${sectionIndex}.rows`,
@@ -92,33 +115,39 @@ export function InteractiveListControls({
     });
 
   return (
-    <Stack>
-      <TextInput
-        {...form.getInputProps("whatsapp.interactive.header.text")}
-        label="Header"
-      />
-      <TextInput
-        {...form.getInputProps("whatsapp.interactive.body.text")}
-        label="Body"
-      />
-      <TextInput
-        {...form.getInputProps("whatsapp.interactive.footer.text")}
-        label="Footer"
-      />
-
-      {sections}
-      <Group justify="center">
-        <Button
-          onClick={() =>
-            form.insertListItem("whatsapp.interactive.action.sections", {
-              title: "",
-              rows: [],
-            })
-          }
-        >
-          Add section
-        </Button>
-      </Group>
-    </Stack>
+    <>
+      <Stack>
+        <TextInput
+          {...form.getInputProps("whatsapp.interactive.header.text")}
+          label="Header"
+        />
+        <TextInput
+          {...form.getInputProps("whatsapp.interactive.body.text")}
+          label="Body"
+        />
+        <TextInput
+          {...form.getInputProps("whatsapp.interactive.footer.text")}
+          label="Footer"
+        />
+      </Stack>
+      <Card.Section>
+        <Divider my="lg" />
+      </Card.Section>
+      <Stack>
+        {sections}
+        <Group justify="center">
+          <Button
+            onClick={() =>
+              form.insertListItem("whatsapp.interactive.action.sections", {
+                title: "",
+                rows: [],
+              })
+            }
+          >
+            Add section
+          </Button>
+        </Group>
+      </Stack>
+    </>
   );
 }

@@ -49,6 +49,7 @@ export type Message = {
   business_phone_number_id: string;
   conversation?: Conversation;
   interactive?: Message_interactive;
+  location?: Message_location;
   interactive_reply?: Message_interactive_reply;
   media?: Message_media;
   message_id: string;
@@ -70,6 +71,7 @@ export const MessageSchema = {
     business_phone_number_id: "string",
     conversation: "Conversation",
     interactive: "Message_interactive",
+    location: "Message_location",
     interactive_reply: "Message_interactive_reply",
     media: "Message_media",
     message_id: "string",
@@ -84,6 +86,24 @@ export const MessageSchema = {
     hidden: "bool?",
   },
   primaryKey: "_id",
+};
+
+export type Message_location = {
+  name?: string;
+  address?: string;
+  latitude?: string;
+  longitude?: string;
+};
+
+export const Message_locationSchema = {
+  name: "Message_location",
+  embedded: true,
+  properties: {
+    name: "string",
+    address: "string",
+    latitude: "string",
+    longitude: "string",
+  },
 };
 
 export type Message_interactive = {

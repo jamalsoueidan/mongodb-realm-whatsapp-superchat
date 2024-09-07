@@ -1,4 +1,11 @@
-import { ActionIcon, Button, Group, Stack, TextInput } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Group,
+  Stack,
+  Text,
+  TextInput,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconTrash } from "@tabler/icons-react";
 import React from "react";
@@ -48,7 +55,7 @@ export function InteractiveButtonsControls({
     });
 
   return (
-    <Stack>
+    <Stack gap="xs">
       <TextInput
         {...form.getInputProps("whatsapp.interactive.header.text")}
         label="Header"
@@ -80,7 +87,11 @@ export function InteractiveButtonsControls({
             Add button
           </Button>
         </Group>
-      ) : null}
+      ) : (
+        <Text fz="xs" color="red">
+          Max 3 buttons allowed
+        </Text>
+      )}
     </Stack>
   );
 }

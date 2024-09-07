@@ -32,6 +32,7 @@ export const Live = () => {
     new BSON.ObjectId(params?.id)
   );
 
+  console.log(params);
   // Function to reload data
   const reloadBot = useCallback(() => {
     const { id, flowId } = params;

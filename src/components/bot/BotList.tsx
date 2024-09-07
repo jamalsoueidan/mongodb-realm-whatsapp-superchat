@@ -56,10 +56,8 @@ export const BotList = () => {
             <Table.Thead>
               <Table.Tr>
                 <Table.Th>Title</Table.Th>
-                <Table.Th>Last update</Table.Th>
-                <Table.Th>Total steps</Table.Th>
                 <Table.Th>Stats</Table.Th>
-                <Table.Th>Log</Table.Th>
+
                 <Table.Th>Status</Table.Th>
               </Table.Tr>
             </Table.Thead>
@@ -72,13 +70,9 @@ export const BotList = () => {
                       <Anchor component={Link} to={`/${bot._id}`}>
                         {bot.title}
                       </Anchor>
-                    </Table.Td>
-                    <Table.Td>
                       <Text size="xs">updated {timestamp.fromNow()}</Text>
                     </Table.Td>
-                    <Table.Td>
-                      <Text size="xs">{bot.nodes.length} steps</Text>
-                    </Table.Td>
+
                     <Table.Td>
                       <Group justify="space-between">
                         <Text fz="xs" c="teal" fw={700}>
@@ -92,8 +86,6 @@ export const BotList = () => {
                         <Progress.Section value={100} color="teal" />
                         <Progress.Section value={100} color="red" />
                       </Progress.Root>
-                    </Table.Td>
-                    <Table.Td>
                       <Anchor
                         component={Link}
                         to={`/${bot._id}/logs?toggle=logs`}
@@ -102,8 +94,10 @@ export const BotList = () => {
                         View log
                       </Anchor>
                     </Table.Td>
+
                     <Table.Td>
                       <Text size="xs"> {bot.status}</Text>
+                      <Text size="xs">total {bot.nodes.length} steps</Text>
                     </Table.Td>
                   </Table.Tr>
                 );

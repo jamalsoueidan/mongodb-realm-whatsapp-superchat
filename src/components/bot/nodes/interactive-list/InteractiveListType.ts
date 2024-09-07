@@ -20,6 +20,7 @@ export type InteractiveList = {
           rows: Array<{
             id: string;
             title: string;
+            description: string;
           }>;
         }>;
       };

@@ -8,6 +8,7 @@ import { MessageImage } from "./messages/MessageImage";
 import { MessageInteractive } from "./messages/MessageInteractive";
 import { MessageInteractiveReply } from "./messages/MessageInteractiveReply";
 import { MessageInternal } from "./messages/MessageInternal";
+import { MessageLocation } from "./messages/MessageLocation";
 import { MessageSystem } from "./messages/MessageSystem";
 import { MessageText } from "./messages/MessageText";
 import { MessageUnknown } from "./messages/MessageUnknown";
@@ -112,9 +113,11 @@ export function ChatMessages({
               <MessageInteractiveReply msg={msg} />
             )}
             {msg.type === "system" && <MessageSystem msg={msg} />}
+            {msg.type === "location" && <MessageLocation msg={msg} />}
             {msg.type === "internal_message" && <MessageInternal msg={msg} />}
             {msg.type !== "text" &&
               msg.type !== "image" &&
+              msg.type !== "location" &&
               msg.type !== "interactive" &&
               msg.type !== "interactive_reply" &&
               msg.type !== "system" &&

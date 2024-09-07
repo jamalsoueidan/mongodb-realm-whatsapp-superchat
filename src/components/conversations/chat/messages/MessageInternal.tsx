@@ -5,7 +5,7 @@ import { MessageWrapper, MessageWrapperProps } from "./MessageWrapper";
 
 export const MessageInternal = ({ msg }: MessageWrapperProps) => {
   return (
-    <MessageWrapper msg={msg} bg="blue.1">
+    <MessageWrapper msg={msg} bg="yellow.1">
       <Text
         size="sm"
         c="gray.9"

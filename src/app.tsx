@@ -35,6 +35,7 @@ import {
   Message_interactive_reply_feedbackSchema,
   Message_interactive_replySchema,
   Message_interactiveSchema,
+  Message_locationSchema,
   Message_mediaSchema,
   Message_statusesSchema,
   Message_template_components_parameters_actionSchema,
@@ -118,6 +119,7 @@ export default function Home() {
                   UserConversationSchema,
                   UserSchema,
                   CustomerBotSchema,
+                  Message_locationSchema,
                 ]}
                 sync={{
                   flexible: true,
