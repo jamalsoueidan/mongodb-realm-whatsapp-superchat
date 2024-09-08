@@ -11,6 +11,7 @@ export type InteractiveListNode = Node<InteractiveList, "interactive-list">;
 export const InteractiveListNode = (props: NodeProps<InteractiveListNode>) => {
   const {
     data: {
+      trigger,
       whatsapp: { interactive },
     },
     sourcePosition,
@@ -41,11 +42,18 @@ export const InteractiveListNode = (props: NodeProps<InteractiveListNode>) => {
                 return (
                   <Box pos="relative" key={row.id} px="xs">
                     <Button
-                      variant="outline"
                       size="compact-sm"
-                      c="blue"
-                      color="gray.4"
-                      disabled
+                      variant={
+                        trigger?.done?.list_reply?.id === row.id
+                          ? "filled"
+                          : "outline"
+                      }
+                      color={
+                        trigger?.done?.list_reply?.id === row.id
+                          ? "green.6"
+                          : "gray.4"
+                      }
+                      disabled={trigger?.done?.list_reply?.id !== row.id}
                       fullWidth
                     >
                       {row.title}

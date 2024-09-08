@@ -1,4 +1,4 @@
-import { Button, rem, Stack, Text, Title } from "@mantine/core";
+import { Box, Button, rem, Stack, Text, Title } from "@mantine/core";
 import {
   Handle,
   Node,
@@ -17,9 +17,15 @@ export const InteractiveFlowNode = (props: NodeProps<InteractiveFlowNode>) => {
 
   const {
     data: {
+      trigger,
       whatsapp: { interactive },
     },
   } = props;
+
+  const done = trigger?.done;
+  const flow_name = trigger?.done?.flow_name;
+  const object = done && flow_name ? done[flow_name] : {};
+
   return (
     <NodeWrapper {...props}>
       <Stack gap={rem(2)} pos="relative" p="sm">
@@ -34,16 +40,28 @@ export const InteractiveFlowNode = (props: NodeProps<InteractiveFlowNode>) => {
           id={props.id}
           isConnectable={connections.length === 0}
         />
-        {interactive.action.parameters.flow_id ? (
-          <Button variant="outline" color="gray.6" w="100%" mt="sm">
-            {interactive.action.parameters.flow_cta}
-          </Button>
-        ) : (
-          <Text c="red" fw="500" fz="sm" mt="sm">
-            Please choose a flow
-          </Text>
-        )}
-      </Stack>{" "}
+        <Box mt="sm">
+          {!done ? (
+            interactive.action.parameters.flow_id ? (
+              <Button variant="outline" color="gray.6" w="100%">
+                {interactive.action.parameters.flow_cta}
+              </Button>
+            ) : (
+              <Text c="red" fw="500" fz="sm">
+                Please choose a flow
+              </Text>
+            )
+          ) : (
+            Object.keys(object)
+              .filter((p) => p !== "flow_token")
+              .map((key) => (
+                <Text key={key} c="gray" fz="sm">
+                  <strong>{object[key].question}</strong> {object[key].value}
+                </Text>
+              ))
+          )}
+        </Box>
+      </Stack>
     </NodeWrapper>
   );
 };

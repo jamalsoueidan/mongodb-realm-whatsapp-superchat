@@ -1,4 +1,21 @@
+import { InteractiveTrigger } from "../../NodeWrapper";
+
 export type InteractiveFlow = {
+  trigger?: InteractiveTrigger["trigger"] & {
+    done?: {
+      message: string;
+      flow_name: string;
+      type: string;
+    } & {
+      [key: string]: Record<
+        string,
+        { question: string; type: string; value: string }
+      >;
+    };
+    waiting?: {
+      message: string;
+    };
+  };
   whatsapp: {
     type: string;
     interactive: {
