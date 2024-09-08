@@ -7,8 +7,10 @@ export const MessageInteractiveReplyList = ({ msg }: MessageWrapperProps) => {
 
   return (
     <Flex direction="column" gap={rem(4)} mt={rem(4)}>
-      <Text>User picked:</Text>
-      <Button color="green.6">{interactiveReply?.list_reply?.title}</Button>
+      <Text fz="sm">User picked:</Text>
+      <Button color="green.6" size="compact-sm">
+        {interactiveReply?.list_reply?.title}
+      </Button>
     </Flex>
   );
 };

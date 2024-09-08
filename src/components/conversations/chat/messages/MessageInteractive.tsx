@@ -51,13 +51,7 @@ export const MessageInteractive = ({ msg }: MessageWrapperProps) => {
       {msg.interactive?.type === "button" ? (
         <Flex pt={rem(4)} justify="stretch" gap="xs">
           {msg.interactive.action?.buttons?.map((button, index) => (
-            <Button
-              color="green.6"
-              size="xs"
-              key={index}
-              miw={rem(60)}
-              flex={1}
-            >
+            <Button color="green.6" key={index} miw={rem(60)} size="compact-xs">
               {button.reply?.title || ""}
             </Button>
           ))}

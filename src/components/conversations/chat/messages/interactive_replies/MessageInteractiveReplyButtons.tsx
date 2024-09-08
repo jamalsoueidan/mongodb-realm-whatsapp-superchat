@@ -9,8 +9,10 @@ export const MessageInteractiveReplyButtons = ({
 
   return (
     <Flex direction="column" gap={rem(4)} mt={rem(4)}>
-      <Text>User picked:</Text>
-      <Button color="green.6">{interactiveReply?.button_reply?.title}</Button>
+      <Text fz="sm">User picked:</Text>
+      <Button color="green.6" size="compact-sm">
+        {interactiveReply?.button_reply?.title}
+      </Button>
     </Flex>
   );
 };
