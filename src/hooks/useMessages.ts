@@ -26,12 +26,14 @@ export function useMessages({
   const messages = useQuery<Message>(
     MessageSchema.name,
     (collection) => {
-      return collection.filtered(
-        `conversation._id = $0 AND hidden == $1 SORT(timestamp DESC) LIMIT(${limit}) SORT(timestamp ASC)`,
-        new BSON.ObjectId(conversationId),
-        null,
-        limit
-      );
+      return collection
+        .filtered(
+          `conversation._id = $0 AND hidden == $1 SORT(timestamp DESC) LIMIT(${limit})`,
+          new BSON.ObjectId(conversationId),
+          null,
+          limit
+        )
+        .sorted("timestamp");
     },
     [conversationId, limit]
   );

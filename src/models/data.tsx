@@ -156,7 +156,7 @@ export const Message_interactive_action_sectionsSchema = {
   embedded: true,
   properties: {
     title: "string?",
-    rows: "Message_interactive_action_sections_rows",
+    rows: "Message_interactive_action_sections_rows[]",
   },
 };
 

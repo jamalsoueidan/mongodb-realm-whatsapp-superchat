@@ -1,11 +1,22 @@
-import { Box, Button, Card, Divider, Flex, rem, Text } from "@mantine/core";
-import React from "react";
+import {
+  Box,
+  Button,
+  Card,
+  Divider,
+  Flex,
+  rem,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { MessageTime } from "./MessageTime";
 import { MessageWrapper, MessageWrapperProps } from "./MessageWrapper";
 
 export const MessageInteractive = ({ msg }: MessageWrapperProps) => {
   const isReplied = !!msg.statuses.find((r) => r.status === "replied");
 
+  if (msg.interactive?.type === "list") {
+    console.log(JSON.stringify(msg.interactive, null, 2));
+  }
   return (
     <MessageWrapper msg={msg}>
       <Text size="sm" c="gray.9" fw="bold">
@@ -22,26 +33,20 @@ export const MessageInteractive = ({ msg }: MessageWrapperProps) => {
         <Divider />
       </Card.Section>
       {msg.interactive?.type === "list" ? (
-        <Flex pt={rem(4)} justify="stretch" gap="xs">
+        <Stack gap={rem(4)}>
           {msg.interactive.action?.sections?.map((section, index) => (
-            <React.Fragment key={index}>
-              <Text size="xs" miw={rem(60)} flex={1}>
+            <Flex pt={rem(4)} justify="stretch" direction="column" key={index}>
+              <Text size="xs" fw="500">
                 {section.title || ""}
               </Text>
               {section.rows?.map((button, bIndex) => (
-                <Button
-                  color="green.6"
-                  size="xs"
-                  key={bIndex}
-                  miw={rem(60)}
-                  flex={1}
-                >
+                <Button color="green.6" key={bIndex} size="compact-xs">
                   {button.title || ""}
                 </Button>
               ))}
-            </React.Fragment>
+            </Flex>
           ))}
-        </Flex>
+        </Stack>
       ) : null}
       {msg.interactive?.type === "button" ? (
         <Flex pt={rem(4)} justify="stretch" gap="xs">
