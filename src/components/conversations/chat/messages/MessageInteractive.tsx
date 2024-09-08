@@ -1,4 +1,5 @@
 import { Box, Button, Card, Divider, Flex, rem, Text } from "@mantine/core";
+import React from "react";
 import { MessageTime } from "./MessageTime";
 import { MessageWrapper, MessageWrapperProps } from "./MessageWrapper";
 
@@ -20,6 +21,28 @@ export const MessageInteractive = ({ msg }: MessageWrapperProps) => {
       <Card.Section>
         <Divider />
       </Card.Section>
+      {msg.interactive?.type === "list" ? (
+        <Flex pt={rem(4)} justify="stretch" gap="xs">
+          {msg.interactive.action?.sections?.map((section, index) => (
+            <React.Fragment key={index}>
+              <Text size="xs" miw={rem(60)} flex={1}>
+                {section.title || ""}
+              </Text>
+              {section.rows?.map((button, bIndex) => (
+                <Button
+                  color="green.6"
+                  size="xs"
+                  key={bIndex}
+                  miw={rem(60)}
+                  flex={1}
+                >
+                  {button.title || ""}
+                </Button>
+              ))}
+            </React.Fragment>
+          ))}
+        </Flex>
+      ) : null}
       {msg.interactive?.type === "button" ? (
         <Flex pt={rem(4)} justify="stretch" gap="xs">
           {msg.interactive.action?.buttons?.map((button, index) => (

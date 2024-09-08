@@ -70,6 +70,7 @@ export function InteractiveListControls({
             <TextInput
               withAsterisk
               label="Section title"
+              required
               flex="1"
               {...form.getInputProps(
                 `whatsapp.interactive.action.sections.${sectionIndex}.title`

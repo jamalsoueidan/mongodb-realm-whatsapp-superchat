@@ -61,9 +61,8 @@ export const Flow = () => {
         _id: new BSON.ObjectId(params?.flowId),
         nodes,
         edges,
-        status: "draft",
       }),
-    800
+    1000
   );
 
   // LOAD NODES; EDGES

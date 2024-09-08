@@ -127,6 +127,8 @@ export const Message_interactiveSchema = {
 };
 
 export type Message_interactive_action = {
+  button?: string;
+  sections?: Realm.List<Message_interactive_action_sections>;
   name?: string;
   parameters?: Message_interactive_action_parameters;
   buttons?: Realm.List<Message_interactive_action_buttons>;
@@ -136,9 +138,39 @@ export const Message_interactive_actionSchema = {
   name: "Message_interactive_action",
   embedded: true,
   properties: {
+    button: "string?",
+    sections: "Message_interactive_action_sections[]",
     name: "string?",
     parameters: "Message_interactive_action_parameters",
     buttons: "Message_interactive_action_buttons[]",
+  },
+};
+
+export type Message_interactive_action_sections = {
+  title?: string;
+  rows?: Realm.List<Message_interactive_action_sections_rows>;
+};
+
+export const Message_interactive_action_sectionsSchema = {
+  name: "Message_interactive_action_sections",
+  embedded: true,
+  properties: {
+    title: "string?",
+    rows: "Message_interactive_action_sections_rows",
+  },
+};
+
+export type Message_interactive_action_sections_rows = {
+  id?: string;
+  title?: string;
+};
+
+export const Message_interactive_action_sections_rowsSchema = {
+  name: "Message_interactive_action_sections_rows",
+  embedded: true,
+  properties: {
+    id: "string?",
+    title: "string?",
   },
 };
 
@@ -251,6 +283,7 @@ export type Message_interactive_reply = {
   flow_name?: string;
   type?: string;
   button_reply?: Message_interactive_reply_button_reply;
+  list_reply?: Message_interactive_reply_list_reply;
 };
 
 export const Message_interactive_replySchema = {
@@ -262,6 +295,21 @@ export const Message_interactive_replySchema = {
     flow_name: "string?",
     type: "string?",
     button_reply: "Message_interactive_reply_button_reply",
+    list_reply: "Message_interactive_reply_list_reply",
+  },
+};
+
+export type Message_interactive_reply_list_reply = {
+  id?: string;
+  title?: string;
+};
+
+export const Message_interactive_reply_list_replySchema = {
+  name: "Message_interactive_reply_list_reply",
+  embedded: true,
+  properties: {
+    id: "string?",
+    title: "string?",
   },
 };
 

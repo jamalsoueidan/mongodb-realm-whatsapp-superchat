@@ -6,6 +6,7 @@ import { MessageTime } from "./MessageTime";
 import { MessageWrapper, MessageWrapperProps } from "./MessageWrapper";
 import { MessageInteractiveReplyButtons } from "./interactive_replies/MessageInteractiveReplyButtons";
 import { MessageInteractiveReplyFlow } from "./interactive_replies/MessageInteractiveReplyFlow";
+import { MessageInteractiveReplyList } from "./interactive_replies/MessageInteractiveReplyList";
 
 export const MessageInteractiveReply = ({ msg }: MessageWrapperProps) => {
   const type = msg.interactive_reply?.type;
@@ -16,8 +17,10 @@ export const MessageInteractiveReply = ({ msg }: MessageWrapperProps) => {
         return <MessageInteractiveReplyFlow msg={msg} />;
       case "button_reply":
         return <MessageInteractiveReplyButtons msg={msg} />;
+      case "list_reply":
+        return <MessageInteractiveReplyList msg={msg} />;
       default:
-        return <Text>Unknown interactive reply</Text>;
+        return <Text>Unknown interactive reply {type}</Text>;
     }
   }, [msg, type]);
 
