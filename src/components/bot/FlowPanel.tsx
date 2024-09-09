@@ -47,7 +47,19 @@ export function FlowPanel() {
         <Tooltip label="Print" position="left">
           <ActionIcon
             size="lg"
-            onClick={() => console.log(getNodes(), getEdges())}
+            onClick={() => {
+              const edges = getEdges();
+              const nodes = getNodes();
+              const node = nodes.find((node) => node.type === "chat");
+              const edgesConnectedChat = edges.filter(
+                (edge) => edge.source === node?.id
+              );
+              console.log(
+                nodes.filter((nodeItem) =>
+                  edgesConnectedChat.some((edge) => edge.target === nodeItem.id)
+                )
+              );
+            }}
           >
             <IconPrinter />
           </ActionIcon>

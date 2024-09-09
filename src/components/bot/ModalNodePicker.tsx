@@ -3,6 +3,7 @@ import { Edge, Node, useReactFlow } from "@xyflow/react";
 
 import { useLocation, useRoute } from "wouter";
 import { CustomModal } from "../CustomModal";
+import { createChatNode } from "./nodes/chat/ChatAction";
 import { createInteractiveButtonNode } from "./nodes/interactive-buttons/InteractiveButtonsAction";
 import { createInteractiveFlowNode } from "./nodes/interactive-flow/InteractiveFlowAction";
 import { createInteractiveListNode } from "./nodes/interactive-list/InteractiveListActions";
@@ -40,6 +41,9 @@ export const ModalNodePicker = () => {
       title="Add trigger"
     >
       <Stack>
+        <Button onClick={() => addOnclick(createChatNode(currentNode))}>
+          ChatGPT
+        </Button>
         <Button
           onClick={() => addOnclick(createInteractiveListNode(currentNode))}
         >

@@ -62,6 +62,7 @@ export type Message = {
   type: string;
   hidden?: boolean;
   user?: User;
+  bot?: CustomerBot;
 };
 
 export const MessageSchema = {
@@ -83,6 +84,7 @@ export const MessageSchema = {
     timestamp: "double",
     type: "string",
     user: "User",
+    bot: "CustomerBot",
     hidden: "bool?",
   },
   primaryKey: "_id",

@@ -24,6 +24,7 @@ import { CustomNodeTypes } from "./CustomNodeTypes";
 import { FlowPanel } from "./FlowPanel";
 import { ModalNodePicker } from "./ModalNodePicker";
 import { NodeControlDrawer } from "./NodeControlDrawer";
+import { ChatNode } from "./nodes/chat/ChatNode";
 import { InteractiveButtonsNode } from "./nodes/interactive-buttons/InteractiveButtonsNode";
 import { InteractiveFlowNode } from "./nodes/interactive-flow/InteractiveFlowNode";
 import { InteractiveListNode } from "./nodes/interactive-list/InteractiveListNode";
@@ -36,6 +37,7 @@ export const nodeTypes: NodeTypes = {
   "interactive-buttons": InteractiveButtonsNode,
   "interactive-list": InteractiveListNode,
   "interactive-flow": InteractiveFlowNode,
+  chat: ChatNode,
   location: LocationNode,
   message: MessageNode,
   plus: PlusNode,
@@ -80,7 +82,7 @@ export const Flow = () => {
 
   useEffect(() => {
     saveData();
-  }, [nodes, edges]);
+  }, [nodes, edges, saveData]);
 
   const { screenToFlowPosition, deleteElements, fitBounds, fitView } =
     useReactFlow();
@@ -209,7 +211,7 @@ export const Flow = () => {
         }, 50);
       }
     }
-  }, [params, nodes]);
+  }, [params, nodes, previous, fitBounds, fitView]);
 
   return (
     <ReactFlow

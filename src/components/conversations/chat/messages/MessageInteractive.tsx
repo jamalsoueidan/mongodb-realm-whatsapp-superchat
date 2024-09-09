@@ -14,9 +14,6 @@ import { MessageWrapper, MessageWrapperProps } from "./MessageWrapper";
 export const MessageInteractive = ({ msg }: MessageWrapperProps) => {
   const isReplied = !!msg.statuses.find((r) => r.status === "replied");
 
-  if (msg.interactive?.type === "list") {
-    console.log(JSON.stringify(msg.interactive, null, 2));
-  }
   return (
     <MessageWrapper msg={msg}>
       <Text size="sm" c="gray.9" fw="bold">
