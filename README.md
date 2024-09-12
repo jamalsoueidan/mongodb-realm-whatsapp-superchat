@@ -1,3 +1,5 @@
+## ⚠️ **Notice: I have stopped developing this project because MongoDB has deprecated the Atlas Device Sync, and I have migrated to Convex.** ⚠️
+
 # Whatsapp Application
 
 ![Desktop](screenshots/bot.png)
