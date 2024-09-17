@@ -1,4 +1,6 @@
-## ⚠️ **Notice: I have stopped developing this project because MongoDB has deprecated the Atlas Device Sync, and I have migrated to Convex.** ⚠️
+## ⚠️ **Notice: I have stopped developing on this project because MongoDB has deprecated the Atlas Device Sync, and I have migrated to Convex.** ⚠️
+
+[Migrate to repos Convex.dev](https://github.com/jamalsoueidan/convex-whatsapp-superchat)
 
 # Whatsapp Application
 
